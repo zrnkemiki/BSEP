@@ -1,2 +1,2 @@
 # BSEP
-Projekat bezbednost u sistemima elektronskog poslovanja FTN
+Projekat iz predmeta Bezbednost u sistemima elektronskog poslovanja FTN
