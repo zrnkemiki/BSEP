@@ -4,6 +4,10 @@ import java.math.BigInteger;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.x509.BasicConstraints;
+import org.bouncycastle.asn1.x509.KeyUsage;
+import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
@@ -98,6 +102,13 @@ public class CertificateGenerator {
 			
 			ContentSigner contentSigner = contentSignerBuilder.build(rootData.getPrivateKey());
 			
+			// add extensions
+			BasicConstraints basicConstraints = new BasicConstraints(true);  // is a CA
+			certBuilder.addExtension(new ASN1ObjectIdentifier("2.5.29.19"), true, basicConstraints);
+			
+			KeyUsage keyUsage = new KeyUsage(KeyUsage.keyCertSign | KeyUsage.digitalSignature);
+			certBuilder.addExtension(new ASN1ObjectIdentifier("2.5.29.15"), true, keyUsage);
+			
 			// generate certificate + signature
 			X509CertificateHolder certHolder = certBuilder.build(contentSigner);
 			
@@ -110,6 +121,8 @@ public class CertificateGenerator {
 		} catch (OperatorCreationException e) {
 			e.printStackTrace();
 		} catch (CertificateException e) {
+			e.printStackTrace();
+		} catch (CertIOException e) {
 			e.printStackTrace();
 		}
 		
