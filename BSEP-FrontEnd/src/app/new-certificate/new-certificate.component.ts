@@ -15,14 +15,15 @@ export class NewCertificateComponent implements OnInit {
     private router: Router, 
     private route: ActivatedRoute, 
   ) {  //KAKO RESITI OVAJ PROBLEM??
-    this.subjectData = {fullName : "", surname :"", givenName:"", organization:"", country:"", email:"", dateFrom:"", dateUntil:"" }
+    this.subjectData = {commonName : "", surname :"", givenName:"", organization:"", organizationUnit:"", 
+    country:"", email:"", dateFrom:"", dateUntil:"", uid: undefined }
   }
 
   ngOnInit(): void {
   }
 
   validateSubjectData(){
-    if (this.subjectData.fullName == "" || this.subjectData.fullName.length <= 2) {
+    if (this.subjectData.commonName == "" || this.subjectData.commonName.length <= 2) {
       alert("Fullname must be more than 2 characters long.")
     }
     else if (this.subjectData.surname == "") {
@@ -34,6 +35,9 @@ export class NewCertificateComponent implements OnInit {
     else if (this.subjectData.organization == "") {
       alert("You must enter organization.")
     }
+    else if (this.subjectData.organizationUnit == "") {
+      alert("You must enter organization unit.")
+    }
     else if (this.subjectData.country == "") {
       alert("You must enter country.")
     }
@@ -41,7 +45,7 @@ export class NewCertificateComponent implements OnInit {
       alert("You must enter email.")
     }
     else {
-      alert("Full name: " + this.subjectData.fullName);
+      alert("CommonName: " + this.subjectData.commonName);
       //Call createCertificate method!
     }
   

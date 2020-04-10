@@ -26,10 +26,10 @@
 
 
         <div class="form-group">
-            <label class="col-md-4 control-label">Full Name</label>
+            <label class="col-md-4 control-label">Common name</label>
             <div class="col-md-8 inputGroupContainer">
                 <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                    <input id="fullName" name="fullName" placeholder="Full Name" class="form-control" required="true" value="" type="text" [(ngModel)]="this.subjectData.fullName"></div>
+                    <input id="fullName" name="fullName" placeholder="Common Name" class="form-control" required="true" value="" type="text" [(ngModel)]="this.subjectData.commonName"></div>
             </div>
         </div>
         <div class="form-group">
@@ -40,10 +40,10 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-4 control-label">GivenName</label>
+            <label class="col-md-4 control-label">Given name</label>
             <div class="col-md-8 inputGroupContainer">
                 <div class="input-group"><span class="input-group-addon"><i
-                            class="glyphicon glyphicon-home"></i></span><input id="givenName" name="givenName" placeholder="GivenName" class="form-control" required="true" value="" type="text" [(ngModel)]="this.subjectData.givenName"></div>
+                            class="glyphicon glyphicon-home"></i></span><input id="givenName" name="givenName" placeholder="Given name" class="form-control" required="true" value="" type="text" [(ngModel)]="this.subjectData.givenName"></div>
             </div>
         </div>
         <div class="form-group">
@@ -53,6 +53,14 @@
                             class="glyphicon glyphicon-home"></i></span><input id="organization" name="organization" placeholder="Organization" class="form-control" required="true" value="" type="text" [(ngModel)]="this.subjectData.organization"></div>
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">Organization unit</label>
+            <div class="col-md-8 inputGroupContainer">
+                <div class="input-group"><span class="input-group-addon"><i
+                            class="glyphicon glyphicon-home"></i></span><input id="organizationUnit" name="organizationUnit" placeholder="Organization unit" class="form-control" required="true" value="" type="text" [(ngModel)]="this.subjectData.organizationUnit"></div>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-md-4 control-label">Country</label>
             <div class="col-md-8 inputGroupContainer">
