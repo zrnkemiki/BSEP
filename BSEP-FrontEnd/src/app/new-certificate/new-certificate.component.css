@@ -1,0 +1,21 @@
+.container {
+    padding-top: 3%;
+    margin-top: 3px;
+}
+
+#buttons {
+    text-align: center;
+}
+
+button {
+    margin-right: 35%;
+}
+
+.background {
+    height: 100px;
+}
+
+.jumbotron {
+    margin-left: -4%;
+    margin-top: -2%;
+}

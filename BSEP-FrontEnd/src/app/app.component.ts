@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'BSEP-FrontEnd';
+  title = 'BSEP-FrontEnd';  
+  //To-Do Current user logged in!
+  user = "a";
 }
