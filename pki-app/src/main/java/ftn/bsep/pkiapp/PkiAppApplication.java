@@ -5,9 +5,11 @@ import java.security.Security;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-public class PkiAppApplication {
+
+public class PkiAppApplication{
 
 	public static void main(String[] args) {
 		Security.addProvider(new BouncyCastleProvider());

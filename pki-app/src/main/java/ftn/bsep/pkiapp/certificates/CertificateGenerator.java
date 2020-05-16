@@ -1,16 +1,25 @@
 package ftn.bsep.pkiapp.certificates;
 
+import java.io.FileOutputStream;
 import java.math.BigInteger;
+import java.security.KeyPair;
+import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.x509.BasicConstraints;
+import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.KeyUsage;
 import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
+import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
@@ -20,6 +29,7 @@ import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import ftn.bsep.pkiapp.data.IssuerData;
 import ftn.bsep.pkiapp.data.RootData;
 import ftn.bsep.pkiapp.data.SubjectData;
+import ftn.bsep.pkiapp.model.CertificateAuthority;
 
 public class CertificateGenerator {
 
@@ -51,35 +61,29 @@ public class CertificateGenerator {
 	// odnosno --> potpisuje CSR
 	// kao param prima CSR, private key od CA, i treba jos public key od subjekta
 	// ne znam da li public key od subjekta moze da se izvuce direktno iz klase CSR
-	public X509Certificate signCSR(SubjectData subjectData, IssuerData issuerData) {
-		
-		try {
-			X509v3CertificateBuilder certBuilder = new JcaX509v3CertificateBuilder(issuerData.getX500name(),
-											new BigInteger(subjectData.getSerialNumber()), 
-											subjectData.getStartDate(), 
-											subjectData.getEndDate(), 
-											subjectData.getX500name(), 
-											subjectData.getPublicKey());
-			
-			JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
-			contentSignerBuilder = contentSignerBuilder.setProvider("BC");
-			
-			ContentSigner contentSigner = contentSignerBuilder.build(issuerData.getPrivateKey());
-			
-			X509CertificateHolder certHolder = certBuilder.build(contentSigner);
-			
-			JcaX509CertificateConverter converter = new JcaX509CertificateConverter();
-			converter.setProvider("BC");
-			
-			return converter.getCertificate(certHolder);
-			
-		} catch (OperatorCreationException e) {
-			e.printStackTrace();
-		} catch (CertificateException e) {
-			e.printStackTrace();
-		} 
-			
-		return null;
+	public X509Certificate signCSR(SubjectData subjectData, CertificateAuthority ca, PKCS10CertificationRequest csr) throws CertificateEncodingException, CertIOException, NoSuchAlgorithmException {
+	       
+			IssuerData issuerData = ca.getKeystoreReader().readIssuerFromStore("D:\\BSEP\\pki-app\\src\\main\\resources\\root-keystore.jks","root", "password".toCharArray(),  "password".toCharArray());
+			Certificate issuerCert = ca.getKeystoreReader().readCertificate("D:\\BSEP\\pki-app\\src\\main\\resources\\root-keystore.jks", "password", "root");
+			X509v3CertificateBuilder issuedCertBuilder = new X509v3CertificateBuilder(issuerData.getX500name(), BigInteger.valueOf(333333), subjectData.getStartDate(), subjectData.getEndDate(), csr.getSubject(), csr.getSubjectPublicKeyInfo());
+
+	        JcaX509ExtensionUtils issuedCertExtUtils = new JcaX509ExtensionUtils();
+
+	        // Add Extensions
+	        // Use BasicConstraints to say that this Cert is not a CA
+	        issuedCertBuilder.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
+
+	        // Add Issuer cert identifier as Extension
+	        issuedCertBuilder.addExtension(Extension.authorityKeyIdentifier, false, issuedCertExtUtils.createAuthorityKeyIdentifier((X509Certificate) issuerCert));
+	        issuedCertBuilder.addExtension(Extension.subjectKeyIdentifier, false, issuedCertExtUtils.createSubjectKeyIdentifier(csr.getSubjectPublicKeyInfo()));
+
+	        //X509CertificateHolder issuedCertHolder = issuedCertBuilder.build(csrContentSigner);
+	        //X509Certificate issuedCert  = new JcaX509CertificateConverter().setProvider(BC_PROVIDER).getCertificate(issuedCertHolder);
+
+	        // Verify the issued cert signature against the root (issuer) cert
+	        //issuedCert.verify(issuedCert.getPublicKey(), "BC");
+
+	        return null;
 	}
 	
 	
@@ -129,4 +133,6 @@ public class CertificateGenerator {
 		
 		return null;
 	}
+	
+	
 }

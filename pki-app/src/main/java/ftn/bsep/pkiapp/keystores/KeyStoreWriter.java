@@ -15,7 +15,6 @@ import java.security.cert.CertificateException;
 public class KeyStoreWriter {
 
 	private KeyStore keyStore;
-	
 	public KeyStoreWriter() {
 		try {
 			keyStore = KeyStore.getInstance("JKS", "SUN");
@@ -65,10 +64,12 @@ public class KeyStoreWriter {
 	public void write(String alias, PrivateKey privateKey, char[] password, Certificate certificate) {
 		try {
 			keyStore.setKeyEntry(alias, privateKey, password, new Certificate[] {certificate});
+			
 		} catch (KeyStoreException e) {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	public void storeCertificate(String alias, Certificate cert) {
 		try {
