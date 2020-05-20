@@ -1,5 +1,6 @@
 package ftn.bsep.pkiapp.data;
 
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Date;
 
@@ -12,18 +13,20 @@ public class SubjectData {
 	private Date startDate;
 	private Date endDate;
 	private PublicKey publicKey;
+	private PrivateKey privateKey;
 	
 	public SubjectData() {
 		
 	}
 
-	public SubjectData(X500Name x500name, String serialNumber, Date startDate, Date endDate, PublicKey publicKey) {
+	public SubjectData(X500Name x500name, String serialNumber, Date startDate, Date endDate, PublicKey publicKey, PrivateKey privateKey) {
 		super();
 		this.x500name = x500name;
 		this.serialNumber = serialNumber;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.publicKey = publicKey;
+		this.privateKey = privateKey;
 	}
 
 	public X500Name getX500name() {
@@ -65,6 +68,16 @@ public class SubjectData {
 	public void setPublicKey(PublicKey publicKey) {
 		this.publicKey = publicKey;
 	}
+
+	public PrivateKey getPrivateKey() {
+		return privateKey;
+	}
+
+	public void setPrivateKey(PrivateKey privateKey) {
+		this.privateKey = privateKey;
+	}
+	
+	
 	
 	
 }

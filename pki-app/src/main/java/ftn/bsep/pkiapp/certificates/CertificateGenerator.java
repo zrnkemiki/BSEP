@@ -2,9 +2,12 @@ package ftn.bsep.pkiapp.certificates;
 
 import java.io.FileOutputStream;
 import java.math.BigInteger;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
@@ -13,7 +16,11 @@ import java.util.Base64;
 
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.x509.BasicConstraints;
+import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.GeneralNames;
+import org.bouncycastle.asn1.x509.KeyPurposeId;
 import org.bouncycastle.asn1.x509.KeyUsage;
 import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -34,7 +41,7 @@ import ftn.bsep.pkiapp.model.CertificateAuthority;
 public class CertificateGenerator {
 
 	
-	
+	private CSRGenerator csrg = new CSRGenerator();
 	
 	public boolean verifyCSRSignature(PKCS10CertificationRequest csr) {
 		
@@ -61,7 +68,7 @@ public class CertificateGenerator {
 	// odnosno --> potpisuje CSR
 	// kao param prima CSR, private key od CA, i treba jos public key od subjekta
 	// ne znam da li public key od subjekta moze da se izvuce direktno iz klase CSR
-	public X509Certificate signCSR(SubjectData subjectData, CertificateAuthority ca, PKCS10CertificationRequest csr) throws CertificateEncodingException, CertIOException, NoSuchAlgorithmException {
+	public X509Certificate signCSR(SubjectData subjectData, CertificateAuthority ca, PKCS10CertificationRequest csr,ContentSigner csrContentSigner) throws CertIOException, NoSuchAlgorithmException, CertificateException, InvalidKeyException, NoSuchProviderException, SignatureException {
 	       
 			IssuerData issuerData = ca.getKeystoreReader().readIssuerFromStore("D:\\BSEP\\pki-app\\src\\main\\resources\\root-keystore.jks","root", "password".toCharArray(),  "password".toCharArray());
 			Certificate issuerCert = ca.getKeystoreReader().readCertificate("D:\\BSEP\\pki-app\\src\\main\\resources\\root-keystore.jks", "password", "root");
@@ -76,14 +83,17 @@ public class CertificateGenerator {
 	        // Add Issuer cert identifier as Extension
 	        issuedCertBuilder.addExtension(Extension.authorityKeyIdentifier, false, issuedCertExtUtils.createAuthorityKeyIdentifier((X509Certificate) issuerCert));
 	        issuedCertBuilder.addExtension(Extension.subjectKeyIdentifier, false, issuedCertExtUtils.createSubjectKeyIdentifier(csr.getSubjectPublicKeyInfo()));
-
-	        //X509CertificateHolder issuedCertHolder = issuedCertBuilder.build(csrContentSigner);
-	        //X509Certificate issuedCert  = new JcaX509CertificateConverter().setProvider(BC_PROVIDER).getCertificate(issuedCertHolder);
+	        //GeneralNames subjectAltName = new GeneralNames(new GeneralName(GeneralName.dNSName, "DNS:localhost"));
+	        //issuedCertBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltName.toASN1Primitive());
+	        //issuedCertBuilder.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
+	        issuedCertBuilder.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeId.id_kp_clientAuth));
+	        X509CertificateHolder issuedCertHolder = issuedCertBuilder.build(csrContentSigner);
+	        X509Certificate issuedCert  = new JcaX509CertificateConverter().setProvider("BC").getCertificate(issuedCertHolder);
 
 	        // Verify the issued cert signature against the root (issuer) cert
-	        //issuedCert.verify(issuedCert.getPublicKey(), "BC");
+	        issuedCert.verify(issuerCert.getPublicKey(), "BC");
 
-	        return null;
+	        return issuedCert;
 	}
 	
 	

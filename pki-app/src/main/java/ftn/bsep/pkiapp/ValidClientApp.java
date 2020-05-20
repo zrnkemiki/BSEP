@@ -31,14 +31,14 @@ public class ValidClientApp {
 	        KeyManagerFactory keyMgrFactory = KeyManagerFactory.getInstance("SunX509");
 	        KeyStore keyStore = KeyStore.getInstance("JKS");
 	        char[] keyStorePassword = "password".toCharArray(); 
-	        keyStore.load(new FileInputStream("D:\\BSEP\\pki-app\\src\\main\\resources\\client-keystore.jks"), keyStorePassword);
+	        keyStore.load(new FileInputStream("D:\\BSEP\\pki-app\\src\\main\\resources\\clientStores\\client-keystore.jks"), keyStorePassword);
 	        keyMgrFactory.init(keyStore, keyStorePassword);
 
 
 	        TrustManagerFactory trustStrFactory = TrustManagerFactory.getInstance("SunX509");
 	        KeyStore trustStore = KeyStore.getInstance("JKS");
 	        char[] trustStorePassword = "password".toCharArray();          
-	        trustStore.load(new FileInputStream("D:\\BSEP\\pki-app\\src\\main\\resources\\client-truststore.jks"), trustStorePassword);
+	        trustStore.load(new FileInputStream("D:\\BSEP\\pki-app\\src\\main\\resources\\clientStores\\client-truststore.jks"), trustStorePassword);
 	        trustStrFactory.init(trustStore);
 
 	        context.init(keyMgrFactory.getKeyManagers(), 

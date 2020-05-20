@@ -41,9 +41,10 @@ public class CSRGenerator {
 	public PKCS10CertificationRequest generateCSR(SubjectData subjectData, PrivateKey privateKeyCA) throws OperatorCreationException {
 		
 		PKCS10CertificationRequestBuilder p10Builder = new JcaPKCS10CertificationRequestBuilder(subjectData.getX500name(), subjectData.getPublicKey());
-        JcaContentSignerBuilder csrBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider("BC");
-
+ 	
+		JcaContentSignerBuilder csrBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider("BC");
         ContentSigner csrContentSigner = csrBuilder.build(privateKeyCA);
+        
         PKCS10CertificationRequest csr = p10Builder.build(csrContentSigner);
         return csr;
 	}
