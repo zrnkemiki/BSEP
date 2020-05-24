@@ -19,8 +19,8 @@ public class CertificateAuthority {
 	// .....
 	private String id;
 	
-	private String keyStorePath = "D:\\BSEP\\pki-app\\src\\main\\resources\\root-keystore.jks";
-	private String trustStorePath = "D:\\BSEP\\pki-app\\src\\main\\resources\\root-truststore.jks";
+	private String keyStorePath = "D:\\BSEP\\pki-app\\src\\main\\resources\\CAStores\\ca-keystore.jks";
+	private String trustStorePath = "D:\\BSEP\\pki-app\\src\\main\\resources\\rootStores\\root-truststore.jks";
 	private KeyStore keystore;
 	private KeyStore truststore;
 	private String password = "password";
@@ -29,7 +29,7 @@ public class CertificateAuthority {
 	
 	
 	public CertificateAuthority() {
-		id = "root";
+		id = "ca-rs";
 		this.keystoreReader = new KeyStoreReader();
 		this.keystoreWriter = new KeyStoreWriter();
 		

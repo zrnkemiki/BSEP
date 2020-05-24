@@ -42,7 +42,7 @@ public class CertificateController {
 	
 	
 	KeyPair keyPairSubject = this.generateKeyPair();
-	SubjectData subjectData = dg.generateSubjectData(keyPairSubject);
+	SubjectData subjectData = dg.generateSSLData(keyPairSubject);
 	PKCS10CertificationRequest csr = null;
 	X509Certificate signedCertificate = null;
 	
@@ -55,9 +55,9 @@ public class CertificateController {
 		RootData rd = dg.generateRootData();
 		ksw.loadKeyStore(null, "password".toCharArray());
 		X509Certificate cert = cg.generateSelfSignedCertificate(rd);
-		writeCertToFileBase64Encoded(cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\self-sign.cer");
+		writeCertToFileBase64Encoded(cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\rootStores\\self-sign.cer");
 		ksw.write("root", rd.getPrivateKey(), "password".toCharArray(), cert);
-		ksw.saveKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\root-keystore.jks", "password".toCharArray());
+		ksw.saveKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\rootStores\\root-keystore.jks", "password".toCharArray());
 		System.out.println("HELOOOOOO");
 		return "Self Signing Finished";
 	}
@@ -71,7 +71,7 @@ public class CertificateController {
 	public String createCSR() throws Exception {
 		//ca.loadStores();
 		
-		csr = csrGen.generateCSR(sslSubjectData, ca.getKeystoreReader().readPrivateKey("D:\\BSEP\\pki-app\\src\\main\\resources\\root-keystore.jks", "password", "root", "password"));
+		csr = csrGen.generateCSR(subjectData,ca.getPrivateKey());
 		writeCertToFileBase64Encoded(csr,"D:\\BSEP\\pki-app\\src\\main\\resources\\csrs\\csr1.csr");
 		
 		return"CSR Created";
@@ -82,20 +82,20 @@ public class CertificateController {
 		//ca.loadStores();
 		JcaContentSignerBuilder csrBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider("BC");
 		ContentSigner csrContentSigner = csrBuilder.build(ca.getPrivateKey());
-		signedCertificate = cg.signCSR(sslSubjectData, ca, csr, csrContentSigner);
+		signedCertificate = cg.signCSR(subjectData, ca, csr, csrContentSigner);
 		
 		ksw.loadKeyStore(null, "password".toCharArray());
-		ksw.write("sslCert", sslSubjectData.getPrivateKey(), "password".toCharArray(), signedCertificate);
-		ksw.saveKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\clientStores\\client-keystore.jks", "password".toCharArray());
+		ksw.write("server2", subjectData.getPrivateKey(), "password".toCharArray(), signedCertificate);
+		ksw.saveKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\serverStores\\server2-keystore.jks", "password".toCharArray());
+		writeCertToFileBase64Encoded(signedCertificate,"D:\\BSEP\\pki-app\\src\\main\\resources\\serverStores\\server2-cert.cer");	
+		//ksw.loadKeyStore(null, "password".toCharArray());
+		//ksw.storeCertificate("ca-rs", ca.getKeystoreReader().readCertificate("D:\\BSEP\\pki-app\\src\\main\\resources\\CAStores\\ca-keystore.jks", "password", "ca-rs"));
+		//ksw.saveKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\serverStores\\server-truststore.jks", "password".toCharArray());
 		
-		ksw.loadKeyStore(null, "password".toCharArray());
-		ksw.storeCertificate("root", ca.getCertificate());
-		ksw.saveKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\clientStores\\client-truststore.jks", "password".toCharArray());
+		//writeCertToFileBase64Encoded(signedCertificate,"D:\\BSEP\\pki-app\\src\\main\\resources\\certificates\\clientCert.cer");
 		
-		writeCertToFileBase64Encoded(signedCertificate,"D:\\BSEP\\pki-app\\src\\main\\resources\\certificates\\clientCert.cer");
-		
-		ca.getKeystoreWriter().loadKeyStore(ca.getTrustStorePath(), ca.getPassword().toCharArray());
-		ca.getKeystoreWriter().saveKeyStore(ca.getTrustStorePath(), ca.getPassword().toCharArray());
+		//ca.getKeystoreWriter().loadKeyStore(ca.getTrustStorePath(), ca.getPassword().toCharArray());
+		//ca.getKeystoreWriter().saveKeyStore(ca.getTrustStorePath(), ca.getPassword().toCharArray());
 		
 		
 		//writeCertToFileBase64Encoded(csr,"D:\\BSEP\\pki-app\\src\\main\\resources\\certificates\\cert1.crt");		

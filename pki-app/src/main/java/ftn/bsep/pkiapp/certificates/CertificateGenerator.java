@@ -70,8 +70,8 @@ public class CertificateGenerator {
 	// ne znam da li public key od subjekta moze da se izvuce direktno iz klase CSR
 	public X509Certificate signCSR(SubjectData subjectData, CertificateAuthority ca, PKCS10CertificationRequest csr,ContentSigner csrContentSigner) throws CertIOException, NoSuchAlgorithmException, CertificateException, InvalidKeyException, NoSuchProviderException, SignatureException {
 	       
-			IssuerData issuerData = ca.getKeystoreReader().readIssuerFromStore("D:\\BSEP\\pki-app\\src\\main\\resources\\root-keystore.jks","root", "password".toCharArray(),  "password".toCharArray());
-			Certificate issuerCert = ca.getKeystoreReader().readCertificate("D:\\BSEP\\pki-app\\src\\main\\resources\\root-keystore.jks", "password", "root");
+			IssuerData issuerData = ca.getKeystoreReader().readIssuerFromStore("D:\\BSEP\\pki-app\\src\\main\\resources\\CAStores\\ca-keystore.jks","ca-rs", "password".toCharArray(),  "password".toCharArray());
+			Certificate issuerCert = ca.getKeystoreReader().readCertificate("D:\\BSEP\\pki-app\\src\\main\\resources\\CAStores\\ca-keystore.jks", "password", "ca-rs");
 			X509v3CertificateBuilder issuedCertBuilder = new X509v3CertificateBuilder(issuerData.getX500name(), BigInteger.valueOf(333333), subjectData.getStartDate(), subjectData.getEndDate(), csr.getSubject(), csr.getSubjectPublicKeyInfo());
 
 	        JcaX509ExtensionUtils issuedCertExtUtils = new JcaX509ExtensionUtils();
@@ -83,10 +83,10 @@ public class CertificateGenerator {
 	        // Add Issuer cert identifier as Extension
 	        issuedCertBuilder.addExtension(Extension.authorityKeyIdentifier, false, issuedCertExtUtils.createAuthorityKeyIdentifier((X509Certificate) issuerCert));
 	        issuedCertBuilder.addExtension(Extension.subjectKeyIdentifier, false, issuedCertExtUtils.createSubjectKeyIdentifier(csr.getSubjectPublicKeyInfo()));
-	        //GeneralNames subjectAltName = new GeneralNames(new GeneralName(GeneralName.dNSName, "DNS:localhost"));
-	        //issuedCertBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltName.toASN1Primitive());
-	        //issuedCertBuilder.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
-	        issuedCertBuilder.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeId.id_kp_clientAuth));
+	        GeneralNames subjectAltName = new GeneralNames(new GeneralName(GeneralName.dNSName, "localhost"));
+	        issuedCertBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltName.toASN1Primitive());
+	        issuedCertBuilder.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
+	        //issuedCertBuilder.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeId.id_kp_clientAuth));
 	        X509CertificateHolder issuedCertHolder = issuedCertBuilder.build(csrContentSigner);
 	        X509Certificate issuedCert  = new JcaX509CertificateConverter().setProvider("BC").getCertificate(issuedCertHolder);
 
