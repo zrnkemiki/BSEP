@@ -12,7 +12,7 @@ export class AppComponent {
   public currentUser = undefined;
   
   ngOnInit() {
-    this.getCurrentUser();
+    //this.getCurrentUser();
   }
 
   getCurrentUser(){

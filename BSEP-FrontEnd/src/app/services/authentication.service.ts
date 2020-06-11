@@ -47,8 +47,7 @@ export class AuthenticationService {
   }
 
   login(loginDto: LoginDTO) {
-    debugger;
-    return this.http.post<any>(`/login`, loginDto)
+    return this.http.post<any>(`https://localhost:9003/login`, loginDto)
       .pipe(map(userDTO => {
         if (userDTO && userDTO.jwttoken) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
