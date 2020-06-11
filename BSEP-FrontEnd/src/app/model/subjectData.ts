@@ -1,4 +1,4 @@
-export interface SubjectData {
+export class SubjectData {
 	commonName: string;
 	surname: string;
 	givenName: string;

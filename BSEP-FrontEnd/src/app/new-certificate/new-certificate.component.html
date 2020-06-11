@@ -13,13 +13,13 @@
         <label class="col-md-4 control-label">Date from</label>
         <div class="form-group row">
             <div class="col-md-8 inputGroupContainer">
-                <input placeholder="YYYY-MM-DD" class="form-control" type="date" [(ngModel)]="this.subjectData.dateFrom">
+                <input placeholder="YYYY-MM-DD" class="form-control" name="dateFrom" type="date" [(ngModel)]="this.subjectData.dateFrom">
             </div>
         </div>
         <label class="col-md-4 control-label">Date until</label>
         <div class="form-group row">
             <div class="col-md-8 inputGroupContainer">
-                <input placeholder="YYYY-MM-DD" class="form-control" type="date" [(ngModel)]="this.subjectData.dateUntil">
+                <input placeholder="YYYY-MM-DD" class="form-control" name="dateUntil" type="date" [(ngModel)]="this.subjectData.dateUntil">
             </div>
         </div>
 
@@ -72,7 +72,7 @@
             <label class="col-md-4 control-label">Email</label>
             <div class="col-md-8 inputGroupContainer">
                 <div class="input-group"><span class="input-group-addon"><i
-                            class="glyphicon glyphicon-envelope"></i></span><input id="email" name="email" placeholder="Email" class="form-control" required="true" value="" type="text" [(ngModel)]="this.subjectData.email"></div>
+                            class="glyphicon glyphicon-envelope"></i></span><input id="email" name="email" placeholder="Email" class="form-control" required="true" value="" type="email" [(ngModel)]="this.subjectData.email"></div>
             </div>
         </div>
 
