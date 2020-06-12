@@ -27,7 +27,6 @@ export class NewCertificateComponent implements OnInit {
   
 
   validateSubjectData() {
-    debugger;
     if (this.subjectData.commonName == "" || this.subjectData.commonName.length <= 2) {
       alert("Fullname must be more than 2 characters long.")
     }
@@ -50,7 +49,6 @@ export class NewCertificateComponent implements OnInit {
       alert("You must enter email.")
     }
     else {
-      alert("CommonName: " + this.subjectData.commonName);
       this.createCertificate(this.subjectData);
       //Call createCertificate method!
     }
@@ -61,7 +59,7 @@ export class NewCertificateComponent implements OnInit {
 
   createCertificate(SubjectData) {
     //To-Do pozvati service
-    alert("Ovo je subject data mail: " + this.subjectData.email)
+    // alert("Ovo je subject data mail: " + this.subjectData.email)
     this.certificateService.addSubjectData(this.subjectData)
   }
 
