@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CertificateService {
   //EXAMPLE TO-DO
-  private url = "http://localhost:8080/..";
+  private url = "http://localhost:9003";
   private subjectDataSource = new BehaviorSubject<SubjectData[]>([]);
   subjectDataObservable = this.subjectDataSource.asObservable();
   private subjectDatas = [];
@@ -18,12 +18,12 @@ export class CertificateService {
   //EXAMPLE TO-DO.. Proveriti sta vraca backend  + bezbednost sto se tice slanja objekta! 
   //Napraviti DTO na bekendu kako bi se vadili podaci
   addSubjectData(subjectData) {
-    this.http.post<SubjectData>(this.url, subjectData)
+    this.http.post<SubjectData>(this.url + "/subject-data", subjectData)
       .subscribe(
         addedSubjectData => {
           this.subjectDatas.push(addedSubjectData);
           this.subjectDataSource.next(this.subjectDatas);
-          alert("Successfully added new subject data. New " + subjectData.surname + "  added.");
+          alert("Successfully added new subject data. New " + subjectData.email + "  added.");
         }
       )
   }

@@ -30,7 +30,6 @@ public class UserController {
 	@Autowired
 	UserServiceImpl userService;
 	
-	@PreAuthorize("hasAuthority('EMPLOYEE')")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UserDTO>> getAll() {
 		List<User> users = userService.findAll();
