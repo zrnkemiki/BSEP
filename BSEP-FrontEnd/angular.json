@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "BSEP-FrontEnd"
+    }
+  },
+  "defaultProject": "BSEP-FrontEnd",
+  "cli": {
+    "analytics": false
+  }
 }

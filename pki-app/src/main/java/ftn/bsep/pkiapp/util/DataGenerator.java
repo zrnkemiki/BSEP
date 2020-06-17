@@ -34,12 +34,12 @@ public class DataGenerator {
 			// vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 			builder.addRDN(BCStyle.CN, "DFRoot");
-			builder.addRDN(BCStyle.SURNAME, "Marko");
-			builder.addRDN(BCStyle.GIVENNAME, "Kopanja");
+			//builder.addRDN(BCStyle.SURNAME, "Marko");
+			//builder.addRDN(BCStyle.GIVENNAME, "Kopanja");
 			builder.addRDN(BCStyle.O, "DefenceFirst");
 			builder.addRDN(BCStyle.OU, "PKI");
-			builder.addRDN(BCStyle.C, "RS");
-			builder.addRDN(BCStyle.E, "sladicg@uns.ac.rs");
+			//builder.addRDN(BCStyle.C, "RS");
+			//builder.addRDN(BCStyle.E, "sladicg@uns.ac.rs");
 			// UID (USER ID) je ID korisnika
 			builder.addRDN(BCStyle.UID, "000001");
 
@@ -69,7 +69,76 @@ public class DataGenerator {
 			// klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o
 			// vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
-			builder.addRDN(BCStyle.CN, "DF-CA");
+			builder.addRDN(BCStyle.CN, "DF-RS-CA");
+			builder.addRDN(BCStyle.SURNAME, "Jovan");
+			builder.addRDN(BCStyle.GIVENNAME, "Lakovic");
+			builder.addRDN(BCStyle.O, "DF");
+			builder.addRDN(BCStyle.OU, "PKI");
+			builder.addRDN(BCStyle.C, "RS");
+			builder.addRDN(BCStyle.E, "nikolic@df.com");
+			// UID (USER ID) je ID korisnika
+			builder.addRDN(BCStyle.UID, "111111");
+
+			// Kreiraju se podaci za sertifikat, sto ukljucuje:
+			// - javni kljuc koji se vezuje za sertifikat
+			// - podatke o vlasniku
+			// - serijski broj sertifikata
+			// - od kada do kada vazi sertifikat
+			return new SubjectData(builder.build(), sn, startDate, endDate, keyPairSubject.getPublic(), keyPairSubject.getPrivate());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+			
+	}
+	
+	public SubjectData generateMUCAData(KeyPair keyPairSubject) {
+		try {
+
+			// Datumi od kad do kad vazi sertifikat
+			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
+			Date startDate = iso8601Formater.parse("2017-12-31");
+			Date endDate = iso8601Formater.parse("2022-12-31");
+
+			// Serijski broj sertifikata
+			String sn = "1";
+			// klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o
+			// vlasniku
+			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
+			builder.addRDN(BCStyle.CN, "DF-RS-MU1-CA");
+			builder.addRDN(BCStyle.O, "DF");
+			builder.addRDN(BCStyle.OU, "PKI");
+			builder.addRDN(BCStyle.C, "RS");
+			// UID (USER ID) je ID korisnika
+			builder.addRDN(BCStyle.UID, "876894");
+
+			// Kreiraju se podaci za sertifikat, sto ukljucuje:
+			// - javni kljuc koji se vezuje za sertifikat
+			// - podatke o vlasniku
+			// - serijski broj sertifikata
+			// - od kada do kada vazi sertifikat
+			return new SubjectData(builder.build(), sn, startDate, endDate, keyPairSubject.getPublic(), keyPairSubject.getPrivate());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+			
+	}
+	
+	public SubjectData generateCACenterData(KeyPair keyPairSubject) {
+		try {
+
+			// Datumi od kad do kad vazi sertifikat
+			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
+			Date startDate = iso8601Formater.parse("2017-12-31");
+			Date endDate = iso8601Formater.parse("2022-12-31");
+
+			// Serijski broj sertifikata
+			String sn = "1";
+			// klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o
+			// vlasniku
+			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
+			builder.addRDN(BCStyle.CN, "DF-RS-CA-Center");
 			builder.addRDN(BCStyle.SURNAME, "Nikola");
 			builder.addRDN(BCStyle.GIVENNAME, "Nikolic");
 			builder.addRDN(BCStyle.O, "DF");
@@ -78,6 +147,42 @@ public class DataGenerator {
 			builder.addRDN(BCStyle.E, "nikolic@df.com");
 			// UID (USER ID) je ID korisnika
 			builder.addRDN(BCStyle.UID, "123456");
+
+			// Kreiraju se podaci za sertifikat, sto ukljucuje:
+			// - javni kljuc koji se vezuje za sertifikat
+			// - podatke o vlasniku
+			// - serijski broj sertifikata
+			// - od kada do kada vazi sertifikat
+			return new SubjectData(builder.build(), sn, startDate, endDate, keyPairSubject.getPublic(), keyPairSubject.getPrivate());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+			
+	}
+	
+	public SubjectData generateCAAgentData(KeyPair keyPairSubject) {
+		try {
+
+			// Datumi od kad do kad vazi sertifikat
+			SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
+			Date startDate = iso8601Formater.parse("2017-12-31");
+			Date endDate = iso8601Formater.parse("2022-12-31");
+
+			// Serijski broj sertifikata
+			String sn = "1";
+			// klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o
+			// vlasniku
+			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
+			builder.addRDN(BCStyle.CN, "DF-RS-CA-Agent");
+			builder.addRDN(BCStyle.SURNAME, "Nikola");
+			builder.addRDN(BCStyle.GIVENNAME, "Nikolic");
+			builder.addRDN(BCStyle.O, "DF");
+			builder.addRDN(BCStyle.OU, "PKI");
+			builder.addRDN(BCStyle.C, "RS");
+			builder.addRDN(BCStyle.E, "nikolic@df.com");
+			// UID (USER ID) je ID korisnika
+			builder.addRDN(BCStyle.UID, "654321");
 
 			// Kreiraju se podaci za sertifikat, sto ukljucuje:
 			// - javni kljuc koji se vezuje za sertifikat
@@ -157,9 +262,9 @@ public class DataGenerator {
 			// klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o
 			// vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
-			builder.addRDN(BCStyle.CN, "localhost");
+			builder.addRDN(BCStyle.CN, "SIEMCenter");
 			builder.addRDN(BCStyle.O, "DF");
-			builder.addRDN(BCStyle.OU, "PKI");
+			builder.addRDN(BCStyle.OU, "SIEM");
 			builder.addRDN(BCStyle.C, "RS");
 			// UID (USER ID) je ID korisnika
 			builder.addRDN(BCStyle.UID, "8265433");
@@ -188,13 +293,10 @@ public class DataGenerator {
 			// klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o
 			// vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
-			builder.addRDN(BCStyle.CN, "agent");
-			builder.addRDN(BCStyle.SURNAME, "Milos");
-			builder.addRDN(BCStyle.GIVENNAME, "Zrnic");
+			builder.addRDN(BCStyle.CN, "SIEMAgent");
 			builder.addRDN(BCStyle.O, "DF");
-			builder.addRDN(BCStyle.OU, "Loggs");
+			builder.addRDN(BCStyle.OU, "SIEM");
 			builder.addRDN(BCStyle.C, "RS");
-			builder.addRDN(BCStyle.E, "Makovic@uns.ac.rs");
 			// UID (USER ID) je ID korisnika
 			builder.addRDN(BCStyle.UID, "213432");
 

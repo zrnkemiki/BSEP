@@ -2,6 +2,7 @@ package ftn.bsep.pkiapp.certificates;
 
 import java.security.PrivateKey;
 
+import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
@@ -38,14 +39,14 @@ public class CSRGenerator {
 		this.csr = csr;
 	}
 	
-	public PKCS10CertificationRequest generateCSR(SubjectData subjectData, PrivateKey privateKeyCA) throws OperatorCreationException {
-		
-		PKCS10CertificationRequestBuilder p10Builder = new JcaPKCS10CertificationRequestBuilder(subjectData.getX500name(), subjectData.getPublicKey());
- 	
-		JcaContentSignerBuilder csrBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider("BC");
-        ContentSigner csrContentSigner = csrBuilder.build(privateKeyCA);
-        
-        PKCS10CertificationRequest csr = p10Builder.build(csrContentSigner);
+	//mogu i da se dodaju ekstenzije u csr - al mozda mozemo da izbegnemo pogadjanjem specificnih endpointova
+	public PKCS10CertificationRequest generateCSR(SubjectData subjectData) throws OperatorCreationException {
+		PKCS10CertificationRequestBuilder p10Builder = new JcaPKCS10CertificationRequestBuilder(subjectData.getX500name(), subjectData.getPublicKey());       
+     
+		JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
+		contentSignerBuilder = contentSignerBuilder.setProvider("BC");
+		ContentSigner contentSigner = contentSignerBuilder.build(subjectData.getPrivateKey());  
+		PKCS10CertificationRequest csr = p10Builder.build(contentSigner);
         return csr;
 	}
 	
