@@ -3,4 +3,5 @@ import requests
 
 def post_method(data):
     # trebace header (sertifikat)
-    r = requests.post('https://httpbin.org/post', data=data)
+    r = requests.post('http://localhost:9005/post-logs', json=data)
+    print(r)

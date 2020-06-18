@@ -16,6 +16,10 @@ if __name__ == '__main__':
             win_parser = WindowsLogParser(source['filter'], source['interval'])
             parsers.append(win_parser)
         elif source['type'] == 'OS Linux':
-            a = 3
+            continue
         else:
-            a = 1
+            continue
+
+    for p in parsers:
+        p.start()
+        # p.run_simple()

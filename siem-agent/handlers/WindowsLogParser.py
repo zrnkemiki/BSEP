@@ -13,6 +13,7 @@ class WindowsLogParser(Thread):
         if os.name != 'nt':
             raise OSException('This parser works only on Windows machine!')
 
+        Thread.__init__(self)
         self.regex_filter = regex_filter
         self.interval = interval
         # ova dva bih mogao citati iz configa isto
@@ -33,12 +34,12 @@ class WindowsLogParser(Thread):
                     msg = ' '.join(msg_data)
                 else:
                     msg = ''
-                w_log = WindowsLog(event.TimeGenerated, SeverityLevel[event.EventType], event.EventID,
+                w_log = WindowsLog(str(event.TimeGenerated), SeverityLevel(event.EventType).name, event.EventID,
                                    event.ComputerName, event.SourceName, msg)
 
-                w_logs.append(w_log)
+                w_logs.append(w_log.format_json())
 
-        win32evtlog.CloseEventLog(self.hand)
+        #win32evtlog.CloseEventLog(self.hand)
         return w_logs
 
     # overrides Thread run
@@ -48,3 +49,7 @@ class WindowsLogParser(Thread):
             parsed_logs = self.read_and_parse()
             response = post_method(parsed_logs)
             time.sleep(self.interval)
+
+    def run_simple(self):
+        parsed_logs = self.read_and_parse()
+        response = post_method(parsed_logs)
