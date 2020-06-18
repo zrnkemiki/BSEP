@@ -3,9 +3,12 @@ import win32evtlog
 from model.log_level import SeverityLevel
 from model.log import WindowsLog
 from exceptions.OSException import OSException
+from http_client.http_client import post_method
+from threading import Thread
+import time
 
 
-class WindowsLogParser:
+class WindowsLogParser(Thread):
     def __init__(self, regex_filter=None, interval=None):
         if os.name != 'nt':
             raise OSException('This parser works only on Windows machine!')
@@ -13,6 +16,7 @@ class WindowsLogParser:
         self.regex_filter = regex_filter
         self.interval = interval
         # ova dva bih mogao citati iz configa isto
+        # ili mozda ipak ni ne treba
         self.server = 'localhost'  # name of the target computer to get event logs
         self.logtype = 'System'
         self.hand = win32evtlog.OpenEventLog(self.server, self.logtype)
@@ -36,3 +40,11 @@ class WindowsLogParser:
 
         win32evtlog.CloseEventLog(self.hand)
         return w_logs
+
+    # overrides Thread run
+    # send logs
+    def run(self):
+        while True:
+            parsed_logs = self.read_and_parse()
+            response = post_method(parsed_logs)
+            time.sleep(self.interval)
