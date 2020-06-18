@@ -14,12 +14,28 @@ public class SubjectData {
 	private Date endDate;
 	private PublicKey publicKey;
 	private PrivateKey privateKey;
-	
-	public SubjectData() {
-		
+	/*
+	public SubjectData(SubjectDataDTO subjectDataDto) {
+		this.x500name;
+		this.commonName = subjectDataDto.getCommonName();
+		this.surname = subjectDataDto.getSurname();
+		this.givenName = subjectDataDto.getGivenName();
+		this.organization = subjectDataDto.getOrganization();
+		this.organizationUnit = subjectDataDto.getOrganizationUnit();
+		this.country = subjectDataDto.getCountry();
+		this.email = subjectDataDto.getEmail();
+		this.startDate = subjectDataDto.getDateFrom();
+		this.endDate = subjectDataDto.getDateUntil();
 	}
 
-	public SubjectData(X500Name x500name, String serialNumber, Date startDate, Date endDate, PublicKey publicKey, PrivateKey privateKey) {
+	*/
+
+	public SubjectData() {
+
+	}
+
+	public SubjectData(X500Name x500name, String serialNumber, Date startDate, Date endDate, PublicKey publicKey,
+			PrivateKey privateKey) {
 		super();
 		this.x500name = x500name;
 		this.serialNumber = serialNumber;
@@ -76,8 +92,5 @@ public class SubjectData {
 	public void setPrivateKey(PrivateKey privateKey) {
 		this.privateKey = privateKey;
 	}
-	
-	
-	
-	
+
 }

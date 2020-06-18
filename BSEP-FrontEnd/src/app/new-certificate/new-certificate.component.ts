@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SubjectData } from '../model/subjectData';
+import { areAllEquivalent } from '@angular/compiler/src/output/output_ast';
+import { CertificateService } from '../services/certificate.service';
 
 @Component({
   selector: 'app-new-certificate',
@@ -12,17 +14,19 @@ export class NewCertificateComponent implements OnInit {
   fullNameValidation: boolean;
 
   constructor(
-    private router: Router, 
-    private route: ActivatedRoute, 
-  ) {  //KAKO RESITI OVAJ PROBLEM??
-    this.subjectData = {commonName : "", surname :"", givenName:"", organization:"", organizationUnit:"", 
-    country:"", email:"", dateFrom:"", dateUntil:"", uid: undefined }
+    private router: Router,
+    private route: ActivatedRoute,
+    private certificateService: CertificateService,
+  ) {  
+    
   }
 
   ngOnInit(): void {
+    this.subjectData = new SubjectData();
   }
+  
 
-  validateSubjectData(){
+  validateSubjectData() {
     if (this.subjectData.commonName == "" || this.subjectData.commonName.length <= 2) {
       alert("Fullname must be more than 2 characters long.")
     }
@@ -45,16 +49,18 @@ export class NewCertificateComponent implements OnInit {
       alert("You must enter email.")
     }
     else {
-      alert("CommonName: " + this.subjectData.commonName);
+      this.createCertificate(this.subjectData);
       //Call createCertificate method!
     }
-  
+
   }
 
- 
 
-  createCertificate(){
+
+  createCertificate(SubjectData) {
     //To-Do pozvati service
+    // alert("Ovo je subject data mail: " + this.subjectData.email)
+    this.certificateService.addSubjectData(this.subjectData)
   }
 
 }

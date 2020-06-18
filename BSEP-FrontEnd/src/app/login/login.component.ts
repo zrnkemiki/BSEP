@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginDTO } from '../modelDTO/loginDTO';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +10,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  public loginDTO: LoginDTO;
+  constructor(private authenticationService: AuthenticationService, private router: Router) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.loginDTO = new LoginDTO();
+  }
+
+  register() {
+    this.router.navigate(['/registration'])
+  }
+
+  onClick() {
+    if (this.loginDTO.username && this.loginDTO.password){
+      this.authenticationService.login(this.loginDTO);
+      this.authenticationService.currentUser.subscribe(
+  
+        (result) => {
+          if (result) {
+            this.router.navigate(['/homepage'])
+          }
+          else {
+            //this.toastr.error('error logging');
+          }
+        });
+  
+    }
+
+   
+
   }
 
 }
+

@@ -27,19 +27,19 @@
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content">
                 <div class="sidebar-brand">
-                    <a href="#">Defence First</a>
+                    <a href="#">Car Diagnostic</a>
 
                 </div>
-                <div *ngIf="user">
+                <div *ngIf="this.currentUser">
                     <div class="sidebar-header">
                         <div class="user-pic">
-                            <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg" alt="User picture">
+                            <img class="img-responsive img-rounded" src="https://images3.polovniautomobili.tv/user-images/thumbs/1158/11582718/9c643dacb24f-800x600.jpg" alt="User picture">
                         </div>
                         <div class="user-info">
-                            <span class="user-name">Petar
-                                <strong>Petrovic</strong>
+                            <span class="user-name">
+                                <strong> {{this.currentUser}}</strong>
                             </span>
-                            <span class="user-role">Administrator</span>
+                            <span class="user-role">Member</span>
                             <span class="user-status">
                                 <i class="fa fa-circle"></i>
                                 <span>Online</span>
@@ -49,20 +49,22 @@
                 </div>
 
                 <!-- Login part-->
-                <div *ngIf="!user">
+                <div *ngIf="!this.currentUser">
                     <li class="nav-item">
-                        <a class="nav-link" id="login" routerLink="/login">
-                            <i class="fa fa-envelope-o">
-                                <span class="badge badge-danger">L</span>
-                            </i>
-                            <strong>Login</strong>
-                        </a>
+                        <button class="btn btn-danger btn-block" value="submit" (click)="login()"> Log in </button>
+                    </li>
+                </div>
+                <!-- Logout part-->
+                <div *ngIf="this.currentUser">
+                    <li class="nav-item">
+                        <button class="btn btn-danger btn-block" value="submit" (click)="logout()"> Log out </button>
                     </li>
                 </div>
 
 
+
                 <!-- sidebar-header  -->
-                <div class="sidebar-menu">
+                <div class="sidebar-menu" *ngIf="this.currentUser">
                     <ul>
                         <li class="header-menu">
                             <span>Certificates</span>

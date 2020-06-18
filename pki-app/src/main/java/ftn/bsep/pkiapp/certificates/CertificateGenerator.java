@@ -99,7 +99,7 @@ public class CertificateGenerator {
 	
 	// ovo je samo za root CA -> mozda da se ne radi programski
 	// vec direktno na masini ??
-	public X509Certificate generateSelfSignedCertificate(RootData rootData) {
+	public X509Certificate generateSelfSignedCertificate(RootData rootData) throws NoSuchAlgorithmException {
 		
 		try {
 			// certificate data
@@ -110,6 +110,7 @@ public class CertificateGenerator {
 														rootData.getX500name(),
 														rootData.getPublicKey());
 			
+			JcaX509ExtensionUtils issuedCertExtUtils = new JcaX509ExtensionUtils();
 			// signature with private key
 			JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
 			contentSignerBuilder = contentSignerBuilder.setProvider("BC");
@@ -118,9 +119,10 @@ public class CertificateGenerator {
 			
 			// add extensions
 			BasicConstraints basicConstraints = new BasicConstraints(true);  // is a CA
-			certBuilder.addExtension(new ASN1ObjectIdentifier("2.5.29.19"), true, basicConstraints);
 			
-			KeyUsage keyUsage = new KeyUsage(KeyUsage.keyCertSign | KeyUsage.digitalSignature);
+			certBuilder.addExtension(new ASN1ObjectIdentifier("2.5.29.19"), true, basicConstraints);
+			certBuilder.addExtension(Extension.subjectKeyIdentifier, false, issuedCertExtUtils.createSubjectKeyIdentifier(rootData.getPublicKey()));
+			KeyUsage keyUsage = new KeyUsage(KeyUsage.keyCertSign | KeyUsage.digitalSignature | KeyUsage.cRLSign);
 			certBuilder.addExtension(new ASN1ObjectIdentifier("2.5.29.15"), true, keyUsage);
 			
 			// generate certificate + signature
