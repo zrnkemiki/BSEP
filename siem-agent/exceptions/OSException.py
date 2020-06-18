@@ -1,0 +1,2 @@
+class OSException(Exception):
+    pass

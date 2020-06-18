@@ -1,4 +1,4 @@
-package ftn.bsep.pkiapp.model;
+ package ftn.bsep.pkiapp.model;
 
 import java.util.UUID;
 

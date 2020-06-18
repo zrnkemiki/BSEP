@@ -1,0 +1,22 @@
+{
+	"sources": [
+		{
+			"type": "OS Windows",
+			"path": "logs/windows",
+			"filter": "regex",
+			"interval": 0
+		},
+		{
+			"type": "OS Linux",
+			"path": "logs/linux",
+			"filter": "regex",
+			"interval": 0
+		},
+		{
+			"type": "Application",
+			"path": "logs/app",
+			"filter": "regex",
+			"interval": 0			
+		}
+	]
+}
