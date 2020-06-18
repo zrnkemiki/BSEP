@@ -1,0 +1,10 @@
+{
+	"sources": [
+		{
+			"type": "OS Windows",
+			"path": "logs/windows",
+			"filter": "regex",
+			"interval": 5
+		}
+	]
+}
