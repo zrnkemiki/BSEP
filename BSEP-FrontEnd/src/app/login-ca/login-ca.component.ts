@@ -1,26 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoginDTO } from '../modelDTO/loginDTO';
+import { LoginCaDTO } from '../modelDTO/loginCaDTO';
 import { AuthenticationService } from '../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-login-ca',
+  templateUrl: './login-ca.component.html',
+  styleUrls: ['./login-ca.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginCAComponent implements OnInit {
 
-  public loginDTO: LoginDTO;
+  public loginCaDTO: LoginCaDTO;
   constructor(private authenticationService: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
-    const currentUser = this.authenticationService.currentUserValue;
-    if(currentUser){
-      this.router.navigate(['']);
-    }
-    else{
-      this.loginDTO = new LoginDTO();
-    }
+    this.loginCaDTO = new LoginCaDTO();
   }
 
   register() {
@@ -28,8 +22,8 @@ export class LoginComponent implements OnInit {
   }
 
   onClick() {
-    if (this.loginDTO.username && this.loginDTO.password){
-      this.authenticationService.login(this.loginDTO);
+    if (this.loginCaDTO.alias && this.loginCaDTO.privateKeyPassword){
+      this.authenticationService.loginCA(this.loginCaDTO);
       this.authenticationService.currentUser.subscribe(
   
         (result) => {

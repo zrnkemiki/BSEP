@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ftn.bsep.pkiapp.dto.LoginCaDTO;
 import ftn.bsep.pkiapp.dto.LoginDTO;
 import ftn.bsep.pkiapp.dto.UserDTO;
 import ftn.bsep.pkiapp.security.TokenUtils;
@@ -60,6 +61,20 @@ public class AuthenticationController {
             user.setJWTToken(tokenUtils.generateToken(details));
             return new ResponseEntity<UserDTO>(
             		user, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+	}
+	
+	@PostMapping("/loginCA")
+	public ResponseEntity<?> loginCA(@RequestBody()LoginCaDTO loginCaDTO){
+		System.out.println("Usao sam u funkciju login-CA!\n");
+		try {
+			//TO-DO
+			System.out.println(loginCaDTO.getAlias());
+			
+            return new ResponseEntity<LoginCaDTO>(
+            		loginCaDTO, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
         }

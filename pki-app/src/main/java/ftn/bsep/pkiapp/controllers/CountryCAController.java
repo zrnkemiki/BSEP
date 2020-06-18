@@ -4,7 +4,11 @@ import java.security.KeyPair;
 import java.security.cert.X509Certificate;
 
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,9 +16,10 @@ import ftn.bsep.pkiapp.certificates.CSRGenerator;
 import ftn.bsep.pkiapp.certificates.CertificateGenerator;
 import ftn.bsep.pkiapp.data.RootData;
 import ftn.bsep.pkiapp.data.SubjectData;
-import ftn.bsep.pkiapp.keystores.KeyStoreWriter;
+import ftn.bsep.pkiapp.dto.CsrDTO;
+import ftn.bsep.pkiapp.dto.LoginCaDTO;
+import ftn.bsep.pkiapp.dto.LoginDTO;
 import ftn.bsep.pkiapp.model.CACountry;
-import ftn.bsep.pkiapp.model.CARoot;
 import ftn.bsep.pkiapp.model.CertificateAuthority;
 import ftn.bsep.pkiapp.util.CertHelper;
 import ftn.bsep.pkiapp.util.DataGenerator;
@@ -69,6 +74,20 @@ public class CountryCAController {
 		X509Certificate issuedCert = ca.signCertificate(csr);
 		return "Ok";
 	}
-
+	
+	//TEST CONTROLER
+	@PostMapping(value = "/csrData")
+	public ResponseEntity<?> csrDataSubmit(@RequestBody()String csrString) {
+		try {
+			//TO-DO
+			System.out.println(csrString);
+			CsrDTO csrDTO = new CsrDTO(csrString);
+			
+            return new ResponseEntity<CsrDTO>(
+            		csrDTO, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+	}
 
 }

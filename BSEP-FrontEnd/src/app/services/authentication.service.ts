@@ -7,6 +7,7 @@ import { LoginDTO } from '../modelDTO/loginDTO';
 
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
+import { LoginCaDTO } from '../modelDTO/loginCaDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -61,7 +62,18 @@ export class AuthenticationService {
         error => { alert("Pogrešno ime i/ili lozinka, pokušajte ponovo") }
       );
 
+      
   }
+
+  loginCA(loginCaDTO: LoginCaDTO){
+    this.http.post<any>('http://localhost:9003/login/loginCA', loginCaDTO)
+    .subscribe(
+      data => {
+        alert("Successfuly sent");
+      }
+    )
+}
+
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');

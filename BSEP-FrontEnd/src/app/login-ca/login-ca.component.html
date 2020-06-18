@@ -1,0 +1,27 @@
+<section class="jumbotron" style="background:url('https://cdn.pixabay.com/photo/2017/05/08/19/35/cyber-security-2296269_960_720.jpg')">
+    <div class="container" id="jumbotron1">
+        <h1 class="jumbotron-heading" style="color: rgba(255, 255, 255, 0.781);">Welcome to Defence First application designed for providing digital certificates for military users worldwide.</h1>
+    </div>
+</section>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+
+        <!-- Icon -->
+        <div class="fadeIn first">
+            <br>
+        </div>
+        <!-- Login Form -->
+        <form>
+            <input type="text" id="alias" [(ngModel)]="this.loginCaDTO.alias" class="fadeIn second" name="alias" placeholder="A L I A S">
+            <input type="password" id="privateKeyPassword" [(ngModel)]="this.loginCaDTO.privateKeyPassword" class="fadeIn third" name="privateKeyPassword" placeholder="P R I V A T E  K E Y  P A S S W O R D">
+            <button (click)="onClick()" class="btn btn-success ">Submit</button>
+        </form>
+
+    </div>
+</div>
