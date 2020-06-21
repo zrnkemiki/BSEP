@@ -1,8 +1,21 @@
 package ftn.bsep.pkiapp.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "csr")
 public class Csr {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String commonName;
 	private String surname;
@@ -12,7 +25,9 @@ public class Csr {
 	private String country;
 	private String email;
 	private int uid;
-	private ArrayList<String> extensions;
+	@Column
+	@ElementCollection(targetClass = String.class)
+	private List<String> extensions;
 	
 	public Csr() {
 		super();
@@ -87,7 +102,7 @@ public class Csr {
 	public void setUid(int uid) {
 		this.uid = uid;
 	}
-	public ArrayList<String> getExtensions() {
+	public List<String> getExtensions() {
 		return extensions;
 	}
 	public void setExtensions(ArrayList<String> extensions) {
