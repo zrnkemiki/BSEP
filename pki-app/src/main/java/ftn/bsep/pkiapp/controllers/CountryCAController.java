@@ -81,7 +81,7 @@ public class CountryCAController {
 		try {
 			//TO-DO
 			System.out.println(csrString);
-			CsrDTO csrDTO = new CsrDTO(csrString);
+			CsrDTO csrDTO = new CsrDTO();
 			
             return new ResponseEntity<CsrDTO>(
             		csrDTO, HttpStatus.OK);
