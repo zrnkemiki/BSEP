@@ -1,20 +1,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { CsrDTO } from '../modelDTO/csrDTO';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CsrService {
+  
+
+  private csrSource = new BehaviorSubject<CsrDTO[]>([]);
+  csrAsObservable = this.csrSource.asObservable();
+  private csrs = [];
 
   constructor(private http : HttpClient, private router: Router) { }
 
   csrSubmit(csr: String){
-    this.http.post<any>('http://localhost:9003/country-ca/csrData', csr)
+    this.http.post<CsrDTO>('http://localhost:9003/country-ca/csrData', csr)
     .subscribe(
-      data => {
-        alert("Successfuly sent");
+      csr => {
+        this.csrs.push(csr);
+        this.csrSource.next(this.csrs);
+        alert("Successfuly sent csr");
       }
     )
 }
+
+getAll() {
+  this.http.get<CsrDTO[]>('http://localhost:9003/country-ca/csrData')
+    .subscribe(csrs => {
+      this.csrs = csrs;
+      this.csrSource.next(this.csrs);
+    });
+}
+
+
 }
