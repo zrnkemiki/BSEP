@@ -1,10 +1,19 @@
 package ftn.bsep.pkiapp.controllers;
 
+import java.io.IOException;
 import java.security.KeyPair;
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,16 +21,18 @@ import ftn.bsep.pkiapp.certificates.CSRGenerator;
 import ftn.bsep.pkiapp.certificates.CertificateGenerator;
 import ftn.bsep.pkiapp.data.RootData;
 import ftn.bsep.pkiapp.data.SubjectData;
-import ftn.bsep.pkiapp.keystores.KeyStoreWriter;
 import ftn.bsep.pkiapp.model.CACountry;
-import ftn.bsep.pkiapp.model.CARoot;
 import ftn.bsep.pkiapp.model.CertificateAuthority;
+import ftn.bsep.pkiapp.model.Csr;
+import ftn.bsep.pkiapp.services.CSRService;
 import ftn.bsep.pkiapp.util.CertHelper;
 import ftn.bsep.pkiapp.util.DataGenerator;
 
 @RestController
 @RequestMapping("/country-ca")
 public class CountryCAController {
+	@Autowired
+	CSRService csrService;
 	
 	CertificateAuthority ca = new CACountry("C:\\Users\\Z-AIO\\Documents\\Projekti\\BSEP\\pki-app\\src\\main\\resources\\countryCAStores\\ca-rs-keystore.jks", null, "password", "ca-rs");
 	CSRGenerator csrGen = new CSRGenerator();
@@ -69,6 +80,51 @@ public class CountryCAController {
 		X509Certificate issuedCert = ca.signCertificate(csr);
 		return "Ok";
 	}
+	
+	//TEST CONTROLER
+	@PostMapping(value = "/csrData")
+	public ResponseEntity<?> csrDataSubmit(@RequestBody()String csrString) throws IOException {
+		Csr csrDTO = CertHelper.csrStringToCsrObj(csrString);
+		try {
+			//TO-DO
+			System.out.println(csrString);
+			
+			System.out.println(csrDTO.getCommonName());
+			System.out.println(csrDTO.getExtensions().get(0));
+			csrService.saveCSR(csrDTO);
+			
+            return new ResponseEntity<Csr>(
+            		csrDTO, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+	}
+	
+	@GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getAll() {
+		
+		List<Csr> csrs = csrService.findAll();
 
+
+
+		try {
+			return new ResponseEntity<>(csrs, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping(value = "/getCSR/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Csr> getCSR(@PathVariable("param") Long id) {
+		
+		Csr csr = csrService.getOne(id);
+		try {
+			return new ResponseEntity<>(csr, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
 
 }

@@ -12,13 +12,19 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './helpers/auth.guard';
+import { LoginCAComponent } from './login-ca/login-ca.component';
+import { CSRSubmitComponent } from './csrsubmit/csrsubmit.component';
+import { CsrRequestViewerComponent } from './csr-request-viewer/csr-request-viewer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     NewCertificateComponent,
-    HomepageComponent
+    HomepageComponent,
+    LoginCAComponent,
+    CSRSubmitComponent,
+    CsrRequestViewerComponent,
   ],
   imports: [
     BrowserModule,

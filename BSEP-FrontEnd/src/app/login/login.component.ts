@@ -14,7 +14,13 @@ export class LoginComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
-    this.loginDTO = new LoginDTO();
+    const currentUser = this.authenticationService.currentUserValue;
+    if(currentUser){
+      this.router.navigate(['']);
+    }
+    else{
+      this.loginDTO = new LoginDTO();
+    }
   }
 
   register() {

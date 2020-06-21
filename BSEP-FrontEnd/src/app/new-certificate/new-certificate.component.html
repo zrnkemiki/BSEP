@@ -10,21 +10,6 @@
 
 <div class="container">
     <form class="well form-horizontal">
-        <label class="col-md-4 control-label">Date from</label>
-        <div class="form-group row">
-            <div class="col-md-8 inputGroupContainer">
-                <input placeholder="YYYY-MM-DD" class="form-control" name="dateFrom" type="date" [(ngModel)]="this.subjectData.dateFrom">
-            </div>
-        </div>
-        <label class="col-md-4 control-label">Date until</label>
-        <div class="form-group row">
-            <div class="col-md-8 inputGroupContainer">
-                <input placeholder="YYYY-MM-DD" class="form-control" name="dateUntil" type="date" [(ngModel)]="this.subjectData.dateUntil">
-            </div>
-        </div>
-
-
-
         <div class="form-group">
             <label class="col-md-4 control-label">Common name</label>
             <div class="col-md-8 inputGroupContainer">
@@ -76,6 +61,68 @@
             </div>
         </div>
 
+        <div class="col-md-9 selectContainer">
+            <label class="col-md-4 control-label">Oid</label>
+            <div class="input-group">
+                <select name="carState" class="form-control" [(ngModel)]="this.extension.oid" required>
+                    <option value="BasicConstraint" selected>Basic Constraint</option>
+                    <option value="KeyUsage" selected>Key Usage</option>
+                    <option value="ExtendedKeyUsage" selected>Extended Key Usage</option>
+                    <option value="SubjectAlternativeName" selected>SubjectAlternativeName</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div *ngIf="this.extension.oid"  class="col-md-9 selectContainer">
+            <label class="col-md-4 control-label">Is Critical</label>
+            <div class="input-group">
+                <select name="carState" class="form-control" [(ngModel)]="this.extension.isCritical" required>
+                    <option value="true" selected>True</option>
+                    <option value="false" selected>False</option>
+                    <input>
+                </select>
+            </div>
+
+        </div>
+
+        <div *ngIf="this.extension.oid == 'BasicConstraint'" class="col-md-9 selectContainer">
+            <label class="col-md-4 control-label">Value</label>
+            <div class="input-group">
+                <select name="carState" class="form-control" [(ngModel)]="this.extension.value" required>
+                    <option value="true" selected>True</option>
+                    <option value="false" selected>False</option>
+                </select>
+                <input id="value" name="value" placeholder="value" class="form-control" required="true" value="" type="text" [(ngModel)]="this.extension.value" >
+            </div>
+        </div>
+
+        <div *ngIf="this.extension.oid == 'KeyUsage'" class="col-md-9 selectContainer">
+            <label class="col-md-4 control-label">Value</label>
+            <div class="input-group">
+                <select name="carState" class="form-control" [(ngModel)]="this.extension.value" required>
+                    <option value="cRLSign" selected>cRLSign</option>
+                    <option value="dataEncipherment" selected>dataEncipherment</option>
+                    <option value="digitalSignature" selected>digitalSignature</option>
+                    <option value="keyAgreement" selected>keyAgreement</option>
+                    <option value="keyCertSign" selected>keyCertSign</option>
+                    <option value="keyEncipherment" selected>keyEncipherment</option>
+                    <option value="nonRepudiation" selected>nonRepudiation</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="this.extension.oid == 'ExtendedKeyUsage'" class="col-md-9 selectContainer">
+            <label class="col-md-4 control-label">Value</label>
+            <div class="input-group">
+                <select name="carState" class="form-control" [(ngModel)]="this.extension.value" required>
+                    <option value="id_kp_serverAuth" selected>id_kp_serverAuth</option>
+                    <option value="id_kp_clientAuth" selected>id_kp_clientAuth</option>
+                </select>
+            </div>
+        </div>
+
+        <button (click)="addExtension()" class="btn btn-success">Add extension</button>
         <div class="form-group" id="buttons">
             <button (click)="validateSubjectData()" class="btn btn-success">Submit</button>
         </div>

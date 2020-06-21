@@ -3,6 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SubjectData } from '../model/subjectData';
 import { areAllEquivalent } from '@angular/compiler/src/output/output_ast';
 import { CertificateService } from '../services/certificate.service';
+import { CsrService } from '../services/csr.service';
+import { CsrDTO } from '../modelDTO/csrDTO';
+import { ExtensionDTO } from '../modelDTO/extensionDTO';
 
 @Component({
   selector: 'app-new-certificate',
@@ -11,18 +14,38 @@ import { CertificateService } from '../services/certificate.service';
 })
 export class NewCertificateComponent implements OnInit {
   public subjectData: SubjectData;
+  public extension: ExtensionDTO; 
+  public csr: CsrDTO;
   fullNameValidation: boolean;
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     private certificateService: CertificateService,
+    private csrService: CsrService,
   ) {  
-    
+    this.subjectData = new SubjectData();
+    this.csr = new CsrDTO();
+  }
+
+  addExtension(){
+    debugger;
+    this.subjectData.extensions.push(this.extension);
+    alert(this.subjectData.extensions[0].isCritical)
+    this.extension = {oid: "", isCritical: undefined, value: undefined};
   }
 
   ngOnInit(): void {
-    this.subjectData = new SubjectData();
+
+    this.extension = new ExtensionDTO;
+    this.getCSRdata();
+  }
+
+  getCSRdata(){
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.csrService.getCsr(id).subscribe(csr => this.csr = csr);
+    if(this.csr.commonName){
+      alert(this.csr.commonName);
+    }
   }
   
 
