@@ -8,6 +8,8 @@ export class SubjectData {
     email:string;
     dateFrom:string;
     dateUntil:string;
-    uid: number;
+    uid: string;
+
+
 
 }

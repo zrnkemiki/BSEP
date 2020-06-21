@@ -6,6 +6,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { AuthGuard } from './helpers/auth.guard';
 import { LoginCAComponent } from './login-ca/login-ca.component';
 import { CSRSubmitComponent } from './csrsubmit/csrsubmit.component';
+import { CsrRequestViewerComponent } from './csr-request-viewer/csr-request-viewer.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'login-ca', component: LoginCAComponent, canActivate: [AuthGuard]},
   { path: '', component: HomepageComponent },
   { path: 'csr-submit', component: CSRSubmitComponent},
+  { path: 'csr-requests', component: CsrRequestViewerComponent},
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }
