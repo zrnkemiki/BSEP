@@ -1,8 +1,8 @@
-package ftn.bsep.pkiapp.dto;
+package ftn.bsep.pkiapp.model;
 
 import java.util.ArrayList;
 
-public class CsrDTO {
+public class Csr {
 	private Long id;
 	private String commonName;
 	private String surname;
@@ -14,12 +14,12 @@ public class CsrDTO {
 	private int uid;
 	private ArrayList<String> extensions;
 	
-	public CsrDTO() {
+	public Csr() {
 		super();
 		extensions = new ArrayList<String>();
 		// TODO Auto-generated constructor stub
 	}
-	public CsrDTO(Long id, String commonName, String surname, String givenName, String organization, String organizationUnit,
+	public Csr(Long id, String commonName, String surname, String givenName, String organization, String organizationUnit,
 			String country, String email, int uid, ArrayList<String> extensions) {
 		super();
 		this.id = id;

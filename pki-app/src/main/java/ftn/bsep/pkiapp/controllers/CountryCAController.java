@@ -16,11 +16,9 @@ import ftn.bsep.pkiapp.certificates.CSRGenerator;
 import ftn.bsep.pkiapp.certificates.CertificateGenerator;
 import ftn.bsep.pkiapp.data.RootData;
 import ftn.bsep.pkiapp.data.SubjectData;
-import ftn.bsep.pkiapp.dto.CsrDTO;
-import ftn.bsep.pkiapp.dto.LoginCaDTO;
-import ftn.bsep.pkiapp.dto.LoginDTO;
 import ftn.bsep.pkiapp.model.CACountry;
 import ftn.bsep.pkiapp.model.CertificateAuthority;
+import ftn.bsep.pkiapp.model.Csr;
 import ftn.bsep.pkiapp.util.CertHelper;
 import ftn.bsep.pkiapp.util.DataGenerator;
 
@@ -81,9 +79,9 @@ public class CountryCAController {
 		try {
 			//TO-DO
 			System.out.println(csrString);
-			CsrDTO csrDTO = new CsrDTO();
+			Csr csrDTO = new Csr();
 			
-            return new ResponseEntity<CsrDTO>(
+            return new ResponseEntity<Csr>(
             		csrDTO, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
