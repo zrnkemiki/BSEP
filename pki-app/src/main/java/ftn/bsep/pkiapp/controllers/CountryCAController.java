@@ -79,7 +79,7 @@ public class CountryCAController {
 		try {
 			//TO-DO
 			System.out.println(csrString);
-			Csr csrDTO = new Csr();
+			Csr csrDTO = CertHelper.csrStringToCsrObj(csrString);
 			
             return new ResponseEntity<Csr>(
             		csrDTO, HttpStatus.OK);
