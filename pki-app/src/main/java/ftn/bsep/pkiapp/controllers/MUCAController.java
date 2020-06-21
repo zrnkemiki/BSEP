@@ -12,6 +12,7 @@ import ftn.bsep.pkiapp.certificates.CSRGenerator;
 import ftn.bsep.pkiapp.certificates.CertificateGenerator;
 import ftn.bsep.pkiapp.data.RootData;
 import ftn.bsep.pkiapp.data.SubjectData;
+import ftn.bsep.pkiapp.keystores.KeyStoreReader;
 import ftn.bsep.pkiapp.keystores.KeyStoreWriter;
 import ftn.bsep.pkiapp.model.CACountry;
 import ftn.bsep.pkiapp.model.CAMU;
@@ -39,15 +40,8 @@ public class MUCAController {
 		
 		
 		if(isCSRValid) {
-			/*
-			KeyStoreWriter ksw = new KeyStoreWriter();
-			ksw.loadKeyStore(null, "password".toCharArray());
 			
-			X509Certificate issuedCert = ca.signServerCertificate(csr);
-			CertHelper.writeCertToFileBase64Encoded(issuedCert, "C:\\Users\\Z-AIO\\Documents\\Projekti\\BSEP\\pki-app\\src\\main\\resources\\serverStores\\SERVER1-RS-MU1.cer");
-			ksw.write("server1-rs-mu1", keyPair.getPrivate(), "password".toCharArray(), issuedCert);
-			ksw.saveKeyStore("C:\\Users\\Z-AIO\\Documents\\Projekti\\BSEP\\pki-app\\src\\main\\resources\\serverStores\\server1-rs-mu1-keystore.jks", "password".toCharArray());
-			*/
+			
 			return ca.getCSRData(csr);
 		}
 		return "Invalid CSR";

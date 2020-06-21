@@ -6,6 +6,7 @@ from exceptions.OSException import OSException
 from http_client.http_client import post_method
 from threading import Thread
 import time
+from datetime import datetime, timedelta
 
 
 class WindowsLogParser(Thread):
@@ -13,7 +14,6 @@ class WindowsLogParser(Thread):
         if os.name != 'nt':
             raise OSException('This parser works only on Windows machine!')
 
-        Thread.__init__(self)
         self.regex_filter = regex_filter
         self.interval = interval
         # ova dva bih mogao citati iz configa isto
@@ -23,23 +23,28 @@ class WindowsLogParser(Thread):
         self.hand = win32evtlog.OpenEventLog(self.server, self.logtype)
         self.flags = win32evtlog.EVENTLOG_BACKWARDS_READ | win32evtlog.EVENTLOG_SEQUENTIAL_READ
         self.total = win32evtlog.GetNumberOfEventLogRecords(self.hand)
+        Thread.__init__(self)
+        self.lastLogCheckTime = datetime.now() - timedelta(hours=100)
+
 
     def read_and_parse(self):
+        #while True:
         events = win32evtlog.ReadEventLog(self.hand, self.flags, 0)
         w_logs = []
         if events:
             for event in events:
-                msg_data = event.StringInserts
-                if msg_data:
-                    msg = ' '.join(msg_data)
-                else:
-                    msg = ''
-                w_log = WindowsLog(str(event.TimeGenerated), SeverityLevel(event.EventType).name, event.EventID,
-                                   event.ComputerName, event.SourceName, msg)
-
-                w_logs.append(w_log.format_json())
+                if event.TimeGenerated > self.lastLogCheckTime:
+                    msg_data = event.StringInserts
+                    if msg_data:
+                        msg = ' '.join(msg_data)
+                    else:
+                        msg = ''
+                    w_log = WindowsLog(str(event.TimeGenerated), SeverityLevel(event.EventType).name, event.EventID,
+                                       event.ComputerName, event.SourceName, msg)
+                    w_logs.append(w_log.format_json())
 
         #win32evtlog.CloseEventLog(self.hand)
+
         return w_logs
 
     # overrides Thread run
@@ -48,6 +53,7 @@ class WindowsLogParser(Thread):
         while True:
             parsed_logs = self.read_and_parse()
             response = post_method(parsed_logs)
+            print(response)
             time.sleep(self.interval)
 
     def run_simple(self):

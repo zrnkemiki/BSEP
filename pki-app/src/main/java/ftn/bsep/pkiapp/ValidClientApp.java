@@ -30,15 +30,17 @@ public class ValidClientApp {
 
 	        KeyManagerFactory keyMgrFactory = KeyManagerFactory.getInstance("SunX509");
 	        KeyStore keyStore = KeyStore.getInstance("JKS");
-	        char[] keyStorePassword = "password".toCharArray(); 
-	        keyStore.load(new FileInputStream("D:\\BSEP\\pki-app\\src\\main\\resources\\clientStores\\client-keystore.jks"), keyStorePassword);
+	        //char[] keyStorePassword = "password".toCharArray(); 
+	        char[] keyStorePassword = "secret".toCharArray();
+	        keyStore.load(new FileInputStream("C:\\Users\\Laptop\\Desktop\\mutual tls\\client\\src\\test\\resources\\identity.jks"), keyStorePassword);
 	        keyMgrFactory.init(keyStore, keyStorePassword);
 
 
 	        TrustManagerFactory trustStrFactory = TrustManagerFactory.getInstance("SunX509");
 	        KeyStore trustStore = KeyStore.getInstance("JKS");
-	        char[] trustStorePassword = "password".toCharArray();          
-	        trustStore.load(new FileInputStream("D:\\BSEP\\pki-app\\src\\main\\resources\\clientStores\\client-truststore.jks"), trustStorePassword);
+	        //char[] trustStorePassword = "password".toCharArray();   
+	        char[] trustStorePassword = "secret".toCharArray(); 
+	        trustStore.load(new FileInputStream("C:\\Users\\Laptop\\Desktop\\mutual tls\\client\\src\\test\\resources\\truststore.jks"), trustStorePassword);
 	        trustStrFactory.init(trustStore);
 
 	        context.init(keyMgrFactory.getKeyManagers(), 
@@ -68,7 +70,7 @@ public class ValidClientApp {
 	        HttpsURLConnection.setDefaultHostnameVerifier(hv);
 
 
-	        URL url = new URL("https://localhost:9003/hello");
+	        URL url = new URL("https://localhost:9005/b");
 
 	        HttpsURLConnection.setDefaultSSLSocketFactory(getSocketFactory());
 	        HttpsURLConnection urlConn = (HttpsURLConnection)url.openConnection();
