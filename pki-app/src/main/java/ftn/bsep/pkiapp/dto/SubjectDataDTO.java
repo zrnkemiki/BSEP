@@ -1,6 +1,8 @@
 package ftn.bsep.pkiapp.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SubjectDataDTO {
 	private String commonName;
@@ -10,20 +12,20 @@ public class SubjectDataDTO {
 	private String organizationUnit;
 	private String country;
 	private String email;
-	private Date dateFrom;
-	private Date dateUntil;
-	private int uid;
+	private String uid;
+	private List<ExtensionDTO> extensions;
 	
 	
 	
 	public SubjectDataDTO() {
 		super();
+		setExtensions(new ArrayList<ExtensionDTO>());
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 	public SubjectDataDTO(String commonName, String surname, String givenName, String organization,
-			String organizationUnit, String country, String email, Date dateFrom, Date dateUntil, int uid) {
+			String organizationUnit, String country, String email, String uid, ArrayList<ExtensionDTO> extensions) {
 		super();
 		this.commonName = commonName;
 		this.surname = surname;
@@ -32,9 +34,8 @@ public class SubjectDataDTO {
 		this.organizationUnit = organizationUnit;
 		this.country = country;
 		this.email = email;
-		this.dateFrom = dateFrom;
-		this.dateUntil = dateUntil;
 		this.uid = uid;
+		this.extensions = extensions;
 	}
 
 
@@ -80,23 +81,20 @@ public class SubjectDataDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Date getDateFrom() {
-		return dateFrom;
-	}
-	public void setDateFrom(Date dateFrom) {
-		this.dateFrom = dateFrom;
-	}
-	public Date getDateUntil() {
-		return dateUntil;
-	}
-	public void setDateUntil(Date dateUntil) {
-		this.dateUntil = dateUntil;
-	}
-	public int getUid() {
+	
+	public String getUid() {
 		return uid;
 	}
-	public void setUid(int uid) {
+	public void setUid(String uid) {
 		this.uid = uid;
+	}
+	public List<ExtensionDTO> getExtensions() {
+		return extensions;
+	}
+
+
+	public void setExtensions(List<ExtensionDTO> extensions) {
+		this.extensions = extensions;
 	}
 
 }

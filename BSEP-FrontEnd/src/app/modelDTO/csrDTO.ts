@@ -1,5 +1,5 @@
 export class CsrDTO{
-    id: number;
+    id: string;
 	commonName: string;
 	surname: string;
 	givenName: string;
@@ -8,4 +8,5 @@ export class CsrDTO{
     country:string;
     email:string;
     uid: string;
+    extensions: string[];
 }

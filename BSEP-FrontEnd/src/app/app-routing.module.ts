@@ -11,7 +11,7 @@ import { CsrRequestViewerComponent } from './csr-request-viewer/csr-request-view
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'new-certificate', component: NewCertificateComponent },
+  { path: 'new-certificate/:id', component: NewCertificateComponent },
   //Disabled AuthGuard
   //{ path: 'new-certificate', component: NewCertificateComponent, canActivate: [AuthGuard] },
   { path: 'login-ca', component: LoginCAComponent, canActivate: [AuthGuard]},

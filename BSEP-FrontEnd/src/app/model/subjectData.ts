@@ -1,4 +1,7 @@
+import { ExtensionDTO } from '../modelDTO/extensionDTO';
+
 export class SubjectData {
+    id: string;
 	commonName: string;
 	surname: string;
 	givenName: string;
@@ -9,6 +12,8 @@ export class SubjectData {
     dateFrom:string;
     dateUntil:string;
     uid: string;
+
+    extensions: Array<ExtensionDTO> = [];
 
 
 

@@ -3,12 +3,15 @@ package ftn.bsep.pkiapp.controllers;
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,5 +99,32 @@ public class CountryCAController {
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
         }
 	}
+	
+	@GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getAll() {
+		
+		List<Csr> csrs = csrService.findAll();
+
+
+
+		try {
+			return new ResponseEntity<>(csrs, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping(value = "/getCSR/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Csr> getCSR(@PathVariable("param") Long id) {
+		
+		Csr csr = csrService.getOne(id);
+		try {
+			return new ResponseEntity<>(csr, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
 
 }

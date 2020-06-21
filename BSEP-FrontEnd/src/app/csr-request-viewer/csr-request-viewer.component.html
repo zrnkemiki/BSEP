@@ -17,14 +17,21 @@
                 <thead>
                     <tr>
                         <th>CSR ID</th>
-                        <th>CSR CommonName</th>
-                        <th>CSR Email</th>
+                        <th>CommonName</th>
+                        <th>Surname</th>
+                        <th>GivenName</th>
+                        <th>Organization</th>
+                        <th>Organization Unit</th>
+                        <th>Country</th>
+                        <th>Email</th>
+                        <th>Uid</th>
+                        <th>Extensions</th>
                         <th style="width: 15%">Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr *ngFor="let csrRequest of csrRequestes; let i = index">
+                    <tr *ngFor="let csrRequest of csrs; let i = index">
                         <td>
                             {{csrRequest.id}}.
                         </td>
@@ -32,7 +39,28 @@
                             {{csrRequest.commonName}}
                         </td>
                         <td>
+                            {{csrRequest.surname}}
+                        </td>
+                        <td>
+                            {{csrRequest.givenName}}
+                        </td>
+                        <td>
+                            {{csrRequest.organization}}
+                        </td>
+                        <td>
+                            {{csrRequest.organizationUnit}}
+                        </td>
+                        <td>
+                            {{csrRequest.country}}
+                        </td>
+                        <td>
                             {{csrRequest.email}}
+                        </td>
+                        <td>
+                            {{csrRequest.uid}}
+                        </td>
+                        <td>
+                            {{csrRequest.extensions}}
                         </td>
                         <td>
                             <button (click)='approveCSR(csrRequest.id)' type="button" class="btn btn-danger">Procced</button>

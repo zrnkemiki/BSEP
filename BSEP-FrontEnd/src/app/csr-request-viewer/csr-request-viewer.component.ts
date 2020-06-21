@@ -12,7 +12,6 @@ import { CsrService } from '../services/csr.service';
 export class CsrRequestViewerComponent implements OnInit {
 
   public csrs: CsrDTO[];
-  test1: CsrDTO;
   private currentUserEmail: string;
   private currentUserUsername: string;
   private currentUserType: string;
@@ -28,14 +27,6 @@ export class CsrRequestViewerComponent implements OnInit {
   ) { }
 
   ngOnInit(){
-    /*
-    this.test1 = new CsrDTO();
-    this.test1.commonName = "Kopanja";
-    this.test1.email = "kopanja@kopanja.com";
-    this.test1.id = 1;
-
-    this.csrs = [this.test1];
-    */
     this.getCSRrequests();
   }
 
@@ -46,7 +37,7 @@ export class CsrRequestViewerComponent implements OnInit {
 
 
   approveCSR(id) {
-    alert("TO_DO!")
+    this.router.navigate(["/new-certificate/" + id]);
 
   }
 

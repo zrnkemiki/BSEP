@@ -19,8 +19,9 @@ public class SubjectDataController {
 	public ResponseEntity<SubjectDataDTO> addSubjectData(@RequestBody SubjectDataDTO subjectDataDto){
 		System.out.println("Usao sam u funkciju new subject Data!\n");
 		System.out.println("SubjectData email: " + subjectDataDto.getEmail());
-		System.out.println("SubjectData DateFrom: " + subjectDataDto.getDateFrom());
-		System.out.println("SubjectData DateUntil: " + subjectDataDto.getDateUntil());
+		System.out.println("SubjectData extension: " + subjectDataDto.getExtensions().get(0).toString());
+
+		System.out.println("SubjectData extension: " + subjectDataDto.getExtensions().get(1).toString());
 		
         	// Perform the authentication
 
