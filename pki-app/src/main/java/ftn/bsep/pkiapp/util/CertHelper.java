@@ -13,6 +13,7 @@ import java.util.Base64;
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.DEROctetString;
+import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DLSequence;
 import org.bouncycastle.asn1.pkcs.Attribute;
 import org.bouncycastle.asn1.x509.BasicConstraints;
@@ -69,19 +70,20 @@ public class CertHelper {
         replacement = "";
         csrString = csrString.replace(target, replacement);
         
-        
+        System.out.println(csrString);
         PemObject pemObject = new PemObject("CERTIFICATE REQUEST", Base64.getDecoder().decode(csrString));
        
         PKCS10CertificationRequest csr = new PKCS10CertificationRequest(pemObject.getContent());
         
-        System.out.println();
+        System.out.println("Pre x500 parse");
         String[] x500 = csr.getSubject().toString().split(",");
         csrObj = parseX500Name(x500, csrObj);
         
+        
         for(Attribute attr : csr.getAttributes()) {
         	extension = "";
-        	DLSequence dl = (DLSequence) attr.getAttributeValues()[0];
-        	DLSequence dl2 = (DLSequence) dl.getObjectAt(0);
+        	DERSequence dl = (DERSequence) attr.getAttributeValues()[0];
+        	DERSequence dl2 = (DERSequence) dl.getObjectAt(0);
         	
         	ASN1ObjectIdentifier oid = (ASN1ObjectIdentifier) dl2.getObjectAt(0);
         	ASN1Encodable value;
@@ -134,6 +136,8 @@ public class CertHelper {
     		}
         	csrObj.addExtension(extension);
         	}
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println(csrObj.getExtensions().get(0));
 		return csrObj;
 	}
 	
