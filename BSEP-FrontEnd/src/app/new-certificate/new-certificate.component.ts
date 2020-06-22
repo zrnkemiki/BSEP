@@ -35,17 +35,14 @@ export class NewCertificateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.extension = new ExtensionDTO;
-    this.getCSRdata();
+    this.extension = new ExtensionDTO();
+    //this.getCSRdata();
   }
 
   getCSRdata(){
+    console.log(1);
     const id = +this.route.snapshot.paramMap.get('id');
-    this.csrService.getCsr(id).subscribe(csr => this.csr = csr);
-    if(this.csr.commonName){
-      alert(this.csr.commonName);
-    }
+    this.csrService.getCsr(id).subscribe(csr => {this.csr = csr; console.log(this.csr);});
   }
   
 
