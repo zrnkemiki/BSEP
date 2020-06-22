@@ -133,10 +133,10 @@ public class DataGenerator {
         extensions.add(ext);
         
         //KeyUsage for CA
-        KeyUsage keyUsage = new KeyUsage(KeyUsage.keyCertSign);
+        KeyUsage keyUsage = new KeyUsage(KeyUsage.keyCertSign | KeyUsage.cRLSign | KeyUsage.digitalSignature);
         ext = new CSRExtension(Extension.keyUsage, true, keyUsage);
         extensions.add(ext);
-        
+        /*
         keyUsage = new KeyUsage(KeyUsage.cRLSign);
         ext = new CSRExtension(Extension.keyUsage, true, keyUsage);
         extensions.add(ext);
@@ -144,7 +144,9 @@ public class DataGenerator {
         keyUsage = new KeyUsage(KeyUsage.digitalSignature);
         ext = new CSRExtension(Extension.keyUsage, true, keyUsage);
         extensions.add(ext);
+        */
 		return extensions;
+		
 	}
 
 //TO-DO
@@ -158,6 +160,7 @@ public ArrayList<CSRExtension> generatServerExtensions() {
         //KeyUsage for CA
         //keyUsage = critical, nonRepudiation, digitalSignature, keyEncipherment, keyAgreement 
         //		extendedKeyUsage        = critical, serverAuth
+        /*
         ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.digitalSignature));
         extensions.add(ext);
         
@@ -169,7 +172,9 @@ public ArrayList<CSRExtension> generatServerExtensions() {
         
         ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.keyAgreement));
         extensions.add(ext);
-        
+        */
+        ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.digitalSignature | KeyUsage.nonRepudiation | KeyUsage.keyEncipherment | KeyUsage.keyAgreement));
+        extensions.add(ext);
         GeneralNames subjectAltName = new GeneralNames(new GeneralName(GeneralName.dNSName, "localhost"));
         ext = new CSRExtension(Extension.subjectAlternativeName, true, subjectAltName.toASN1Primitive());
         extensions.add(ext);
@@ -188,9 +193,22 @@ public ArrayList<CSRExtension> generatClientExtensions() {
     extensions.add(ext);
     
     //KeyUsage for CA
-    KeyUsage keyUsage = new KeyUsage(KeyUsage.keyCertSign | KeyUsage.digitalSignature | KeyUsage.cRLSign);
-    ext = new CSRExtension(Extension.keyUsage, true, keyUsage);
-    extensions.add(ext);  
+    ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.digitalSignature | KeyUsage.nonRepudiation | KeyUsage.keyEncipherment | KeyUsage.keyAgreement));
+    extensions.add(ext);
+    
+   // ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.nonRepudiation));
+   // extensions.add(ext);
+    
+   // ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.digitalSignature));
+   // extensions.add(ext);
+    
+   // ext = new CSRExtension(Extension.keyUsage, false, new KeyUsage(KeyUsage.keyEncipherment));
+   // extensions.add(ext);
+    
+   // ext = new CSRExtension(Extension.keyUsage, false, new KeyUsage(KeyUsage.keyAgreement));
+   // extensions.add(ext);
+    ext = new CSRExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_clientAuth));
+    extensions.add(ext);
 	return extensions;
 }
 
