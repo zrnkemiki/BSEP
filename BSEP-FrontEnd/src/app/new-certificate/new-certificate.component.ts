@@ -15,34 +15,33 @@ import { ExtensionDTO } from '../modelDTO/extensionDTO';
 export class NewCertificateComponent implements OnInit {
   public subjectData: SubjectData;
   public extension: ExtensionDTO; 
-  public csr: CsrDTO;
+  public csrDto: CsrDTO;
   fullNameValidation: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private certificateService: CertificateService,
     private csrService: CsrService,
+    private router: Router
   ) {  
     this.subjectData = new SubjectData();
-    this.csr = new CsrDTO();
+    this.csrDto = new CsrDTO();
   }
 
-  addExtension(){
-    debugger;
-    this.subjectData.extensions.push(this.extension);
-    alert(this.subjectData.extensions[0].isCritical)
-    this.extension = {oid: "", isCritical: undefined, value: undefined};
-  }
 
   ngOnInit(): void {
     this.extension = new ExtensionDTO();
     //this.getCSRdata();
   }
 
-  getCSRdata(){
-    console.log(1);
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.csrService.getCsr(id).subscribe(csr => {this.csr = csr; console.log(this.csr);});
+
+
+  
+  addExtension(){
+    debugger;
+    this.subjectData.extensions.push(this.extension);
+    alert(this.subjectData.extensions[0].isCritical)
+    this.extension = {oid: "", isCritical: undefined, value: undefined};
   }
   
 

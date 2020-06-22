@@ -22,4 +22,8 @@ if __name__ == '__main__':
 
     for p in parsers:
         p.start()
-        # p.run_simple()
+        #p.run_simple()
+        #p.run_simple()
+        #p.run_simple()
+        #p.run_simple()
+        #p.run_simple()
