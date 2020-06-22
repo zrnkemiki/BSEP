@@ -8,5 +8,6 @@ export class CsrDTO{
     country:string;
     email:string;
     uid: string;
-    extensions: string[];
+    //extensions: string[];
+    extensions: Array<String>;
 }

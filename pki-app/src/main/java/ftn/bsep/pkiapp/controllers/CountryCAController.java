@@ -85,13 +85,18 @@ public class CountryCAController {
 	@PostMapping(value = "/csrData")
 	public ResponseEntity<?> csrDataSubmit(@RequestBody()String csrString) throws IOException {
 		Csr csrDTO = CertHelper.csrStringToCsrObj(csrString);
+		csrDTO.setCsrStringReq(csrString);
 		try {
 			//TO-DO
 			System.out.println(csrString);
 			
 			System.out.println(csrDTO.getCommonName());
 			System.out.println(csrDTO.getExtensions().get(0));
-			csrService.saveCSR(csrDTO);
+			csrDTO = csrService.saveCSR(csrDTO);
+			csrDTO.getId();
+			csrDTO = csrService.findByID(csrDTO.getId());
+			System.out.println("Ovo je string iz baze: " + csrDTO.getCsrStringReq());
+			
 			
             return new ResponseEntity<Csr>(
             		csrDTO, HttpStatus.OK);
@@ -117,7 +122,7 @@ public class CountryCAController {
 	@GetMapping(value = "/getCSR/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Csr> getCSR(@PathVariable("param") Long id) {
 		
-		Csr csr = csrService.getOne(id);
+		Csr csr = csrService.findByID(id);
 		try {
 			return new ResponseEntity<>(csr, HttpStatus.OK);
 		} catch (Exception e) {
