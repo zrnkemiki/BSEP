@@ -43,7 +43,7 @@ export class CsrService {
   }
 
   generateCertificate(id: number) : Observable<any>{
-    return this.http.get<CsrDTO>('http://localhost:9003/country-ca/generateCertificate/1');
+    return this.http.get<CsrDTO>('http://localhost:9003/country-ca/generateCertificate' + "/"  + id);
   }
 
 }
