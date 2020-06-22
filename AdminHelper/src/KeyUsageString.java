@@ -16,6 +16,8 @@ public class KeyUsageString {
 		this.map.put("4", "keyCertSign");
 		this.map.put("20", "keyEncipherment");
 		this.map.put("40", "nonRepudiation");
+		this.map.put("e8", "digitalSignature, nonRepudiation, keyAgreement, keyEncipherment");
+		this.map.put("86", "digitalSignature, cRLSign, keyCertSign");
 	}
 	
 	public String getKeyUsageString(String key) {
