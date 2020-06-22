@@ -12,6 +12,7 @@ import { CsrService } from '../services/csr.service';
 export class CsrRequestViewerComponent implements OnInit {
 
   public csrs: CsrDTO[];
+  public csr: CsrDTO;
   private currentUserEmail: string;
   private currentUserUsername: string;
   private currentUserType: string;
@@ -35,11 +36,15 @@ export class CsrRequestViewerComponent implements OnInit {
     this.csrService.getAll();
   }
 
-
-  approveCSR(id) {
-    this.router.navigate(["/new-certificate/" + id]);
-
+  viewCSR(id){
+    this.router.navigate(["/csr-view/" + id]);
   }
+
+  rejectCSR(id){
+    alert("To-DO")
+  }
+
+  
 
   returnHome() {
     this.router.navigate(["/homepage"]);

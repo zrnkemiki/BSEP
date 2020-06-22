@@ -22,6 +22,7 @@ import org.bouncycastle.asn1.DLSequence;
 import org.bouncycastle.asn1.pkcs.Attribute;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.asn1.x500.RDN;
+import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.Extension;
@@ -109,8 +110,7 @@ public class Util {
         
         PKCS10CertificationRequest csr = new PKCS10CertificationRequest(pemObject.getContent());
         
-        System.out.println(csr.getSubject().toString());
-        
+        String[] x500 = fromX500ToString(csr.getSubject());
         for(Attribute attr : csr.getAttributes()) {
         	DLSequence dl = (DLSequence) attr.getAttributeValues()[0];
         	DLSequence dl2 = (DLSequence) dl.getObjectAt(0);
@@ -165,9 +165,10 @@ public class Util {
     			GeneralNames subjectAltName = GeneralNames.getInstance(str.getOctets());
     			System.out.println(subjectAltName + "| Critical: " + isCritical);
     		}
-        	}
-        	
-        
+        	}     
         
     }
+	static String[] fromX500ToString(X500Name name) {
+		return name.toString().split(",");
+	}
 }

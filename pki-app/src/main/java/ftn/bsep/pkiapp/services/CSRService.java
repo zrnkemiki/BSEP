@@ -21,7 +21,7 @@ public class CSRService {
 		return csrRepo.findAll();	
 	}
 	
-	public Csr getOne(Long id) {
+	public Csr findByID(Long id) {
 		return csrRepo.findById(id).get();
 	}
 }

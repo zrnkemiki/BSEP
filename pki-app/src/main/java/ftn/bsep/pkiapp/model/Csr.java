@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -25,6 +26,10 @@ public class Csr {
 	private String country;
 	private String email;
 	private String uid;
+	@Lob
+	private String csrStringReq;
+	
+	
 	@Column
 	@ElementCollection(targetClass = String.class)
 	private List<String> extensions;
@@ -111,6 +116,15 @@ public class Csr {
 	public void addExtension(String extension) {
 		this.extensions.add(extension);
 	}
+	
+	public String getCsrStringReq() {
+		return csrStringReq;
+	}
+	public void setCsrStringReq(String csrStringReq) {
+		this.csrStringReq = csrStringReq;
+	}
+	
+	
 	
 	
 	

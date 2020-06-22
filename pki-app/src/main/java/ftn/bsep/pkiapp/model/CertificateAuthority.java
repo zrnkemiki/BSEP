@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.pkcs.Attribute;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
@@ -25,6 +26,7 @@ import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
+import org.bouncycastle.asn1.x509.KeyUsage;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -43,6 +45,7 @@ import ftn.bsep.pkiapp.data.IssuerData;
 import ftn.bsep.pkiapp.data.SubjectData;
 import ftn.bsep.pkiapp.keystores.KeyStoreReader;
 import ftn.bsep.pkiapp.keystores.KeyStoreWriter;
+import ftn.bsep.pkiapp.util.CertHelper;
 
 public abstract class CertificateAuthority {
 
@@ -127,8 +130,8 @@ public abstract class CertificateAuthority {
 	
 	public X509Certificate signCertificate(PKCS10CertificationRequest csr) throws NoSuchAlgorithmException, CertIOException, OperatorCreationException, CertificateException, InvalidKeyException, NoSuchProviderException, SignatureException {
 		//potrebni podaci CA-ja
-		IssuerData issuerData = this.getKeystoreReader().readIssuerFromStore("D:\\BSEP\\pki-app\\src\\main\\resources\\CAStores\\ca-keystore.jks","ca-rs", "password".toCharArray(),  "password".toCharArray());
-		Certificate issuerCert = this.getKeystoreReader().readCertificate("D:\\BSEP\\pki-app\\src\\main\\resources\\CAStores\\ca-keystore.jks", "password", "ca-rs");
+		IssuerData issuerData = this.getKeystoreReader().readIssuerFromStore(this.keyStorePath,this.alias, this.password.toCharArray(),  this.password.toCharArray());
+		Certificate issuerCert = this.getKeystoreReader().readCertificate(this.keyStorePath, this.password, this.alias);
 		
 		//Datumi vazenja sertifikata (startDate -> trenutno vreme, endDate -> +6meseci)
 		Calendar cal = Calendar.getInstance();
@@ -141,17 +144,14 @@ public abstract class CertificateAuthority {
 		X509v3CertificateBuilder issuedCertBuilder = new X509v3CertificateBuilder(issuerData.getX500name(), BigInteger.valueOf(333333), startDate, endDate, csr.getSubject(), csr.getSubjectPublicKeyInfo());
         JcaX509ExtensionUtils issuedCertExtUtils = new JcaX509ExtensionUtils();
 
-        // Add Extensions
-        // Use BasicConstraints to say that this Cert is not a CA
-        issuedCertBuilder.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
-
+        
         // Add Issuer cert identifier as Extension
         issuedCertBuilder.addExtension(Extension.authorityKeyIdentifier, false, issuedCertExtUtils.createAuthorityKeyIdentifier((X509Certificate) issuerCert));
         issuedCertBuilder.addExtension(Extension.subjectKeyIdentifier, false, issuedCertExtUtils.createSubjectKeyIdentifier(csr.getSubjectPublicKeyInfo()));
-        GeneralNames subjectAltName = new GeneralNames(new GeneralName(GeneralName.dNSName, "localhost"));
-        issuedCertBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltName.toASN1Primitive());
-        issuedCertBuilder.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
-        //issuedCertBuilder.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeId.id_kp_clientAuth));
+        // Add Extensions
+        issuedCertBuilder = CertHelper.setCertAttributes(issuedCertBuilder, csr);
+       // issuedCertBuilder.addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.dataEncipherment));
+        //issuedCertBuilder.addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.cRLSign));
         //========================================================================================================================
         //Potpisivanje sertifikata
         JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");

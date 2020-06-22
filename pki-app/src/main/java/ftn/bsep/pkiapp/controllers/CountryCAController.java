@@ -1,11 +1,18 @@
 package ftn.bsep.pkiapp.controllers;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
+import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
+import org.bouncycastle.pkcs.PKCSException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,7 +41,7 @@ public class CountryCAController {
 	@Autowired
 	CSRService csrService;
 	
-	CertificateAuthority ca = new CACountry("C:\\Users\\Z-AIO\\Documents\\Projekti\\BSEP\\pki-app\\src\\main\\resources\\countryCAStores\\ca-rs-keystore.jks", null, "password", "ca-rs");
+	CertificateAuthority ca = new CACountry("D:\\BSEP\\pki-app\\src\\main\\resources\\rootStores\\DFRoot-keystore.jks", null, "password", "root");
 	CSRGenerator csrGen = new CSRGenerator();
 	DataGenerator dataGen = new DataGenerator();
 	PKCS10CertificationRequest csr = null;
@@ -83,15 +90,30 @@ public class CountryCAController {
 	
 	//TEST CONTROLER
 	@PostMapping(value = "/csrData")
-	public ResponseEntity<?> csrDataSubmit(@RequestBody()String csrString) throws IOException {
-		Csr csrDTO = CertHelper.csrStringToCsrObj(csrString);
+	public ResponseEntity<?> csrDataSubmit(@RequestBody()String csrString) throws IOException, OperatorCreationException, PKCSException {
+		PKCS10CertificationRequest csr = CertHelper.csrStringToCsrPKCS(csrString);
+		Csr csrDTO = null;
+		boolean isCSRValid = CertHelper.checkCSRSigniture(csr);
+		
+		if(isCSRValid) {
+			System.out.println("CSR potpis je validan");
+			csrDTO = CertHelper.csrStringToCsrObj(csrString);
+			csrDTO.setCsrStringReq(csrString);
+		}else {
+			System.out.println("CSR potpis NIJE validan");
+		}
+		
 		try {
 			//TO-DO
 			System.out.println(csrString);
 			
 			System.out.println(csrDTO.getCommonName());
 			System.out.println(csrDTO.getExtensions().get(0));
-			csrService.saveCSR(csrDTO);
+			csrDTO = csrService.saveCSR(csrDTO);
+			csrDTO.getId();
+			csrDTO = csrService.findByID(csrDTO.getId());
+			System.out.println("Ovo je string iz baze: " + csrDTO.getCsrStringReq());
+			
 			
             return new ResponseEntity<Csr>(
             		csrDTO, HttpStatus.OK);
@@ -115,9 +137,14 @@ public class CountryCAController {
 	}
 	
 	@GetMapping(value = "/getCSR/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Csr> getCSR(@PathVariable("param") Long id) {
+	public ResponseEntity<Csr> getCSR(@PathVariable("param") Long id) throws Exception {
+		System.out.println("A");
+		Csr csr = csrService.findByID(id);
 		
-		Csr csr = csrService.getOne(id);
+		PKCS10CertificationRequest csrPkcs = CertHelper.csrStringToCsrPKCS(csr.getCsrStringReq());
+		X509Certificate cert = ca.signCertificate(csrPkcs);
+		CertHelper.writeCertToFileBase64Encoded(cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ServerCSRCert.cer");
+		
 		try {
 			return new ResponseEntity<>(csr, HttpStatus.OK);
 		} catch (Exception e) {

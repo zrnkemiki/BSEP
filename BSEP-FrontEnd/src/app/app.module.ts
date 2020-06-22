@@ -15,6 +15,7 @@ import { AuthGuard } from './helpers/auth.guard';
 import { LoginCAComponent } from './login-ca/login-ca.component';
 import { CSRSubmitComponent } from './csrsubmit/csrsubmit.component';
 import { CsrRequestViewerComponent } from './csr-request-viewer/csr-request-viewer.component';
+import { CsrViewerComponent } from './csr-viewer/csr-viewer.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { CsrRequestViewerComponent } from './csr-request-viewer/csr-request-view
     LoginCAComponent,
     CSRSubmitComponent,
     CsrRequestViewerComponent,
+    CsrViewerComponent,
   ],
   imports: [
     BrowserModule,
