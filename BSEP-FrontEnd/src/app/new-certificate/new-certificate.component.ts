@@ -38,9 +38,7 @@ export class NewCertificateComponent implements OnInit {
 
   
   addExtension(){
-    debugger;
     this.subjectData.extensions.push(this.extension);
-    alert(this.subjectData.extensions[0].isCritical)
     this.extension = {oid: "", isCritical: undefined, value: undefined};
   }
   
