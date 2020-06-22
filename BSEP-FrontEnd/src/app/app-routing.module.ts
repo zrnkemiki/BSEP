@@ -9,27 +9,29 @@ import { CSRSubmitComponent } from './csrsubmit/csrsubmit.component';
 import { CsrRequestViewerComponent } from './csr-request-viewer/csr-request-viewer.component';
 import { CsrViewerComponent } from './csr-viewer/csr-viewer.component';
 import { AuthenticationService } from './services/authentication.service';
+import { AuthCAGuard } from './helpers/auth.ca.guard';
+import { AuthMUGuard } from './helpers/auth.mu.guard';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'new-certificate', component: NewCertificateComponent },
   { path: 'csr-view/:id', component: CsrViewerComponent },
-
+  
   { path: 'csr-view/:id', component: CsrViewerComponent },
   { path: 'new-certificate', component: NewCertificateComponent},
   { path: 'csr-submit', component: CSRSubmitComponent},
   { path: 'csr-requests', component: CsrRequestViewerComponent},
   { path: 'login-ca', component: LoginCAComponent},
-
+  
   //Disabled AuthGuard
   /*
-  { path: 'csr-view/:id', component: CsrViewerComponent , canActivate: [AuthGuard]},
-  { path: 'new-certificate', component: NewCertificateComponent, canActivate: [AuthGuard] },
-  { path: 'csr-submit', component: CSRSubmitComponent, canActivate: [AuthGuard] },
-  { path: 'csr-requests', component: CsrRequestViewerComponent, canActivate: [AuthGuard] },
-  { path: 'login-ca', component: LoginCAComponent, canActivate: [AuthGuard]},
-*/
+  { path: 'csr-view/:id', component: CsrViewerComponent , canActivate: [AuthCAGuard]},
+  { path: 'new-certificate', component: NewCertificateComponent, canActivate: [AuthCAGuard] },
+  { path: 'csr-submit', component: CSRSubmitComponent, canActivate: [AuthMUGuard] },
+  { path: 'csr-requests', component: CsrRequestViewerComponent, canActivate: [AuthCAGuard] },
+  { path: 'login-ca', component: LoginCAComponent, canActivate: [AuthCAGuard]},
+  */
 
   { path: '', component: HomepageComponent },
 

@@ -23,7 +23,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
 	protected Long id;
-	private Long carId;
 	protected String firstName;
 	protected String lastName;
 	protected String username;
@@ -33,7 +32,13 @@ public class User {
 	protected String phoneNumber;
 	@Enumerated(EnumType.ORDINAL)
     protected UserStatus userStatus;
+	@Enumerated(EnumType.ORDINAL)
+	protected UserType userType;
 	
+	
+
+
+
 	protected String uuid;
     
     
@@ -43,11 +48,10 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public User(Long id, Long carId, String firstName, String lastName, String username, String email, String password,
-			String city, String phoneNumber, UserStatus userStatus, String uuid) {
+	public User(Long id, String firstName, String lastName, String username, String email, String password,
+			String city, String phoneNumber, UserStatus userStatus, String uuid, UserType userType) {
 		super();
 		this.id = id;
-		this.carId = carId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
@@ -57,6 +61,7 @@ public class User {
 		this.phoneNumber = phoneNumber;
 		this.userStatus = userStatus;
 		this.uuid = uuid;
+		this.userType = userType;
 	}
 	
 	public User(UserDTO dto) {
@@ -68,6 +73,7 @@ public class User {
 		this.city = dto.getCity();
 		this.phoneNumber = dto.getNumber();
 		this.uuid = UUID.randomUUID().toString();
+		this.userType = dto.getUserType();
 	}
 
 
@@ -82,12 +88,7 @@ public class User {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getCarId() {
-		return carId;
-	}
-	public void setCarId(Long carId) {
-		this.carId = carId;
-	}
+		
 	public String getFirstName() {
 		return firstName;
 	}
@@ -155,5 +156,12 @@ public class User {
 		this.uuid = uuid;
 	}
     
+	public UserType getUserType() {
+		return userType;
+	}
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
     
 }

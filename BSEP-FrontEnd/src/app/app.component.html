@@ -37,9 +37,9 @@
                         </div>
                         <div class="user-info">
                             <span class="user-name">
-                                <strong> {{this.currentUser}}</strong>
+                                <strong> {{currentUser.firstName}} {{this.currentUser.lastName}}</strong>
                             </span>
-                            <span class="user-role">Member</span>
+                            <span class="user-role">{{this.currentUser.userType}}</span>
                             <span class="user-status">
                                 <i class="fa fa-circle"></i>
                                 <span>Online</span>
@@ -69,37 +69,37 @@
                         <li class="header-menu">
                             <span>Certificates</span>
                         </li>
-                        <li>
+                        <li *ngIf='this.currentUser.userType == "ADMIN_CA"'>
                             <a routerLink="/new-certificate">
                                 <i class="fa fa-calendar"></i>
                                 <span>New Certificate</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf='this.currentUser.userType == "ADMIN_CA"'>
                             <a routerLink="/issued-certificate">
                                 <i class="fa fa-calendar"></i>
                                 <span>Issued Certificate</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf='this.currentUser.userType == "ADMIN_CA"'>
                             <a routerLink="/revoke-certificate">
                                 <i class="fa fa-calendar"></i>
                                 <span>Revoke Certificate</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf='this.currentUser.userType == "ADMIN_MU"'>
                             <a routerLink="/csr-submit">
                                 <i class="fa fa-calendar"></i>
                                 <span>CSR submit</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf='this.currentUser.userType == "ADMIN_CA"'>
                             <a routerLink="/csr-requests">
                                 <i class="fa fa-calendar"></i>
                                 <span>CSR Requests</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf='this.currentUser.userType == "ADMIN_CA"'>
                             <a routerLink="/login-ca">
                                 <i class="fa fa-calendar"></i>
                                 <span>CA Login</span>
