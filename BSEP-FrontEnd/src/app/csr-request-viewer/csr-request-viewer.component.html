@@ -21,11 +21,8 @@
                         <th>Surname</th>
                         <th>GivenName</th>
                         <th>Organization</th>
-                        <th>Organization Unit</th>
                         <th>Country</th>
                         <th>Email</th>
-                        <th>Uid</th>
-                        <th>Extensions</th>
                         <th style="width: 15%">Action</th>
                     </tr>
                 </thead>
@@ -48,22 +45,14 @@
                             {{csrRequest.organization}}
                         </td>
                         <td>
-                            {{csrRequest.organizationUnit}}
-                        </td>
-                        <td>
                             {{csrRequest.country}}
                         </td>
                         <td>
                             {{csrRequest.email}}
                         </td>
                         <td>
-                            {{csrRequest.uid}}
-                        </td>
-                        <td>
-                            {{csrRequest.extensions}}
-                        </td>
-                        <td>
-                            <button (click)='approveCSR(csrRequest.id)' type="button" class="btn btn-danger">Procced</button>
+                            <button (click)='viewCSR(csrRequest.id)' type="button" class="btn btn-success">View</button>
+                            <button (click)='rejectCSR(csrRequest.id)' type="button" class="btn btn-danger">Reject</button>
                         </td>
                     </tr>
                 </tbody>

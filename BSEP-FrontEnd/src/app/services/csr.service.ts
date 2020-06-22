@@ -28,31 +28,24 @@ export class CsrService {
         alert("Successfuly sent csr");
       }
     )
-}
+  }
 
-getAll() {
-  this.http.get<CsrDTO[]>('http://localhost:9003/country-ca/getAll')
-    .subscribe(csrs => {
-      this.csrs = csrs;
-      this.csrSource.next(this.csrs);
-    });
-}
-
-getCsr(id: number) {
-  return this.http.get<CsrDTO>('http://localhost:9003/country-ca/getCSR' + "/" + id)
-  .pipe(tap(
-    csr => {
-    for (var i = 0; i < this.csrs.length; i++) {
-      if (csr.id === this.csrs[i].id) {
-        this.csrs[i] = csr;
+  getAll() {
+    this.http.get<CsrDTO[]>('http://localhost:9003/country-ca/getAll')
+      .subscribe(csrs => {
+        this.csrs = csrs;
         this.csrSource.next(this.csrs);
-        return csr;
-      }
-    }
-  })
-  )
-}
+      });
+  }
 
+  getCsr(id: number) : Observable<any>{
+    return this.http.get<CsrDTO>('http://localhost:9003/country-ca/getCSR' + "/" + id);
+  }
+
+  generateCertificate(id: number){
+    this.http.post<any>('http://localhost:9003/country-ca/generateCertificate/' , id);
+    
+  }
 
 
 }
