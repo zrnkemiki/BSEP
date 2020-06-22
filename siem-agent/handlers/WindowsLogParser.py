@@ -24,7 +24,7 @@ class WindowsLogParser(Thread):
         self.flags = win32evtlog.EVENTLOG_BACKWARDS_READ | win32evtlog.EVENTLOG_SEQUENTIAL_READ
         self.total = win32evtlog.GetNumberOfEventLogRecords(self.hand)
         Thread.__init__(self)
-        self.lastLogCheckTime = datetime.now() - timedelta(hours=100)
+        self.last_log_timestamp = datetime.now() - timedelta(hours=5)
 
 
     def read_and_parse(self):
@@ -33,7 +33,7 @@ class WindowsLogParser(Thread):
         w_logs = []
         if events:
             for event in events:
-                if event.TimeGenerated > self.lastLogCheckTime:
+                if event.TimeGenerated > self.last_log_timestamp:
                     msg_data = event.StringInserts
                     if msg_data:
                         msg = ' '.join(msg_data)
@@ -42,6 +42,7 @@ class WindowsLogParser(Thread):
                     w_log = WindowsLog(str(event.TimeGenerated), SeverityLevel(event.EventType).name, event.EventID,
                                        event.ComputerName, event.SourceName, msg)
                     w_logs.append(w_log.format_json())
+                    self.last_log_timestamp = event.TimeGenerated
 
         #win32evtlog.CloseEventLog(self.hand)
 

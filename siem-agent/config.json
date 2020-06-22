@@ -2,9 +2,27 @@
 	"sources": [
 		{
 			"type": "OS Windows",
-			"path": "logs/windows",
+			"path": "",
 			"filter": "regex",
 			"interval": 5
+		},
+		{
+			"type": "OS Linux",
+			"path": "/var/log",
+			"filter": "regex",
+			"interval": -1
+		},
+		{
+			"type": "Application",
+			"path": "/logs/app",
+			"filter": "regex",
+			"interval": -1
+		},
+		{
+			"type": "Web-Server",
+			"path": "/logs/server",
+			"filter": "regex",
+			"interval": -1
 		}
 	]
 }
