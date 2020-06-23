@@ -1,29 +1,15 @@
+package rules;
+
+import ftn.bsep.siemcenter.model.Log;
+
+global java.util.List fixes;
 
 rule "Error log"
     when
         $log: Log( getLevel() == 'ERROR' );
     then
     	fixes.clear();
-    	fixes.addAll("Pronasao sam log tipa ERROR. Vreme: " + $log.getTimestamp());
-    	
-    	delete($log);
- end 
- 
- rule "Warning log"
-    when
-        $log: Log( getLevel() == 'WARNING' );
-    then
-    	fixes.clear();
-    	fixes.addAll("Pronasao sam log tipa WARNING. Vreme: " + $log.getTimestamp());
-    	
-    	delete($log);
- end 
- 
- rule "Critical log"
-    when
-        $log: Log( getLevel() == 'CRITICAL' );
-    then
-    	fixes.clear();
-    	fixes.addAll("Pronasao sam log tipa CRITICAL. Vreme: " + $log.getTimestamp());
+    	fixes.add("Pronasao sam log tipa ERROR. Vreme: " + $log.getTimestamp());
+    	System.out.println("Uspesno");
     	delete($log);
  end 

@@ -12,4 +12,5 @@ def post_method(data):
                       verify=TRUSTSTORE_PATH,
                       cert=(CLIENT_CERT_PATH,
                             CLIENT_PK_PATH))
+    print(data)
     return r
