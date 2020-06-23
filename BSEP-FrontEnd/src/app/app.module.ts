@@ -16,6 +16,8 @@ import { LoginCAComponent } from './login-ca/login-ca.component';
 import { CSRSubmitComponent } from './csrsubmit/csrsubmit.component';
 import { CsrRequestViewerComponent } from './csr-request-viewer/csr-request-viewer.component';
 import { CsrViewerComponent } from './csr-viewer/csr-viewer.component';
+import { AuthCAGuard } from './helpers/auth.ca.guard';
+import { AuthMUGuard } from './helpers/auth.mu.guard';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,7 @@ import { CsrViewerComponent } from './csr-viewer/csr-viewer.component';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    AuthGuard,
+    AuthGuard, AuthCAGuard, AuthMUGuard,
     //{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

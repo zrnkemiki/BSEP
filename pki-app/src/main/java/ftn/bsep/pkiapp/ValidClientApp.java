@@ -31,16 +31,16 @@ public class ValidClientApp {
 	        KeyManagerFactory keyMgrFactory = KeyManagerFactory.getInstance("SunX509");
 	        KeyStore keyStore = KeyStore.getInstance("JKS");
 	        //char[] keyStorePassword = "password".toCharArray(); 
-	        char[] keyStorePassword = "secret".toCharArray();
-	        keyStore.load(new FileInputStream("C:\\Users\\Laptop\\Desktop\\mutual tls\\client\\src\\test\\resources\\identity.jks"), keyStorePassword);
+	        char[] keyStorePassword = "password".toCharArray();
+	        keyStore.load(new FileInputStream("D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\client-keystore.jks"), keyStorePassword);
 	        keyMgrFactory.init(keyStore, keyStorePassword);
 
 
 	        TrustManagerFactory trustStrFactory = TrustManagerFactory.getInstance("SunX509");
 	        KeyStore trustStore = KeyStore.getInstance("JKS");
 	        //char[] trustStorePassword = "password".toCharArray();   
-	        char[] trustStorePassword = "secret".toCharArray(); 
-	        trustStore.load(new FileInputStream("C:\\Users\\Laptop\\Desktop\\mutual tls\\client\\src\\test\\resources\\truststore.jks"), trustStorePassword);
+	        char[] trustStorePassword = "password".toCharArray(); 
+	        trustStore.load(new FileInputStream("D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\server-truststore.jks"), trustStorePassword);
 	        trustStrFactory.init(trustStore);
 
 	        context.init(keyMgrFactory.getKeyManagers(), 

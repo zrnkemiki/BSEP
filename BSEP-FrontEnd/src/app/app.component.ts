@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from './model/user';
+import { Router } from '@angular/router';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -9,15 +11,25 @@ import { User } from './model/user';
 export class AppComponent {
   title = 'BSEP-FrontEnd';  
   //To-Do Current user logged in!
-  public currentUser = undefined;
+  public currentUser : User;
+  public currentAdminCA : boolean;
+  public currentAdminMU : boolean;
+
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService
+) {}
+
   
   ngOnInit() {
     this.getCurrentUser();
   }
 
   getCurrentUser(){
-    var user = JSON.parse(localStorage.getItem('currentUser'));
-    this.currentUser = user.firstName + " " + user.lastName
+    const currentUser = this.authenticationService.currentUserValue;
+    //var user = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = new User();
+    this.currentUser = currentUser;
   }
 
   login(){

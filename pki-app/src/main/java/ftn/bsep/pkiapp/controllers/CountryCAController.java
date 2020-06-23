@@ -1,6 +1,7 @@
 package ftn.bsep.pkiapp.controllers;
 
 import java.io.IOException;
+import java.security.cert.Certificate;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -138,12 +139,28 @@ public class CountryCAController {
 	
 	@GetMapping(value = "/getCSR/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Csr> getCSR(@PathVariable("param") Long id) throws Exception {
+		Csr csr = csrService.findByID(id);
+		/*
+		PKCS10CertificationRequest csrPkcs = CertHelper.csrStringToCsrPKCS(csr.getCsrStringReq());
+		X509Certificate cert = ca.signCertificate(csrPkcs);
+		CertHelper.writeCertToFileBase64Encoded(cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ServerCSRCert.cer");
+		*/
+		try {
+			return new ResponseEntity<>(csr, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping(value = "/generateCertificate/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Csr> generateCertificate(@PathVariable("param") Long id) throws Exception {
 		System.out.println("A");
 		Csr csr = csrService.findByID(id);
 		
 		PKCS10CertificationRequest csrPkcs = CertHelper.csrStringToCsrPKCS(csr.getCsrStringReq());
 		X509Certificate cert = ca.signCertificate(csrPkcs);
-		CertHelper.writeCertToFileBase64Encoded(cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ServerCSRCert.cer");
+		//CertHelper.writeCertToFileBase64Encoded(cert, "/Users/zrnke/Documents/Projekti/BSEP/pki-app/src/main/resources/newCerts/ServerCSRCert.cer");
+		CertHelper.writeCertToFileBase64Encoded((Certificate)cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ClientCert.cer");
 		
 		try {
 			return new ResponseEntity<>(csr, HttpStatus.OK);
