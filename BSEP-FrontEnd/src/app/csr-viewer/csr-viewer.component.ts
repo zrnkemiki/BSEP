@@ -36,7 +36,7 @@ export class CsrViewerComponent implements OnInit {
     debugger;
     this.csrService.generateCertificate(id).subscribe(
       csr => {alert("Successfuly created certificate!")},
-      error=> {alert("Something went wrong")}
+      error=> {alert("Something went wrong!")}
       );
   }
 
