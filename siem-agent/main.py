@@ -3,6 +3,7 @@ import sys
 from handlers.WindowsLogParser import WindowsLogParser
 from handlers.AppLogParser import AppLogParser
 from exceptions.ConfigException import ConfigException
+import os
 
 
 def check_config(config):
@@ -11,6 +12,19 @@ def check_config(config):
             raise ConfigException('Allowed types are: [OS Windows, OS Linux, Application, Web-Server]!')
         if not isinstance(src['interval'], int) and not (isinstance(src['interval'], float)):
             raise ConfigException('Interval has to be float or int!')
+
+
+def handle_dir(path):
+    files = []
+    if os.path.isdir(path):
+        for r, d, ff in os.walk(path):
+            for file in ff:
+                if '.log' in file:
+                    files.append(os.path.join(r, file))
+    else:
+        files.append(path)
+
+    return files
 
 
 if __name__ == '__main__':
@@ -29,13 +43,10 @@ if __name__ == '__main__':
         elif source['type'] == 'OS Linux':
             continue
         else:
-            app_parser = AppLogParser(source['filter'], source['interval'], source['path'])
-            parsers.append(app_parser)
+            file_list = handle_dir(source['path'])
+            for i in file_list:
+                app_parser = AppLogParser(source['filter'], source['interval'], i)
+                parsers.append(app_parser)
 
     for p in parsers:
         p.start()
-        #p.run_simple()
-        #p.run_simple()
-        #p.run_simple()
-        #p.run_simple()
-        #p.run_simple()

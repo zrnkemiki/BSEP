@@ -11,32 +11,11 @@ class AppLogParser(Thread):
         self.regex_filter = regex_filter
         self.interval = interval
         self.log_path = log_path
-        if os.path.isdir(log_path):
-            self.path_type = 'dir'
-        else:
-            self.path_type = 'file'
-
         Thread.__init__(self)
         self.last_log_timestamp = datetime.now()
 
     def read_and_parse(self):
-        logs = []
-        if self.path_type == 'dir':
-            files = []
-            for r, d, f in os.walk(self.log_path):
-                for file in f:
-                    if '.log' in file:
-                        files.append(os.path.join(r, file))
-            for log_file in files:
-                logs += self.parse_log(log_file)
-
-        else:
-            logs += self.parse_log(self.log_path)
-
-        return logs
-
-    def parse_log(self, path):
-        f = open(path, "r")
+        f = open(self.log_path, "r")
         log_file = f.read()
 
         logs = []
@@ -63,5 +42,6 @@ class AppLogParser(Thread):
             parsed_logs = self.read_and_parse()
             if len(parsed_logs) != 0:
                 response = post_method(parsed_logs)
+                print(response, '[', len(parsed_logs), ' LOGS SENT TO CENTER]')
             if self.interval != -1:
                 time.sleep(self.interval)

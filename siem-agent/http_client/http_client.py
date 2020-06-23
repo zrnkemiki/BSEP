@@ -1,6 +1,6 @@
 import os
-
 import requests
+
 
 def post_method(data):
     # trebace header (sertifikat)
@@ -8,4 +8,4 @@ def post_method(data):
                       verify='C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\siem-agent\\certificates\\truststore\\root-ca.pem',
                       cert=('C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\siem-agent\\certificates\\client_cert\\client-signed.cer',
                             'C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\siem-agent\\certificates\\client_cert\\client-private.key'))
-    print(r)
+    return r

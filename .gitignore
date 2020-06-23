@@ -6,3 +6,4 @@ siem-agent/.idea/inspectionProfiles/profiles_settings.xml
 siem-agent/.idea/workspace.xml
 siem-agent/.idea/vcs.xml
 *.pyc
+*.pyc
