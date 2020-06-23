@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ftn.bsep.siemcenter.Proba;
 import ftn.bsep.siemcenter.model.Log;
 
 @RestController
@@ -16,8 +17,10 @@ public class LogController {
 	@PostMapping("/post-logs")
 	public void receiveLogs(@RequestBody List<Log> logs) {
 		System.out.println("Usao");
+		Proba proba = new Proba();
 		for (Log log : logs) {
 			System.out.println(log);
+			proba.test1(log);
 		}
 	}
 	
