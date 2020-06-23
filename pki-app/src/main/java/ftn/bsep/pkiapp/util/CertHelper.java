@@ -7,6 +7,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
+import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -50,12 +51,18 @@ public class CertHelper {
 		return null;
 	}
 
-	public static void writeCertToFileBase64Encoded(X509Certificate certificate, String fileName) throws Exception {
+	public static void writeCertToFileBase64Encoded(Certificate certificate, String fileName) throws Exception {
+		/*
 		FileOutputStream certificateOut = new FileOutputStream(fileName);
 		certificateOut.write("-----BEGIN CERTIFICATE-----".getBytes());
 		certificateOut.write(Base64.getEncoder().encode(certificate.getEncoded()));
 		certificateOut.write("-----END CERTIFICATE-----".getBytes());
 		certificateOut.close();
+		*/
+		FileOutputStream fos = new FileOutputStream(fileName);
+	      byte[] certBytes = certificate.getEncoded();
+	      fos.write(certBytes);
+	      fos.close();
 	}
 
 	static void writeCSRToFileBase64Encoded(PKCS10CertificationRequest csr, String fileName) throws Exception {
