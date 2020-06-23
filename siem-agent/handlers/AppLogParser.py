@@ -42,6 +42,6 @@ class AppLogParser(Thread):
             parsed_logs = self.read_and_parse()
             if len(parsed_logs) != 0:
                 response = post_method(parsed_logs)
-                print(response, '[', len(parsed_logs), ' LOGS SENT TO CENTER]')
+                print(response, '[ [AppLogParser] ', len(parsed_logs), ' LOGS SENT TO CENTER]')
             if self.interval != -1:
                 time.sleep(self.interval)

@@ -13,3 +13,24 @@ rule "Error log"
     	System.out.println("Uspesno");
     	delete($log);
  end 
+
+  
+ rule "Warning log"
+    when
+        $log: Log( getLevel() == 'WARNING' );
+    then
+    	fixes.clear();
+    	fixes.add("Pronasao sam log tipa WARNING. Vreme: " + $log.getTimestamp());
+    	
+    	delete($log);
+ end 
+ 
+ rule "Critical log"
+    when
+        $log: Log( getLevel() == 'CRITICAL' );
+    then
+    	fixes.clear();
+    	fixes.add("Pronasao sam log tipa CRITICAL. Vreme: " + $log.getTimestamp());
+    	delete($log);
+ end 
+ 
