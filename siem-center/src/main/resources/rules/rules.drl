@@ -1,15 +1,61 @@
 package rules;
-
 import ftn.bsep.siemcenter.model.Log;
+global java.util.List logsOutput;
 
-global java.util.List fixes;
 
-rule "Error log"
+rule "LOG_ALWAYS-log"
     when
-        $log: Log( getLevel() == 'ERROR' );
+        $log: Log( getLevel() == 'LOG_ALWAYS' );
     then
-    	fixes.clear();
-    	fixes.add("Pronasao sam log tipa ERROR. Vreme: " + $log.getTimestamp());
-    	System.out.println("Uspesno");
+    	logsOutput.clear();
+    	logsOutput.add("Log_Always has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage);
     	delete($log);
- end 
+end 
+ 
+rule "CRITICAL-log"
+	when
+	    $log: Log( getLevel() == 'CRITICAL' );
+	then
+		logsOutput.clear();
+		logsOutput.add("Critical log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage);
+		delete($log);
+end 
+ 
+
+rule "ERROR-log"
+	when
+	    $log: Log( getLevel() == 'ERROR' );
+	then
+		logsOutput.clear();
+		logsOutput.add("Error log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage);
+		delete($log);
+end 
+ 
+rule "WARNING-log"
+	when
+	    $log: Log( getLevel() == 'WARNING' );
+	then
+		logsOutput.clear();
+		logsOutput.add("Warning log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage);
+		delete($log);
+end 
+ 
+rule "INFORMATIONAL-log"
+	when
+	    $log: Log( getLevel() == 'INFORMATIONAL' );
+	then
+		logsOutput.clear();
+		logsOutput.add("Informational log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage);
+		delete($log);
+end
+ 
+rule "VERBOSE-log"
+	when
+	    $log: Log( getLevel() == 'VERBOSE' );
+	then
+		logsOutput.clear();
+		logsOutput.add("Verbose log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage);
+		delete($log);
+end 
+ 
+
