@@ -160,7 +160,7 @@ public class CountryCAController {
 		PKCS10CertificationRequest csrPkcs = CertHelper.csrStringToCsrPKCS(csr.getCsrStringReq());
 		X509Certificate cert = ca.signCertificate(csrPkcs);
 		//CertHelper.writeCertToFileBase64Encoded(cert, "/Users/zrnke/Documents/Projekti/BSEP/pki-app/src/main/resources/newCerts/ServerCSRCert.cer");
-		CertHelper.writeCertToFileBase64Encoded((Certificate)cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\CACSRCert.cer");
+		CertHelper.writeCertToFileBase64Encoded((Certificate)cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ClientCert.cer");
 		
 		try {
 			return new ResponseEntity<>(csr, HttpStatus.OK);
