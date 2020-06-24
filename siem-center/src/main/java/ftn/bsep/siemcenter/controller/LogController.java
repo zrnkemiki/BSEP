@@ -27,12 +27,8 @@ public class LogController {
 		//	log.setExecutionTime(new Date());
 		//}
 		//rulesEngine.insertLog(logs);
-		System.out.println("Logs received: " + logs.size());
 		logService.saveAll(logs);
-		List<Log> savedLogs = logService.findAll();
-		if (savedLogs.size() > 0) {
-			System.out.println("Sacuvano: " + savedLogs.size());
-		}
+		
 		
 	}
 	//TEST CONTROLLER

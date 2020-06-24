@@ -32,7 +32,7 @@ public class LogService {
 	
 	public void saveAll(List<Log> logs) {
 		for (Log log : logs) {
-			saveLog(log);
+			System.out.println(saveLog(log).toString());
 		}
 	}
 	
