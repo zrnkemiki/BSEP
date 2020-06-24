@@ -18,6 +18,8 @@ import { CsrRequestViewerComponent } from './csr-request-viewer/csr-request-view
 import { CsrViewerComponent } from './csr-viewer/csr-viewer.component';
 import { AuthCAGuard } from './helpers/auth.ca.guard';
 import { AuthMUGuard } from './helpers/auth.mu.guard';
+import { AllCertificatesComponent } from './all-certificates/all-certificates.component';
+import { CertificateViewComponent } from './certificate-view/certificate-view.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { AuthMUGuard } from './helpers/auth.mu.guard';
     CSRSubmitComponent,
     CsrRequestViewerComponent,
     CsrViewerComponent,
+    AllCertificatesComponent,
+    CertificateViewComponent,
   ],
   imports: [
     BrowserModule,

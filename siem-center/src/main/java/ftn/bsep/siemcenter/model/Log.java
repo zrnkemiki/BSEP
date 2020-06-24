@@ -1,10 +1,14 @@
 package ftn.bsep.siemcenter.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.kie.api.definition.type.Expires;
 import org.kie.api.definition.type.Role;
 import org.kie.api.definition.type.Timestamp;
+
+import ftn.bsep.siemcenter.helpers.LogHelper;
+import ftn.bsep.siemcenter.helpers.SeverityLevel;
 
 @Role(Role.Type.EVENT)
 @Timestamp("executionTime")

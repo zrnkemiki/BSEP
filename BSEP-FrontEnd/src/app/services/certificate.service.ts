@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SubjectData } from '../model/subjectData';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { CsrDTO } from '../modelDTO/csrDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -27,4 +28,23 @@ export class CertificateService {
         }
       )
   }
+
+  getCertificates(){
+    this.http.get<SubjectData[]>('http://localhost:9003/country-ca/getAllCertificates')
+    .subscribe(data => {
+      this.subjectDatas = data;
+      this.subjectDataSource.next(this.subjectDatas);
+    });
+  }
+
+  getCertificate(id: number) : Observable<any>{
+      return this.http.get<String>('http://localhost:9003/country-ca/getCertificate' + "/" + id);
+  }
+
+  revokeCertificate(id: number) : Observable<any>{
+      return this.http.get<String>('http://localhost:9003/country-ca/revoke' + "/" + id);
+  }
+
+
+  
 }

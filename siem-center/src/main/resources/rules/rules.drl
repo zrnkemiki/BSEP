@@ -7,7 +7,6 @@ rule "LOG_ALWAYS-log"
     when
         $log: Log( getLevel() == 'LOG_ALWAYS' );
     then
-    	logsOutput.clear();
     	logsOutput.add("Log_Always has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
     	delete($log);
 end 
@@ -16,7 +15,6 @@ rule "CRITICAL-log"
 	when
 	    $log: Log( getLevel() == 'CRITICAL' );
 	then
-		logsOutput.clear();
 		logsOutput.add("Critical log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
 		delete($log);
 end 
@@ -26,9 +24,8 @@ rule "ERROR-log"
 	when
 	    $log: Log( getLevel() == 'ERROR', $level: level );
 	    Number(intValue >= 2) from accumulate(
-            $log2: Log( this != $log, level == $level, this meets[1h] $log),count($log2))
+        $log2: Log( this != $log, level == $level, this meets[15s] $log),count($log2))
 	then
-		logsOutput.clear();
 		logsOutput.add("Error has occured more than 2 times");
 		//logsOutput.add("Error log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage);
 		delete($log);
@@ -38,7 +35,6 @@ rule "WARNING-log"
 	when
 	    $log: Log( getLevel() == 'WARNING' );
 	then
-		logsOutput.clear();
 		logsOutput.add("Warning log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
 		delete($log);
 end 
@@ -47,7 +43,6 @@ rule "INFORMATIONAL-log"
 	when
 	    $log: Log( getLevel() == 'INFORMATIONAL' );
 	then
-		logsOutput.clear();
 		logsOutput.add("Informational log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
 		delete($log);
 end
@@ -56,7 +51,6 @@ rule "VERBOSE-log"
 	when
 	    $log: Log( getLevel() == 'VERBOSE' );
 	then
-		logsOutput.clear();
 		logsOutput.add("Verbose log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
 		delete($log);
 end 
