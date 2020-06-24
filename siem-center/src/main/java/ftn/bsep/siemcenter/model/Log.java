@@ -97,7 +97,12 @@ public class Log {
 		this.executionTime = executionTime;
 	}
 	
+	public LocalDateTime getTimestampLDT() {
+		return LocalDateTime.parse(this.timestamp, LogHelper.FORMATTER);
+	}
 	
-	
+	public SeverityLevel getSevirityLevel() {
+		return SeverityLevel.valueOf(this.level);
+	}
 	
 }
