@@ -1,0 +1,10 @@
+{
+	"sources": [
+		{
+			"type": "Application",
+			"path": "/Users/zrnke/Documents/Projekti/BSEP/siem-agent/logs/app",
+			"filter": "regex",
+			"interval": -1
+		}
+	]
+}

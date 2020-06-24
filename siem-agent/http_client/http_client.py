@@ -1,11 +1,16 @@
-import os
-
+import sys
 import requests
+
+TRUSTSTORE_PATH = sys.argv[2]
+CLIENT_CERT_PATH = sys.argv[3]
+CLIENT_PK_PATH = sys.argv[4]
+
 
 def post_method(data):
     # trebace header (sertifikat)
     r = requests.post('https://localhost:9005/post-logs', json=data,
-                      verify='C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\siem-agent\\certificates\\truststore\\root-ca.pem',
-                      cert=('C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\siem-agent\\certificates\\client_cert\\client-signed.cer',
-                            'C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\siem-agent\\certificates\\client_cert\\client-private.key'))
-    print(r)
+                      verify=TRUSTSTORE_PATH,
+                      cert=(CLIENT_CERT_PATH,
+                            CLIENT_PK_PATH))
+    print(data)
+    return r

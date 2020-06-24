@@ -135,4 +135,15 @@ public class ObrisiPosleController {
 			e.printStackTrace();
 		}
 	}
+	
+	@GetMapping("/uradi")
+	public void makeJks() {
+		KeyStoreReader ksr = new KeyStoreReader();
+		X509Certificate rootCert = (X509Certificate)ksr.readCertificate("C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\DFRoot-keystore.jks", "password", "root");
+
+		
+		KeyStoreWriter ksw = new KeyStoreWriter();
+		ksw.loadKeyStore(null, "password".toCharArray());
+
+	}
 }

@@ -53,10 +53,8 @@ class WindowsLogParser(Thread):
     def run(self):
         while True:
             parsed_logs = self.read_and_parse()
-            response = post_method(parsed_logs)
-            print(response)
-            time.sleep(self.interval)
-
-    def run_simple(self):
-        parsed_logs = self.read_and_parse()
-        response = post_method(parsed_logs)
+            if len(parsed_logs) != 0:
+                response = post_method(parsed_logs)
+                print(response, '[ [Windows OS] ', len(parsed_logs), ' LOGS SENT TO CENTER]')
+            if self.interval != -1:
+                time.sleep(self.interval)
