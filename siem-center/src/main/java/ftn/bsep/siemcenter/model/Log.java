@@ -1,5 +1,10 @@
 package ftn.bsep.siemcenter.model;
 
+import java.time.LocalDateTime;
+
+import ftn.bsep.siemcenter.helpers.LogHelper;
+import ftn.bsep.siemcenter.helpers.SeverityLevel;
+
 public class Log {
 
 	private String timestamp;
@@ -78,7 +83,12 @@ public class Log {
 				+ computer_name + ", source_name=" + source_name + ", message=" + message + "]";
 	}
 	
+	public LocalDateTime getTimestampLDT() {
+		return LocalDateTime.parse(this.timestamp, LogHelper.FORMATTER);
+	}
 	
-	
+	public SeverityLevel getSevirityLevel() {
+		return SeverityLevel.valueOf(this.level);
+	}
 	
 }

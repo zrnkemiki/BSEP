@@ -1,4 +1,4 @@
-package ftn.bsep.siemcenter;
+package ftn.bsep.siemcenter.rbs;
 
 import java.util.ArrayList;
 import java.util.List;

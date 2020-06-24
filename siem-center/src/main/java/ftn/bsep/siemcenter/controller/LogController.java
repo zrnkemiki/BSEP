@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ftn.bsep.siemcenter.RuleEngine;
 import ftn.bsep.siemcenter.model.Log;
+import ftn.bsep.siemcenter.rbs.RuleEngine;
 
 @RestController
 public class LogController {
@@ -20,13 +20,4 @@ public class LogController {
 		rulesEngine.insertLog(logs);
 	}
 	
-	@PostMapping("/a")
-	public void test() {
-		System.out.println("usao test");
-	}
-	
-	@GetMapping("/b")
-	public void test2() {
-		System.out.println("get prosao");
-	}
 }

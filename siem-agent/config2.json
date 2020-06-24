@@ -5,12 +5,6 @@
 			"path": "C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\siem-agent\\logs\\app",
 			"filter": "regex",
 			"interval": -1
-		},
-		{
-			"type": "OS Windows",
-			"path": "",
-			"filter": "regex",
-			"interval": 5
 		}
 	]
 }
