@@ -1,5 +1,14 @@
 package ftn.bsep.siemcenter.model;
 
+import java.util.Date;
+
+import org.kie.api.definition.type.Expires;
+import org.kie.api.definition.type.Role;
+import org.kie.api.definition.type.Timestamp;
+
+@Role(Role.Type.EVENT)
+@Timestamp("executionTime")
+@Expires("2h30m")
 public class Log {
 
 	private String timestamp;
@@ -8,6 +17,8 @@ public class Log {
 	private String computer_name;
 	private String source_name;
 	private String message;
+
+    private Date executionTime;
 	
 	public Log() {
 		
@@ -76,6 +87,14 @@ public class Log {
 	public String toString() {
 		return "Log [timestamp=" + timestamp + ", level=" + level + ", event_id=" + event_id + ", computer_name="
 				+ computer_name + ", source_name=" + source_name + ", message=" + message + "]";
+	}
+
+	public Date getExecutionTime() {
+		return executionTime;
+	}
+
+	public void setExecutionTime(Date executionTime) {
+		this.executionTime = executionTime;
 	}
 	
 	

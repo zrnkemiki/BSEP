@@ -26,12 +26,7 @@ rule "ERROR-log"
 	when
 	    $log: Log( getLevel() == 'ERROR', $level: level );
 	    Number(intValue >= 2) from accumulate(
-            $log2: Log(
-                this != $log, 
-                level == $level, 
-                this meets[1h] $t1
-            ),
-            count($log2)
+            $log2: Log( this != $log, level == $level, this meets[1h] $log),count($log2))
 	then
 		logsOutput.clear();
 		logsOutput.add("Error has occured more than 2 times");
