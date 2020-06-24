@@ -38,7 +38,6 @@ public class CSRGenerator {
 		this.csr = csr;
 	}
 	
-	//mogu i da se dodaju ekstenzije u csr - al mozda mozemo da izbegnemo pogadjanjem specificnih endpointova
 	public PKCS10CertificationRequest generateCSR(SubjectData subjectData, ArrayList<CSRExtension> extensions) throws OperatorCreationException, IOException {
 		
 		PKCS10CertificationRequestBuilder p10Builder = new JcaPKCS10CertificationRequestBuilder(subjectData.getX500name(), subjectData.getPublicKey());       

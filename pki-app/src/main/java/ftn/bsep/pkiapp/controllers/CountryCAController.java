@@ -47,32 +47,6 @@ public class CountryCAController {
 	DataGenerator dataGen = new DataGenerator();
 	PKCS10CertificationRequest csr = null;
 	
-	@GetMapping("/submit-csr")
-	public String signCSR() throws Exception {
-		KeyPair keyPair = CertHelper.generateKeyPair();
-		
-		SubjectData subjectData = dataGen.generateMUCAData(keyPair);
-		
-		csr = csrGen.generateCSR(subjectData);
-		boolean isCSRValid = ca.checkCSRSigniture(csr);
-		
-		
-		if(isCSRValid) {
-			/*
-			KeyStoreWriter ksw = new KeyStoreWriter();
-			ksw.loadKeyStore(null, "password".toCharArray());
-			
-			X509Certificate issuedCert = ca.signCertificate(csr);
-			CertHelper.writeCertToFileBase64Encoded(issuedCert, "C:\\Users\\Z-AIO\\Documents\\Projekti\\BSEP\\pki-app\\src\\main\\resources\\muCAStores\\CA-RS-MU1.cer");
-			ksw.write("ca-rs-mu1", keyPair.getPrivate(), "password".toCharArray(), issuedCert);
-			ksw.saveKeyStore("C:\\Users\\Z-AIO\\Documents\\Projekti\\BSEP\\pki-app\\src\\main\\resources\\muCAStores\\ca-rs-mu1-keystore.jks", "password".toCharArray());
-			*/
-			return ca.getCSRData(csr);
-		}
-		return "Invalid CSR";
-	
-	}
-	
 	@GetMapping("/gen-root")
 	public String genRoot() throws Exception {
 		RootData rootData = dataGen.generateRootData();
@@ -83,11 +57,6 @@ public class CountryCAController {
 		return "Ok";
 	}
 	
-	@GetMapping("/sign-cert")
-	public String signCert() throws Exception {
-		X509Certificate issuedCert = ca.signCertificate(csr);
-		return "Ok";
-	}
 	
 	//TEST CONTROLER
 	@PostMapping(value = "/csrData")
@@ -140,11 +109,6 @@ public class CountryCAController {
 	@GetMapping(value = "/getCSR/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Csr> getCSR(@PathVariable("param") Long id) throws Exception {
 		Csr csr = csrService.findByID(id);
-		/*
-		PKCS10CertificationRequest csrPkcs = CertHelper.csrStringToCsrPKCS(csr.getCsrStringReq());
-		X509Certificate cert = ca.signCertificate(csrPkcs);
-		CertHelper.writeCertToFileBase64Encoded(cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ServerCSRCert.cer");
-		*/
 		try {
 			return new ResponseEntity<>(csr, HttpStatus.OK);
 		} catch (Exception e) {
@@ -159,7 +123,6 @@ public class CountryCAController {
 		
 		PKCS10CertificationRequest csrPkcs = CertHelper.csrStringToCsrPKCS(csr.getCsrStringReq());
 		X509Certificate cert = ca.signCertificate(csrPkcs);
-		//CertHelper.writeCertToFileBase64Encoded(cert, "/Users/zrnke/Documents/Projekti/BSEP/pki-app/src/main/resources/newCerts/ServerCSRCert.cer");
 		CertHelper.writeCertToFileBase64Encoded((Certificate)cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ClientCert.cer");
 		
 		try {

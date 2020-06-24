@@ -1,11 +1,27 @@
 package ftn.bsep.pkiapp.controllers;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.Security;
+import java.security.cert.CertPath;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.PKIXParameters;
+import java.security.cert.PKIXRevocationChecker;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemWriter;
@@ -18,6 +34,65 @@ import ftn.bsep.pkiapp.keystores.KeyStoreWriter;
 @RestController
 public class ObrisiPosleController {
 
+
+	@GetMapping("/ok")
+	public String ok(HttpServletRequest request) {
+
+		X509Certificate[] certs = (X509Certificate[])request.getAttribute("javax.servlet.request.X509Certificate");
+		for(X509Certificate cert : certs) {
+			System.out.println(cert.toString());
+		}
+		
+		CertificateFactory cf = null;
+		try {
+			cf = CertificateFactory.getInstance("X.509");
+		} catch (CertificateException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			CertPath cp = cf.generateCertPath(Arrays
+			    .asList(new X509Certificate[] { certs[0] }));
+			System.out.println(cp.getCertificates().size());
+		} catch (CertificateException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+
+		KeyStore keyStore = null;
+		try {
+			keyStore = KeyStore.getInstance("JKS", "SUN");
+		} catch (KeyStoreException | NoSuchProviderException e) {
+			e.printStackTrace();
+		}
+		BufferedInputStream in = null;
+		try {
+			in = new BufferedInputStream(new FileInputStream("D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\server-truststore.jks"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			keyStore.load(in, "password".toCharArray());
+		} catch (NoSuchAlgorithmException | CertificateException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PKIXParameters pkixParams = null;
+		try {
+			pkixParams = new PKIXParameters(keyStore);
+			pkixParams.setRevocationEnabled(true);
+			
+		} catch (KeyStoreException | InvalidAlgorithmParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(pkixParams.isRevocationEnabled());
+		Security.setProperty("ocsp.enable", "true");
+		return "OK";
+	}
+	
 	@GetMapping("/generisi")
 	public void generateSiemStores() {
 		KeyStoreReader ksr = new KeyStoreReader();
