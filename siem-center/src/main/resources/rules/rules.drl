@@ -4,9 +4,9 @@ global java.util.List logsOutput;
 
 rule "ERROR-log"
     when
-        $log: Log( getLevel() == 'ERROR' );
+        $log: Log( getLevel() == 'ERROR');
     then
-    	logsOutput.add("ERROR has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
+    	logsOutput.add("ERROR has occured");
     	delete($log);
 end 
  
@@ -16,7 +16,7 @@ rule "LOG_ALWAYS-log"
     when
         $log: Log( getLevel() == 'LOG_ALWAYS' );
     then
-    	logsOutput.add("Log_Always has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
+    	logsOutput.add("Log_Always has occured");
     	delete($log);
 end 
  
@@ -24,7 +24,7 @@ rule "CRITICAL-log"
 	when
 	    $log: Log( getLevel() == 'CRITICAL' );
 	then
-		logsOutput.add("Critical log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
+		logsOutput.add("Critical log has occured.");
 		delete($log);
 end 
 
@@ -32,16 +32,16 @@ rule "Special privileges - log on"
 	when
 	    $log: Log( getEventId() == '4672');
 	then
-		logsOutput.add("Critical log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
+		logsOutput.add("Special privileges - log on");
 		delete($log);
 end 
  
 
-rule "ERROR-log"
+rule "ERROR-login"
 	when
 	    $log: Log( getEventId() == '4625', $eventId: eventId );
 	    Number(intValue >= 2) from accumulate(
-        $log2: Log( this != $log, eventId == $eventId, this meets[10s] $log),count($log2))
+        $log2: Log( this != $log, eventId == $eventId, this meets[15s] $log),count($log2))
 	then
 		logsOutput.add("Multiple failed login! Time: " + $log.getTimestamp());
 		delete($log);
@@ -51,7 +51,7 @@ rule "WARNING-log"
 	when
 	    $log: Log( getLevel() == 'WARNING' );
 	then
-		logsOutput.add("Warning log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
+		logsOutput.add("Warning log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputerName() + "Message: " + $log.getMessage());
 		delete($log);
 end 
  
@@ -59,7 +59,7 @@ rule "INFORMATIONAL-log"
 	when
 	    $log: Log( getLevel() == 'INFORMATIONAL' );
 	then
-		logsOutput.add("Informational log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
+		logsOutput.add("Informational log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputerName() + "Message: " + $log.getMessage());
 		delete($log);
 end
  
@@ -67,7 +67,7 @@ rule "VERBOSE-log"
 	when
 	    $log: Log( getLevel() == 'VERBOSE' );
 	then
-		logsOutput.add("Verbose log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
+		logsOutput.add("Verbose log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputerName() + "Message: " + $log.getMessage());
 		delete($log);
 end 
  

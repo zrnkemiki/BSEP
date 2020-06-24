@@ -1,15 +1,15 @@
 package ftn.bsep.siemcenter.rbs;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import ftn.bsep.siemcenter.model.Log;
-
-import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import ftn.bsep.siemcenter.model.Log;
 
 
 @Service
@@ -35,8 +35,8 @@ public class RuleEngineService {
 		//KieSession kSession = kieContainer.newKieSession("rulesSession");
 	//	kSession.setGlobal("logsOutput", new ArrayList<String>());
 		
-		
-		for (Log log : logs) {
+		for(Log log : logs) {
+			log.setExecutionTime(new Date());
 			kSession.insert(log);
 		}
 		

@@ -32,14 +32,17 @@ public class LogController {
 	@PostMapping("/post-logs")
 	public void receiveLogs(@RequestBody List<Log> logs) {
 		System.out.println("Usao");
-		List<String> alerts = ruleEngineService.insertLog(logs);
+		System.out.println("Lista size: " + logs.size());
+		List<String> alerts;
+		alerts = new ArrayList<String>();
+		alerts = ruleEngineService.insertLog(logs);
 		
-		if(alerts.size()!= 0) {
+		if(alerts != null) {
 			for (String alert : alerts) {
 				System.out.println(alert);
 			}
 		}
-		alerts.clear();
+		//alerts.clear();
 		//RuleEngine rulesEngine = new RuleEngine();
 		//for (Log log : logs) {
 		//	log.setExecutionTime(new Date());
@@ -61,7 +64,7 @@ public class LogController {
 
 		if(id==1) {
 			Log log = new Log();
-			log.setLevel("ERROR");
+			log.setEventId("4625");
 			log.setMessage("OVO JE PORUKA");
 			log.setTimestamp("VREME");
 			log.setExecutionTime(new Date());
