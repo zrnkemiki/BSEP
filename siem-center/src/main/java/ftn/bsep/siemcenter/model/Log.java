@@ -6,6 +6,11 @@ import java.util.Date;
 import org.kie.api.definition.type.Expires;
 import org.kie.api.definition.type.Role;
 import org.kie.api.definition.type.Timestamp;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import ftn.bsep.siemcenter.helpers.LogHelper;
+import ftn.bsep.siemcenter.helpers.SeverityLevel;
 
 import ftn.bsep.siemcenter.helpers.LogHelper;
 import ftn.bsep.siemcenter.helpers.SeverityLevel;
@@ -13,13 +18,16 @@ import ftn.bsep.siemcenter.helpers.SeverityLevel;
 @Role(Role.Type.EVENT)
 @Timestamp("executionTime")
 @Expires("2h30m")
+@Document(collection = "logs")
 public class Log {
 
+	@Id
+	private String id;
 	private String timestamp;
 	private String level;
-	private String event_id;
-	private String computer_name;
-	private String source_name;
+	private String eventId;
+	private String computerName;
+	private String sourceName;
 	private String message;
 
     private Date executionTime;
@@ -28,16 +36,18 @@ public class Log {
 		
 	}
 
-	public Log(String timestamp, String level, String event_id, String computer_name, String source_name,
+	public Log(String timestamp, String level, String eventId, String computerName, String sourceName,
 			String message) {
 		super();
 		this.timestamp = timestamp;
 		this.level = level;
-		this.event_id = event_id;
-		this.computer_name = computer_name;
-		this.source_name = source_name;
+		this.eventId = eventId;
+		this.computerName = computerName;
+		this.sourceName = sourceName;
 		this.message = message;
 	}
+	
+	
 
 	public String getTimestamp() {
 		return timestamp;
@@ -55,28 +65,28 @@ public class Log {
 		this.level = level;
 	}
 
-	public String getEvent_id() {
-		return event_id;
+	public String getEventId() {
+		return eventId;
 	}
 
-	public void setEvent_id(String event_id) {
-		this.event_id = event_id;
+	public void setEventId(String eventId) {
+		this.eventId = eventId;
 	}
 
-	public String getComputer_name() {
-		return computer_name;
+	public String getComputerName() {
+		return computerName;
 	}
 
-	public void setComputer_name(String computer_name) {
-		this.computer_name = computer_name;
+	public void setComputerName(String computerName) {
+		this.computerName = computerName;
 	}
 
-	public String getSource_name() {
-		return source_name;
+	public String getSourceName() {
+		return sourceName;
 	}
 
-	public void setSource_name(String source_name) {
-		this.source_name = source_name;
+	public void setSourceName(String sourceName) {
+		this.sourceName = sourceName;
 	}
 
 	public String getMessage() {
@@ -89,8 +99,8 @@ public class Log {
 
 	@Override
 	public String toString() {
-		return "Log [timestamp=" + timestamp + ", level=" + level + ", event_id=" + event_id + ", computer_name="
-				+ computer_name + ", source_name=" + source_name + ", message=" + message + "]";
+		return "Log [timestamp=" + timestamp + ", level=" + level + ", eventId=" + eventId + ", computerName="
+				+ computerName + ", sourceName=" + sourceName + ", message=" + message + "]";
 	}
 
 	public Date getExecutionTime() {
@@ -108,5 +118,15 @@ public class Log {
 	public SeverityLevel getSevirityLevel() {
 		return SeverityLevel.valueOf(this.level);
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	
 	
 }

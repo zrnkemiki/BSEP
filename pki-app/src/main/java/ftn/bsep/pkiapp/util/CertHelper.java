@@ -12,15 +12,20 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Base64;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DLSequence;
 import org.bouncycastle.asn1.pkcs.Attribute;
+import org.bouncycastle.asn1.x509.AccessDescription;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
 import org.bouncycastle.asn1.x509.KeyUsage;
@@ -122,7 +127,7 @@ public class CertHelper {
 
 			} else if (Extension.extendedKeyUsage.equals(oid)) {
 				ExtendedKeyUsageString kuHelper = new ExtendedKeyUsageString();
-
+				
 				DEROctetString str = (DEROctetString) value;
 				ExtendedKeyUsage ku = ExtendedKeyUsage.getInstance(str.getOctets());
 				String s = ku.toASN1Primitive().toString();
@@ -228,10 +233,16 @@ public class CertHelper {
 				DEROctetString str = (DEROctetString) value;
 				GeneralNames subjectAltName = GeneralNames.getInstance(str.getOctets());
 				certBuilder.addExtension(Extension.subjectAlternativeName, isCritical, subjectAltName.toASN1Primitive());
+			} else if (Extension.authorityInfoAccess.equals(oid)) {
+				DEROctetString str = (DEROctetString) value;
+				ASN1Sequence ad =  DERSequence.getInstance(str.getOctets());
+				certBuilder.addExtension(Extension.authorityInfoAccess, isCritical, ad);
 			}
 		}
 		return certBuilder;
 	}
+
+	
 	
 
 

@@ -49,7 +49,6 @@ public class RuleEngineService {
 		} catch (Exception e) {
 		
 		}
-
         
 		return logsOutput;
 		

@@ -18,8 +18,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1Set;
+import org.bouncycastle.asn1.DERIA5String;
+import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.pkcs.Attribute;
+import org.bouncycastle.asn1.x509.AccessDescription;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.Extension;
@@ -143,16 +147,24 @@ public abstract class CertificateAuthority {
 		
 		X509v3CertificateBuilder issuedCertBuilder = new X509v3CertificateBuilder(issuerData.getX500name(), BigInteger.valueOf(333333), startDate, endDate, csr.getSubject(), csr.getSubjectPublicKeyInfo());
         JcaX509ExtensionUtils issuedCertExtUtils = new JcaX509ExtensionUtils();
-
+      
         
         // Add Issuer cert identifier as Extension
         issuedCertBuilder.addExtension(Extension.authorityKeyIdentifier, false, issuedCertExtUtils.createAuthorityKeyIdentifier((X509Certificate) issuerCert));
         issuedCertBuilder.addExtension(Extension.subjectKeyIdentifier, false, issuedCertExtUtils.createSubjectKeyIdentifier(csr.getSubjectPublicKeyInfo()));
-        // Add Extensions
+        
+        // Add Extensions from csr
         issuedCertBuilder = CertHelper.setCertAttributes(issuedCertBuilder, csr);
-       // issuedCertBuilder.addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.dataEncipherment));
-        //issuedCertBuilder.addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.cRLSign));
-        //========================================================================================================================
+        
+        // Adding AuthorityInfoAccess Extensions
+        AccessDescription caIssuers = new AccessDescription(AccessDescription.id_ad_caIssuers, new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("http://localhost:9005/ca.cer")));
+        AccessDescription ocsp = new AccessDescription(AccessDescription.id_ad_ocsp, new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("http://localhost:9005/b")));
+         
+        ASN1EncodableVector aia_ASN = new ASN1EncodableVector();
+        aia_ASN.add(caIssuers);
+        aia_ASN.add(ocsp);
+        issuedCertBuilder.addExtension(Extension.authorityInfoAccess, false, new DERSequence(aia_ASN));
+        //============================================================================================================================================================================================
         //Potpisivanje sertifikata
         JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
 		contentSignerBuilder = contentSignerBuilder.setProvider("BC");

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ftn.bsep.siemcenter.model.Log;
 import ftn.bsep.siemcenter.rbs.RuleEngineService;
+import ftn.bsep.siemcenter.rbs.RuleEngine;
+import ftn.bsep.siemcenter.service.LogService;
 
 @RestController
 public class LogController {
@@ -25,6 +27,8 @@ public class LogController {
 	public LogController(RuleEngineService ruleEngineService) {
 		this.ruleEngineService = ruleEngineService;
 	}
+	@Autowired
+	private LogService logService;
 	
 	@PostMapping("/post-logs")
 	public void receiveLogs(@RequestBody List<Log> logs) {
@@ -37,6 +41,17 @@ public class LogController {
 			}
 		}
 		alerts.clear();
+		//RuleEngine rulesEngine = new RuleEngine();
+		//for (Log log : logs) {
+		//	log.setExecutionTime(new Date());
+		//}
+		//rulesEngine.insertLog(logs);
+		System.out.println("Logs received: " + logs.size());
+		logService.saveAll(logs);
+		List<Log> savedLogs = logService.findAll();
+		if (savedLogs.size() > 0) {
+			System.out.println("Sacuvano: " + savedLogs.size());
+		}
 		
 	}
 	
@@ -46,6 +61,34 @@ public class LogController {
 	@PostMapping("/testCEP/{param}")
 	public void testCEP(@PathVariable("param") Long id) {
 		System.out.println("Usao u test cep");
+		
+		Log log = new Log();
+		log.setLevel("ERROR");
+		log.setComputerName("TEST");
+		log.setEventId("EventId");
+		log.setMessage("OVO JE PORUKA");
+		log.setSourceName("SOURCE");
+		log.setTimestamp("VREME");
+		log.setExecutionTime(new Date());
+		Log log1 = new Log();
+		log1.setLevel("ERROR");
+		log1.setComputerName("TEST");
+		log1.setEventId("EventId");
+		log1.setMessage("OVO JE PORUKA");
+		log1.setSourceName("SOURCE");
+		log1.setTimestamp("VREME");
+		log1.setExecutionTime(new Date());
+		
+		Log log2 = new Log();
+		
+		log2.setLevel("ERROR");
+		log2.setComputerName("TEST");
+		log2.setEventId("EventId");
+		log2.setMessage("OVO JE PORUKA");
+		log2.setSourceName("SOURCE");
+		log2.setTimestamp("VREME");
+		log2.setExecutionTime(new Date());
+		
 		List<Log> logs = new ArrayList<Log>();
 		if(id==1) {
 			Log log = new Log();
