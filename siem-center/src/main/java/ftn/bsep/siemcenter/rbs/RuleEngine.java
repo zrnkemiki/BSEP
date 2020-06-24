@@ -40,6 +40,8 @@ public class RuleEngine {
 	        for (String data : logsOutput) {
 				System.out.println(data);
 	        }
+		
+		System.out.println("KRAAAAAAAAJ");
         
 		return logsOutput;
 		

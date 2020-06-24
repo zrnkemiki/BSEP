@@ -11,12 +11,12 @@ import ftn.bsep.siemcenter.model.Log;
 @Repository
 public interface LogRepository extends MongoRepository<Log, String> {
 
-	/*
+	
 	public List<Log> findByLevel(String level);
 	public Optional<Log> findById(String id);
-	public List<Log> findByComputer_name(String computerName);
-	public List<Log> findBySource_name(String sourceName);
-	public List<Log> findByEvent_id(String eventId);
-	*/
+	public List<Log> findByComputerName(String computerName);
+	public List<Log> findBySourceName(String sourceName);
+	public List<Log> findByEventId(String eventId);
+	
 	
 }

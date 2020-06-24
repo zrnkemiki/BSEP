@@ -23,6 +23,6 @@ public class NextSequenceService {
             new Update().inc("seq",1),
             options().returnNew(true).upsert(true),
             CustomSequences.class);
-        return String.valueOf(counter.getSq());
+        return String.valueOf(counter.getSeq());
     }
 }

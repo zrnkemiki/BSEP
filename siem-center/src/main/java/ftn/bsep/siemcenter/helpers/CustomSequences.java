@@ -8,21 +8,29 @@ public class CustomSequences {
 
 	@Id
 	private String id;
-	private int sq;
+	private int seq;
 	
-	
+	public CustomSequences() {
+		
+	}
+
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
-	public int getSq() {
-		return sq;
+
+	public int getSeq() {
+		return seq;
 	}
-	public void setSq(int sq) {
-		this.sq = sq;
+
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 	
+	
+
 	
 }

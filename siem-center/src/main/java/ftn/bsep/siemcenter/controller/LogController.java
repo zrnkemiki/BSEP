@@ -22,9 +22,12 @@ public class LogController {
 	@PostMapping("/post-logs")
 	public void receiveLogs(@RequestBody List<Log> logs) {
 		System.out.println("Usao");
-		RuleEngine rulesEngine = new RuleEngine();
-		rulesEngine.insertLog(logs);
-		
+		//RuleEngine rulesEngine = new RuleEngine();
+		//for (Log log : logs) {
+		//	log.setExecutionTime(new Date());
+		//}
+		//rulesEngine.insertLog(logs);
+		System.out.println("Logs received: " + logs.size());
 		logService.saveAll(logs);
 		List<Log> savedLogs = logService.findAll();
 		if (savedLogs.size() > 0) {
@@ -39,28 +42,28 @@ public class LogController {
 		
 		Log log = new Log();
 		log.setLevel("ERROR");
-		log.setComputer_name("TEST");
-		log.setEvent_id("EVENT_ID");
+		log.setComputerName("TEST");
+		log.setEventId("EventId");
 		log.setMessage("OVO JE PORUKA");
-		log.setSource_name("SOURCE");
+		log.setSourceName("SOURCE");
 		log.setTimestamp("VREME");
 		log.setExecutionTime(new Date());
 		Log log1 = new Log();
 		log1.setLevel("ERROR");
-		log1.setComputer_name("TEST");
-		log1.setEvent_id("EVENT_ID");
+		log1.setComputerName("TEST");
+		log1.setEventId("EventId");
 		log1.setMessage("OVO JE PORUKA");
-		log1.setSource_name("SOURCE");
+		log1.setSourceName("SOURCE");
 		log1.setTimestamp("VREME");
 		log1.setExecutionTime(new Date());
 		
 		Log log2 = new Log();
 		
 		log2.setLevel("ERROR");
-		log2.setComputer_name("TEST");
-		log2.setEvent_id("EVENT_ID");
+		log2.setComputerName("TEST");
+		log2.setEventId("EventId");
 		log2.setMessage("OVO JE PORUKA");
-		log2.setSource_name("SOURCE");
+		log2.setSourceName("SOURCE");
 		log2.setTimestamp("VREME");
 		log2.setExecutionTime(new Date());
 		

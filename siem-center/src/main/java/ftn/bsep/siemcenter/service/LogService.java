@@ -1,6 +1,7 @@
 package ftn.bsep.siemcenter.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,9 @@ public class LogService {
 	
 	
 	public Log saveLog(Log log) {
-		log.setId(nextSeq.getNextSequence("customSequences"));
+		String iddd = nextSeq.getNextSequence("customSequences");
+		log.setId(iddd);
 		Log saved = logRepository.save(log);
-		System.out.println("Log [" + saved.getId() + "] saved to database.");
 		return saved;
 	}
 	
@@ -33,5 +34,31 @@ public class LogService {
 		for (Log log : logs) {
 			saveLog(log);
 		}
+	}
+	
+	public Log findById(String id) {
+		Optional<Log> opt = logRepository.findById(id);
+		return opt.orElse(null);
+	}
+	
+	public List<Log> findByLevel(String level) {
+		List<Log> ret = logRepository.findByLevel(level);
+		return ret;
+	}
+	
+	public List<Log> findByComputerName(String computerName) {
+		return logRepository.findByComputerName(computerName);
+	}
+	
+	public List<Log> findBySourceName(String sourceName) {
+		return logRepository.findBySourceName(sourceName);
+	}
+	
+	public List<Log> findByEventId(String eventId) {
+		return logRepository.findByEventId(eventId);
+	}
+	
+	public void emptyCollection() {
+		logRepository.deleteAll();
 	}
 }
