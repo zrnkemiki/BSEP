@@ -1,6 +1,6 @@
 package ftn.bsep.siemcenter.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,6 +8,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import ftn.bsep.siemcenter.helpers.LogHelper;
 import ftn.bsep.siemcenter.helpers.SeverityLevel;
 
+
+import org.kie.api.definition.type.Expires;
+import org.kie.api.definition.type.Role;
+import org.kie.api.definition.type.Timestamp;
+
+@Role(Role.Type.EVENT)
+@Timestamp("executionTime")
+@Expires("2h30m")
 @Document(collection = "logs")
 public class Log {
 
@@ -19,6 +27,8 @@ public class Log {
 	private String computer_name;
 	private String source_name;
 	private String message;
+
+    private Date executionTime;
 	
 	public Log() {
 		
@@ -87,6 +97,14 @@ public class Log {
 	public String toString() {
 		return "Log [timestamp=" + timestamp + ", level=" + level + ", event_id=" + event_id + ", computer_name="
 				+ computer_name + ", source_name=" + source_name + ", message=" + message + "]";
+	}
+
+	public Date getExecutionTime() {
+		return executionTime;
+	}
+
+	public void setExecutionTime(Date executionTime) {
+		this.executionTime = executionTime;
 	}
 	
 	public LocalDateTime getTimestampLDT() {
