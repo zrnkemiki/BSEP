@@ -2,11 +2,17 @@ package ftn.bsep.siemcenter.model;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import ftn.bsep.siemcenter.helpers.LogHelper;
 import ftn.bsep.siemcenter.helpers.SeverityLevel;
 
+@Document(collection = "logs")
 public class Log {
 
+	@Id
+	private String id;
 	private String timestamp;
 	private String level;
 	private String event_id;
@@ -90,5 +96,15 @@ public class Log {
 	public SeverityLevel getSevirityLevel() {
 		return SeverityLevel.valueOf(this.level);
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	
 	
 }

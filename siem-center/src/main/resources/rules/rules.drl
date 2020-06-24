@@ -29,9 +29,9 @@ rule "ERROR-log"
             $log2: Log(
                 this != $log, 
                 level == $level, 
-                this meets[1h] $t1
+                this meets[1h] $log
             ),
-            count($log2)
+            count($log2));
 	then
 		logsOutput.clear();
 		logsOutput.add("Error has occured more than 2 times");
