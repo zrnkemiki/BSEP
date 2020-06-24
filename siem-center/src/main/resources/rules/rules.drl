@@ -2,6 +2,15 @@ package rules;
 import ftn.bsep.siemcenter.model.Log;
 global java.util.List logsOutput;
 
+rule "ERROR-log"
+    when
+        $log: Log( getLevel() == 'ERROR' );
+    then
+    	logsOutput.add("ERROR has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
+    	delete($log);
+end 
+ 
+
 
 rule "LOG_ALWAYS-log"
     when
@@ -18,16 +27,23 @@ rule "CRITICAL-log"
 		logsOutput.add("Critical log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
 		delete($log);
 end 
+
+rule "Special privileges - log on"
+	when
+	    $log: Log( getEventId() == '4672');
+	then
+		logsOutput.add("Critical log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage());
+		delete($log);
+end 
  
 
 rule "ERROR-log"
 	when
-	    $log: Log( getLevel() == 'ERROR', $level: level );
+	    $log: Log( getEventId() == '4625', $eventId: eventId );
 	    Number(intValue >= 2) from accumulate(
-        $log2: Log( this != $log, level == $level, this meets[15s] $log),count($log2))
+        $log2: Log( this != $log, eventId == $eventId, this meets[10s] $log),count($log2))
 	then
-		logsOutput.add("Error has occured more than 2 times");
-		//logsOutput.add("Error log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputer_name() + "Message: " + $log.getMessage);
+		logsOutput.add("Multiple failed login! Time: " + $log.getTimestamp());
 		delete($log);
 end 
  
