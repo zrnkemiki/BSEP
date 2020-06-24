@@ -12,6 +12,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import ftn.bsep.siemcenter.helpers.LogHelper;
 import ftn.bsep.siemcenter.helpers.SeverityLevel;
 
+import ftn.bsep.siemcenter.helpers.LogHelper;
+import ftn.bsep.siemcenter.helpers.SeverityLevel;
+
 @Role(Role.Type.EVENT)
 @Timestamp("executionTime")
 @Expires("2h30m")

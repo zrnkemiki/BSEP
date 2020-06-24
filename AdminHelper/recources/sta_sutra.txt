@@ -1,4 +1,0 @@
-izgenerisao si CA cert, privateKey(proverio si da li odgovara), i napravio keyStore;
-napravi funkcije za prevljenje keystore, truststore, i switch/case za main. Iscimaj se uz kafu!!!
-probaj sa CA cert da izdas client/server
-testiraj SSL i Chrome

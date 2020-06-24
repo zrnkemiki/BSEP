@@ -12,9 +12,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.DERIA5String;
+import org.bouncycastle.asn1.DERObjectIdentifier;
+import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.asn1.x509.AccessDescription;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.Extension;
@@ -136,43 +142,17 @@ public class DataGenerator {
         KeyUsage keyUsage = new KeyUsage(KeyUsage.keyCertSign | KeyUsage.cRLSign | KeyUsage.digitalSignature);
         ext = new CSRExtension(Extension.keyUsage, true, keyUsage);
         extensions.add(ext);
-        /*
-        keyUsage = new KeyUsage(KeyUsage.cRLSign);
-        ext = new CSRExtension(Extension.keyUsage, true, keyUsage);
-        extensions.add(ext);
-        
-        keyUsage = new KeyUsage(KeyUsage.digitalSignature);
-        ext = new CSRExtension(Extension.keyUsage, true, keyUsage);
-        extensions.add(ext);
-        */
 		return extensions;
 		
 	}
 
-//TO-DO
-public ArrayList<CSRExtension> generatServerExtensions() {
+public ArrayList<CSRExtension> generateServerExtensions() {
 		
 		ArrayList<CSRExtension> extensions = new ArrayList<CSRExtension>();
-		// Use BasicConstraints to say that this Cert is CA
+
 		CSRExtension ext = new CSRExtension(Extension.basicConstraints, true, new BasicConstraints(false));
         extensions.add(ext);
-        
-        //KeyUsage for CA
-        //keyUsage = critical, nonRepudiation, digitalSignature, keyEncipherment, keyAgreement 
-        //		extendedKeyUsage        = critical, serverAuth
-        /*
-        ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.digitalSignature));
-        extensions.add(ext);
-        
-        ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.nonRepudiation));
-        extensions.add(ext);
-        
-        ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.keyEncipherment));
-        extensions.add(ext);
-        
-        ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.keyAgreement));
-        extensions.add(ext);
-        */
+
         ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.digitalSignature | KeyUsage.nonRepudiation | KeyUsage.keyEncipherment | KeyUsage.keyAgreement));
         extensions.add(ext);
         GeneralNames subjectAltName = new GeneralNames(new GeneralName(GeneralName.dNSName, "localhost"));
@@ -180,15 +160,27 @@ public ArrayList<CSRExtension> generatServerExtensions() {
         extensions.add(ext);
         
         ext = new CSRExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
+        
         extensions.add(ext);
         return extensions;
 	}
 
+public ArrayList<CSRExtension> generateOCSPExtensions(){
+	ArrayList<CSRExtension> extensions = new ArrayList<CSRExtension>();
+
+	CSRExtension ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.digitalSignature | KeyUsage.nonRepudiation | KeyUsage.keyEncipherment | KeyUsage.keyAgreement));
+    extensions.add(ext);
+    
+    ext = new CSRExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_OCSPSigning));
+    extensions.add(ext);
+    return extensions;
+}
+
 //TO-DO
-public ArrayList<CSRExtension> generatClientExtensions() {
+public ArrayList<CSRExtension> generateClientExtensions() {
 	
 	ArrayList<CSRExtension> extensions = new ArrayList<CSRExtension>();
-	// Use BasicConstraints to say that this Cert is CA
+
 	CSRExtension ext = new CSRExtension(Extension.basicConstraints, true, new BasicConstraints(false));
     extensions.add(ext);
     
@@ -196,18 +188,18 @@ public ArrayList<CSRExtension> generatClientExtensions() {
     ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.digitalSignature | KeyUsage.nonRepudiation | KeyUsage.keyEncipherment | KeyUsage.keyAgreement));
     extensions.add(ext);
     
-   // ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.nonRepudiation));
-   // extensions.add(ext);
-    
-   // ext = new CSRExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.digitalSignature));
-   // extensions.add(ext);
-    
-   // ext = new CSRExtension(Extension.keyUsage, false, new KeyUsage(KeyUsage.keyEncipherment));
-   // extensions.add(ext);
-    
-   // ext = new CSRExtension(Extension.keyUsage, false, new KeyUsage(KeyUsage.keyAgreement));
-   // extensions.add(ext);
     ext = new CSRExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_clientAuth));
+    extensions.add(ext);
+    
+    AccessDescription caIssuers = new AccessDescription(AccessDescription.id_ad_caIssuers,
+            new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("http://localhost:9005/ca.cer")));
+    AccessDescription ocsp = new AccessDescription(AccessDescription.id_ad_ocsp,
+            new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("http://localhost:9005/b")));
+     
+    ASN1EncodableVector aia_ASN = new ASN1EncodableVector();
+    aia_ASN.add(caIssuers);
+    aia_ASN.add(ocsp);
+    ext = new CSRExtension(Extension.authorityInfoAccess, false, new DERSequence(aia_ASN));
     extensions.add(ext);
 	return extensions;
 }

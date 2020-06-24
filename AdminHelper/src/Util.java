@@ -1,3 +1,4 @@
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,6 +19,7 @@ import java.security.SecureRandom;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -31,10 +33,13 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DEROctetString;
+import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DLSequence;
 import org.bouncycastle.asn1.pkcs.Attribute;
 import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x509.AccessDescription;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.Extension;
@@ -69,29 +74,28 @@ public class Util {
 		certificateOut.close();
 	}
 
-	static void writeCertToFileBase64Encoded(PKCS10CertificationRequest csr, String fileName) throws Exception {
-		FileOutputStream certificateOut = new FileOutputStream(fileName);
-		certificateOut.write("-----BEGIN CERTIFICATE REQUEST-----".getBytes());
-		certificateOut.write(Base64.getEncoder().encode(csr.getEncoded()));
-		certificateOut.write("-----END CERTIFICATE REQUEST-----".getBytes());
-		certificateOut.close();
+	static void writeCertToFileBase64Encoded(Certificate certificate, String fileName) throws Exception {
+		FileOutputStream fos = new FileOutputStream(fileName);
+	      byte[] certBytes = certificate.getEncoded();
+	      fos.write(certBytes);
+	      fos.close();
 
+	}
+	
+	static void writeCertToPem(Certificate certificate, String fileName) throws CertificateEncodingException, IOException {
+		try (PemWriter writer = new PemWriter(new FileWriter(fileName))) {
+			writer.writeObject(new PemObject("CERTIFICATE", certificate.getEncoded()));
+		}
 	}
 
 	static void writePrivateKeyToFilePem(KeyPair kp, String fileName) throws Exception {
-		// FileOutputStream certificateOut = new FileOutputStream(fileName);
-		// certificateOut.write("-----BEGIN CERTIFICATE REQUEST-----".getBytes());
-		// certificateOut.write(Base64.getEncoder().encode(csr.getEncoded()));
-		// certificateOut.write("-----END CERTIFICATE REQUEST-----".getBytes());
-		// certificateOut.close();
+
 		try (PemWriter writer = new PemWriter(new FileWriter(fileName))) {
 			writer.writeObject(new PemObject("RSA PRIVATE KEY", kp.getPrivate().getEncoded()));
 		}
 	}
 
-	// static void write
 
-	// U PKI ce se prosledjivati csrString
 	static void readCSRToFileBase64Encoded(String fileName) throws Exception {
 
 		byte[] encoded = Files.readAllBytes(Paths.get(fileName));
@@ -162,6 +166,17 @@ public class Util {
 				DEROctetString str = (DEROctetString) value;
 				GeneralNames subjectAltName = GeneralNames.getInstance(str.getOctets());
 				System.out.println(subjectAltName + "| Critical: " + isCritical);
+			}else if (Extension.authorityInfoAccess.equals(oid)) {
+				DEROctetString str = (DEROctetString) value;
+				ASN1Sequence ad =  DERSequence.getInstance(str.getOctets());
+				for(int i = 0; i < ad.size(); i++) {
+					System.out.println(ad.getObjectAt(i));
+					AccessDescription acd = AccessDescription.getInstance(ad.getObjectAt(i));
+					System.out.println(acd.getAccessMethod());
+					System.out.println(acd.getAccessLocation());
+				}
+				//
+				
 			}
 		}
 
@@ -188,26 +203,6 @@ public class Util {
 		}
 		return cert;
 
-		/*
-		 * 
-		 * String target = "-----BEGIN CERTIFICATE-----"; String replacement = "";
-		 * certString = certString.replace(target, replacement);
-		 * 
-		 * target = "-----END CERTIFICATE-----"; replacement = ""; certString =
-		 * certString.replace(target, replacement);
-		 * 
-		 * 
-		 * PemObject pemObject = new PemObject("CERTIFICATE",
-		 * Base64.getDecoder().decode(certString));
-		 * 
-		 * //FileInputStream fis = new FileInputStream(filePath); //BufferedInputStream
-		 * bis = new BufferedInputStream(fis); //CertificateFactory cf =
-		 * CertificateFactory.getInstance("X.509"); //Certificate cert =
-		 * Certificate.getInstance(pemObject.getContent()); X509Certificate cer = null;
-		 * Certificate c = (Certificate) cer; cer = (X509Certificate) c; //Certificate
-		 * cert = cf.generateCertificate(pemObject.getContent())
-		 * //System.out.println(cert.toString()); return cert;
-		 */
 	}
 
 	public static PrivateKey readPrivateKeyFromPem(String filePath)

@@ -1,11 +1,21 @@
 package ftn.bsep.pkiapp;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Security;
+import java.security.cert.CertificateException;
+import java.security.cert.PKIXParameters;
 import java.util.Base64;
 
 import javax.net.ssl.HostnameVerifier;
@@ -26,8 +36,37 @@ public class ValidClientApp {
 	{
 	    try 
 	    {
+	    	KeyStore keyStore2 = null;
+			try {
+				keyStore2 = KeyStore.getInstance("JKS", "SUN");
+			} catch (KeyStoreException | NoSuchProviderException e) {
+				e.printStackTrace();
+			}
+			BufferedInputStream in = null;
+			try {
+				in = new BufferedInputStream(new FileInputStream("D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\server-truststore.jks"));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				keyStore2.load(in, "password".toCharArray());
+			} catch (NoSuchAlgorithmException | CertificateException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			PKIXParameters pkixParams = null;
+			try {
+				pkixParams = new PKIXParameters(keyStore2);
+				pkixParams.setRevocationEnabled(true);
+				
+			} catch (KeyStoreException | InvalidAlgorithmParameterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(pkixParams.isRevocationEnabled());
+			Security.setProperty("ocsp.enable", "true");
 	        SSLContext context = SSLContext.getInstance("TLS");
-
 	        KeyManagerFactory keyMgrFactory = KeyManagerFactory.getInstance("SunX509");
 	        KeyStore keyStore = KeyStore.getInstance("JKS");
 	        //char[] keyStorePassword = "password".toCharArray(); 
@@ -69,8 +108,8 @@ public class ValidClientApp {
 
 	        HttpsURLConnection.setDefaultHostnameVerifier(hv);
 
-
-	        URL url = new URL("https://localhost:9005/b");
+	        
+	        URL url = new URL("https://localhost:9003/ok");
 
 	        HttpsURLConnection.setDefaultSSLSocketFactory(getSocketFactory());
 	        HttpsURLConnection urlConn = (HttpsURLConnection)url.openConnection();
