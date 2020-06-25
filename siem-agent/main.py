@@ -5,6 +5,13 @@ from handlers.AppLogParser import AppLogParser
 from exceptions.ConfigException import ConfigException
 import os
 
+'''
+argv[1] = path to config.json
+argv[2] = path to truststore file
+argv[3] = path to client certificate file
+argv[4] = path to client private key file
+'''
+
 
 def check_config(config):
     for src in conf['sources']:
