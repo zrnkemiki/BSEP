@@ -29,6 +29,7 @@ public class LogController {
 	@Autowired
 	private LogService logService;
 	
+	
 	@PostMapping("/post-logs")
 	public void receiveLogs(@RequestBody List<Log> logs) {
 		System.out.println("Usao");
@@ -53,6 +54,30 @@ public class LogController {
 		
 	}
 	
+	@GetMapping(value="/get", produces= MediaType.APPLICATION_JSON_VALUE)
+	public List<Log> getAllLogs() {
+		return logService.findAll();
+	}
+	
+	@GetMapping(value="/get/eventId={id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Log> getLogsByEventId(@PathVariable("id") String id) {
+		return logService.findByEventId(id);
+	}
+	
+	@GetMapping(value="/get/level={level}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Log> getLogsByLevel(@PathVariable("level") String level) {
+		return logService.findByLevel(level);
+	}
+	
+	@GetMapping(value="/get/computername={computerName}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Log> getLogsByComputerName(@PathVariable("computerName") String computerName) {
+		return logService.findByComputerName(computerName);
+	}
+	
+	@GetMapping(value="/get/sourcename={sourceName}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Log> getLogsBySourceName(@PathVariable("sourceName") String sourceName) {
+		return logService.findBySourceName(sourceName);
+	}
 	
 	
 	//TEST CONTROLLER
