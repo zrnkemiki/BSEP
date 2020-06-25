@@ -75,7 +75,7 @@ public class DataGenerator {
 			builder.addRDN(BCStyle.O, "DF");
 			builder.addRDN(BCStyle.OU, "PKI");
 			builder.addRDN(BCStyle.C, "RS");
-			builder.addRDN(BCStyle.E, "nikolic@df.com");
+			builder.addRDN(BCStyle.E, "lakovic.j4@gmail.com");
 			// UID (USER ID) je ID korisnika
 			builder.addRDN(BCStyle.UID, "111111");
 

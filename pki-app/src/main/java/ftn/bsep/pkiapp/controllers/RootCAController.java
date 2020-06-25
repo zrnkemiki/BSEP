@@ -1,6 +1,7 @@
 package ftn.bsep.pkiapp.controllers;
 
 import java.security.KeyPair;
+import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ftn.bsep.pkiapp.certificates.CSRGenerator;
 import ftn.bsep.pkiapp.certificates.CertificateGenerator;
+import ftn.bsep.pkiapp.certificates.KeysGenerator;
 import ftn.bsep.pkiapp.data.RootData;
 import ftn.bsep.pkiapp.data.SubjectData;
 import ftn.bsep.pkiapp.keystores.KeyStoreWriter;
@@ -23,11 +25,24 @@ import ftn.bsep.pkiapp.util.DataGenerator;
 @RequestMapping("/root-ca")
 public class RootCAController {
 	
-	CertificateAuthority ca = new CARoot(null, null, null, null);
+	CertificateAuthority ca = new CARoot("D:\\BSEP\\pki-app\\src\\main\\resources\\rootStores\\DFRoot-keystore.jks", null, "password", "root");
 	CSRGenerator csrGen = new CSRGenerator();
 	DataGenerator dataGen = new DataGenerator();
 	PKCS10CertificationRequest csr = null;
 	
+	@GetMapping("/gen-ca")
+	public String genCA() throws Exception {
+		KeyPair keyPairSubject = KeysGenerator.generateKeyPair();
+		SubjectData rootData = dataGen.generateCAData(keyPairSubject);
+		PKCS10CertificationRequest csr = CSRGenerator.generateCSR(rootData);
+		X509Certificate rootCert = ca.signCertificate(csr);
+		CertHelper.writeCertToFileBase64Encoded((Certificate)rootCert, "D:\\BSEP\\pki-app\\src\\main\\resources\\CAStores\\CA-RS-Cert.cer");
+		CertHelper.writePrivateKeyToFilePem(keyPairSubject, "D:\\BSEP\\pki-app\\src\\main\\resources\\CAStores\\CAprivateKey.key");
+		System.out.println(rootCert.toString());
+		
+		
+		return "Ok";
+	}
 	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@GetMapping("/submit-csr")
 	public String signCSR() throws Exception {
