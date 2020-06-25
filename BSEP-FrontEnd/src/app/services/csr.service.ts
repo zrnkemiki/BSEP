@@ -19,6 +19,10 @@ export class CsrService {
 
   constructor(private http : HttpClient, private router: Router) { }
 
+  testMail(){
+    this.http.get<any>('http://localhost:9003/login/testMail').subscribe(data => {alert(data)});
+  }
+
   csrSubmit(csr: String){
     this.http.post<CsrDTO>('http://localhost:9003/country-ca/csrData', csr)
     .subscribe(

@@ -1,9 +1,13 @@
 package ftn.bsep.pkiapp.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -72,15 +76,12 @@ public class MyUserDetailsService implements UserDetailsService {
 
 			@Override
 			public Collection<? extends GrantedAuthority> getAuthorities() {
-				/*
 				if (user.getUserType() == null) {
 					return new ArrayList<>();
 				}
 				final List<GrantedAuthority> authorities = Collections
 						.singletonList(new SimpleGrantedAuthority(user.getUserType().toString()));
 				return authorities;
-				*/
-				return null;
 			}
 		};
 

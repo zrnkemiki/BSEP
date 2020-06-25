@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { User } from './model/user';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './services/authentication.service';
+import { CsrService } from './services/csr.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private csrService: CsrService,
 ) {}
 
   
@@ -30,6 +32,10 @@ export class AppComponent {
     //var user = JSON.parse(localStorage.getItem('currentUser'));
     this.currentUser = new User();
     this.currentUser = currentUser;
+  }
+
+  testMail(){
+    this.csrService.testMail();
   }
 
   login(){
