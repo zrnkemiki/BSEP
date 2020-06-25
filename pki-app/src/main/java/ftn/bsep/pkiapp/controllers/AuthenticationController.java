@@ -1,5 +1,7 @@
 package ftn.bsep.pkiapp.controllers;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,10 +81,12 @@ public class AuthenticationController {
 	}
 	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@GetMapping("/testMail")
-	public void testEmail() {
+	public void testEmail() throws MessagingException {
 		UserDTO user = new UserDTO(userService.getLoggedUser());
 		User u = new User(user);
-		emailService.sendMail(u, "Subject", "test");
+		//emailService.sendMail(u, "Subject", "test");
+		emailService.sendMailWithAttachment("bgkgsiit@gmail.com", "Subject sertifikat", "saljem sertifikat", "sertifikat.cer", "newCerts\\ClientCert.cer");
+		
 	}
 	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@PostMapping("/loginCA")
