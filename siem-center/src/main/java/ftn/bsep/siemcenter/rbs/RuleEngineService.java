@@ -53,5 +53,6 @@ public class RuleEngineService {
 		return logsOutput;
 		
 	}
+	
 
 }

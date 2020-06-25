@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "BSEP-FrontEnd": {
+    "SiemCentarFrontEnd": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,12 +13,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/BSEP-FrontEnd",
+            "outputPath": "dist/SiemCentarFrontEnd",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
+            "aot": false,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -41,6 +41,7 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
+              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -62,20 +63,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "BSEP-FrontEnd:build",
-            "sslKey": "../pki-app/src/main/resources/noviJKS/serverKey.key",
-            "sslCert": "../pki-app/src/main/resources/noviJKS/serverCert.cer"
+            "browserTarget": "SiemCentarFrontEnd:build",
+            "sslKey": "../siem-center/src/main/resources/noviJKS/serverKey.key",
+            "sslCert": "../siem-center/src/main/resources/noviJKS/serverCert.cer"
+
           },
           "configurations": {
             "production": {
-              "browserTarget": "BSEP-FrontEnd:build:production"
+              "browserTarget": "SiemCentarFrontEnd:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "BSEP-FrontEnd:build"
+            "browserTarget": "SiemCentarFrontEnd:build"
           }
         },
         "test": {
@@ -112,19 +114,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "BSEP-FrontEnd:serve"
+            "devServerTarget": "SiemCentarFrontEnd:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "BSEP-FrontEnd:serve:production"
+              "devServerTarget": "SiemCentarFrontEnd:serve:production"
             }
           }
         }
       }
-    }
-  },
-  "defaultProject": "BSEP-FrontEnd",
-  "cli": {
-    "analytics": false
-  }
+    }},
+  "defaultProject": "SiemCentarFrontEnd"
 }
