@@ -9,7 +9,7 @@ import { CsrDTO } from '../modelDTO/csrDTO';
 })
 export class CertificateService {
   //EXAMPLE TO-DO
-  private url = "http://localhost:9003";
+  private url = "https://localhost:9003";
   private subjectDataSource = new BehaviorSubject<SubjectData[]>([]);
   subjectDataObservable = this.subjectDataSource.asObservable();
   private subjectDatas = [];
@@ -30,7 +30,7 @@ export class CertificateService {
   }
 
   getCertificates(){
-    this.http.get<SubjectData[]>('http://localhost:9003/country-ca/getAllCertificates')
+    this.http.get<SubjectData[]>('https://localhost:9003/country-ca/getAllCertificates')
     .subscribe(data => {
       this.subjectDatas = data;
       this.subjectDataSource.next(this.subjectDatas);
@@ -38,11 +38,11 @@ export class CertificateService {
   }
 
   getCertificate(id: number) : Observable<any>{
-      return this.http.get<String>('http://localhost:9003/country-ca/getCertificate' + "/" + id);
+      return this.http.get<String>('https://localhost:9003/country-ca/getCertificate' + "/" + id);
   }
 
   revokeCertificate(id: number) : Observable<any>{
-      return this.http.get<String>('http://localhost:9003/country-ca/revoke' + "/" + id);
+      return this.http.get<String>('https://localhost:9003/country-ca/revoke' + "/" + id);
   }
 
 

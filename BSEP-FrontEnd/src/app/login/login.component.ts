@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
             //this.toastr.error('error logging');
           }
         });
-  
+        this.router.navigate([''])
     }
 
    
