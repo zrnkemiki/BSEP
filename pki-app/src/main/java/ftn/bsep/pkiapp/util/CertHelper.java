@@ -250,6 +250,31 @@ public class CertHelper {
 			writer.writeObject(new PemObject("RSA PRIVATE KEY", kp.getPrivate().getEncoded()));
 		}
 	}
+	
+	public static String getCertEmail(X509Certificate cert) {
+		//int start = cert.getIssuerDN().getName()
+		String email = cert.getSubjectDN().getName().split("EMAILADDRESS=")[1];
+		email = email.split(",")[0];
+		return email;
+	}
+	
+	public static String getCertCN(X509Certificate cert) {
+		int start = cert.getSubjectDN().getName().indexOf("CN");
+		String tmpName = "", name = "";
+		if (start > 0) { 
+		  tmpName = cert.getSubjectDN().getName().substring(start+3);
+		  int end = tmpName.indexOf(",");
+		  if (end > 0) {
+		    name = tmpName.substring(0, end);
+		  }
+		  else {
+		    name = tmpName; 
+		  }
+		}
+		System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+		System.out.println(name + "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+		return name;
+	}
 
 	
 	
