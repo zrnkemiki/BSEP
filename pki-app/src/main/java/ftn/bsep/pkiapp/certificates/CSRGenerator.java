@@ -40,7 +40,7 @@ public class CSRGenerator {
 	}
 	
 	//mogu i da se dodaju ekstenzije u csr - al mozda mozemo da izbegnemo pogadjanjem specificnih endpointova
-	public PKCS10CertificationRequest generateCSR(SubjectData subjectData) throws OperatorCreationException {
+	public static PKCS10CertificationRequest generateCSR(SubjectData subjectData) throws OperatorCreationException {
 		PKCS10CertificationRequestBuilder p10Builder = new JcaPKCS10CertificationRequestBuilder(subjectData.getX500name(), subjectData.getPublicKey());       
      
 		JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");

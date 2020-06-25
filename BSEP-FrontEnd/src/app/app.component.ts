@@ -29,7 +29,6 @@ export class AppComponent {
 
   getCurrentUser(){
     const currentUser = this.authenticationService.currentUserValue;
-    //var user = JSON.parse(localStorage.getItem('currentUser'));
     this.currentUser = new User();
     this.currentUser = currentUser;
   }

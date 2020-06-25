@@ -89,32 +89,40 @@ public class LogController {
 
 		if(id==1) {
 			Log log = new Log();
+			log.setLevel("SUCCESS_AUDIT");
+			log.setEventId("4672");
+			log.setMessage("OVO JE PORUKA");
+			log.setTimestamp("VREME");
+			log.setExecutionTime(new Date());
+			logs.add(log);
+		}
+		
+		if(id==2) {
+			Log log = new Log();
+			log.setLevel("FAILURE_AUDIT");
 			log.setEventId("4625");
 			log.setMessage("OVO JE PORUKA");
 			log.setTimestamp("VREME");
 			log.setExecutionTime(new Date());
 			logs.add(log);
-
 		}
-		else if(id==2) {
-			
-			Log log1 = new Log();
-			log1.setLevel("ERROR");
-			log1.setMessage("OVO JE PORUKA");
-			log1.setTimestamp("VREME");
-			log1.setExecutionTime(new Date());
-			logs.add(log1);
+		if(id==3) {
+			Log log = new Log();
+			log.setLevel("WARNING");
+			log.setEventId("1234");
+			log.setMessage("OVO JE PORUKA");
+			log.setTimestamp("VREME");
+			log.setExecutionTime(new Date());
+			logs.add(log);
 		}
-		else if(id==3) {
-			Log log2 = new Log();
-			
-			log2.setLevel("ERROR");
-			log2.setMessage("OVO JE PORUKA");
-			log2.setTimestamp("VREME");
-			log2.setExecutionTime(new Date());
-			logs.add(log2);
-			
-			
+		if(id==4) {
+			Log log = new Log();
+			log.setLevel("WARNING");
+			log.setEventId("9999");
+			log.setMessage("OVO JE PORUKA");
+			log.setTimestamp("VREME");
+			log.setExecutionTime(new Date());
+			logs.add(log);
 		}
 		
 		List<String> alerts = ruleEngineService.insertLog(logs);

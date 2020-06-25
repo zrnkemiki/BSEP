@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
   
         (result) => {
           if (result) {
+            location.reload()
             this.router.navigate(['/homepage'])
           }
           else {

@@ -11,7 +11,11 @@ import java.security.cert.X509Certificate;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.DERIA5String;
+import org.bouncycastle.asn1.DERSequence;
+import org.bouncycastle.asn1.x509.AccessDescription;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.Extension;
@@ -63,7 +67,7 @@ public class CARoot extends CertificateAuthority {
 
 		        // Add Extensions
 		        // Use BasicConstraints to say that this Cert is CA
-		        issuedCertBuilder.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
+		        issuedCertBuilder.addExtension(Extension.basicConstraints, true, new BasicConstraints(0));
 
 		        // Add Issuer cert identifier as Extension
 		        issuedCertBuilder.addExtension(Extension.authorityKeyIdentifier, false, issuedCertExtUtils.createAuthorityKeyIdentifier((X509Certificate) issuerCert));
@@ -72,7 +76,16 @@ public class CARoot extends CertificateAuthority {
 		        KeyUsage keyUsage = new KeyUsage(KeyUsage.keyCertSign | KeyUsage.digitalSignature | KeyUsage.cRLSign);
 		        issuedCertBuilder.addExtension(new ASN1ObjectIdentifier("2.5.29.15"), true, keyUsage);
 		       
-		        //Potpisivanje sertifikata
+		        AccessDescription caIssuers = new AccessDescription(AccessDescription.id_ad_caIssuers, new GeneralName(
+						GeneralName.uniformResourceIdentifier, new DERIA5String("https://localhost:9003/DF-Root.cer")));
+				AccessDescription ocsp = new AccessDescription(AccessDescription.id_ad_ocsp,
+						new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("https://localhost:9003/root/ocsp")));
+				ASN1EncodableVector aia_ASN = new ASN1EncodableVector();
+				aia_ASN.add(caIssuers);
+				aia_ASN.add(ocsp);
+				issuedCertBuilder.addExtension(Extension.authorityInfoAccess, false, new DERSequence(aia_ASN));
+				
+				//Potpisivanje sertifikata
 		        JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
 				contentSignerBuilder = contentSignerBuilder.setProvider("BC");
 				ContentSigner contentSigner = contentSignerBuilder.build(issuerData.getPrivateKey());  
