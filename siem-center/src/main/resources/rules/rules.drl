@@ -6,69 +6,47 @@ rule "ERROR-log"
     when
         $log: Log( getLevel() == 'ERROR');
     then
-    	logsOutput.add("ERROR has occured");
+    	logsOutput.add("ERROR has occured. \n");
     	delete($log);
-end 
- 
-
-
-rule "LOG_ALWAYS-log"
-    when
-        $log: Log( getLevel() == 'LOG_ALWAYS' );
-    then
-    	logsOutput.add("Log_Always has occured");
-    	delete($log);
-end 
- 
-rule "CRITICAL-log"
-	when
-	    $log: Log( getLevel() == 'CRITICAL' );
-	then
-		logsOutput.add("Critical log has occured.");
-		delete($log);
 end 
 
 rule "Special privileges - log on"
 	when
-	    $log: Log( getEventId() == '4672');
+	    $log: Log( getEventId() == '4672' && getLevel() == 'SUCCESS_AUDIT');
 	then
-		logsOutput.add("Special privileges - log on");
+		logsOutput.add("Special privileges -> LOG-ON \n");
+		delete($log);
+end 
+
+rule "FAILURE 4625-login"
+	when
+	    $log: Log( getEventId() == '4625' && getLevel() == 'FAILURE_AUDIT' , $eventId: eventId );
+	    Number(intValue >= 2) from accumulate(
+        $log2: Log( this != $log, eventId == $eventId, this meets[15s] $log),count($log2))
+	then
+		logsOutput.add("Multiple failed login! Time: " + $log.getTimestamp() + "| Message: " + $log.getMessage() + "\n");
 		delete($log);
 end 
  
 
-rule "ERROR-login"
+rule "LOGIN Mulitiple fail"
 	when
-	    $log: Log( getEventId() == '4625', $eventId: eventId );
+	    $log: Log( getEventId() == '9999' && getLevel() == 'WARNING' , $eventId: eventId );
 	    Number(intValue >= 2) from accumulate(
         $log2: Log( this != $log, eventId == $eventId, this meets[15s] $log),count($log2))
 	then
-		logsOutput.add("Multiple failed login! Time: " + $log.getTimestamp());
+		logsOutput.add("Multiple failed Application LOGIN! Time: " + $log.getTimestamp() + "| Message: " + $log.getMessage() + "\n");
 		delete($log);
 end 
  
-rule "WARNING-log"
+rule "FAILURE-log"
 	when
-	    $log: Log( getLevel() == 'WARNING' );
+	    $log: Log( getLevel() == 'FAILURE' );
 	then
-		logsOutput.add("Warning log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputerName() + "Message: " + $log.getMessage());
+		logsOutput.add("Failure log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputerName() + "Message: " + $log.getMessage() + "\n");
 		delete($log);
 end 
  
-rule "INFORMATIONAL-log"
-	when
-	    $log: Log( getLevel() == 'INFORMATIONAL' );
-	then
-		logsOutput.add("Informational log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputerName() + "Message: " + $log.getMessage());
-		delete($log);
-end
  
-rule "VERBOSE-log"
-	when
-	    $log: Log( getLevel() == 'VERBOSE' );
-	then
-		logsOutput.add("Verbose log has occured. Time: " + $log.getTimestamp() + "| On machine: " + $log.getComputerName() + "Message: " + $log.getMessage());
-		delete($log);
-end 
  
 

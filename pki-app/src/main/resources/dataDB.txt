@@ -1,1 +1,4 @@
 INSERT INTO `BSEP`.`user` (`id`, `city`, `email`, `first_name`, `last_name`, `password`, `phone_number`, `user_status`, `user_type`, `username`, `uuid`) VALUES ('1', 'Novi Sad', 'fiifzxxxxefaqxzmk@awdrt.net', 'Milos', 'Zrnic', '$2a$10$KwsEtz9/kjaoS48Je2ppceByKX.E0q3DBfjfbPHwj5V5avlvl/K4G', '021', '0', '0', 'miki', 'ae4f2db3-d98d-4b20-b9a8-585b438eea72');
+INSERT INTO `BSEP`.`user` (`id`, `city`, `email`, `first_name`, `last_name`, `password`, `phone_number`, `user_status`, `user_type`, `username`, `uuid`) VALUES ('2', 'New York', 'fiifzxxxxefaqxzmk@awdrt.net', 'Jovan', 'Lakovic', '$2a$10$KwsEtz9/kjaoS48Je2ppceByKX.E0q3DBfjfbPHwj5V5avlvl/K4G', '021', '0', '1', 'jole', 'ae4f2db3-d98d-4b20-b9a8-585b438eea72');
+
+
