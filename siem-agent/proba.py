@@ -1,24 +1,31 @@
 import win32evtlog
+from datetime import datetime, timedelta
 
 server = 'localhost' # name of the target computer to get event logs
-logtype = 'System'
+logtype = 'Security'
 hand = win32evtlog.OpenEventLog(server,logtype)
 flags = win32evtlog.EVENTLOG_BACKWARDS_READ|win32evtlog.EVENTLOG_SEQUENTIAL_READ
 total = win32evtlog.GetNumberOfEventLogRecords(hand)
 
+last_log_timestamp = datetime.now()
+print(last_log_timestamp)
+print('TIMESTAMP|SOURCE NAME|COMPUTER NAME|ID|EVENT TYPE|')
+flag = False
+
 while True:
+    if flag:
+        break
+    hand = win32evtlog.OpenEventLog(server, logtype)
     events = win32evtlog.ReadEventLog(hand, flags,0)
-    print('CATEGORY|TIMESTAMP|SOURCE|ID|TYPE|DATA')
+
     if events:
         for event in events:
-            print(dir(event))
-            for_print = str(event.EventCategory) + '|' + str(event.TimeGenerated) + '|' + str(event.SourceName) + '|' +\
-                        str(event.EventID) + '|' + str(event.EventType) + '|'
-            data = event.StringInserts
-            if data:
-                por = ""
-                #for msg in data:
-                    #print(msg)
-            print("%s |%s | %s | %s | %s | %s" % (event.EventCategory, event.TimeGenerated, event.SourceName, event.EventID, event.EventType, por))
-    break
+            if event.TimeGenerated > last_log_timestamp:
+                print("%s |%s | %s | %s | %s |" % (event.TimeGenerated, event.SourceName, event.ComputerName, event.EventID, event.EventType))
+                last_log_timestamp = event.TimeGenerated
+            else:
+                #flag = True
+                flag = False
+
+
 win32evtlog.CloseEventLog(hand)

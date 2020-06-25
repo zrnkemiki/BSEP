@@ -5,6 +5,19 @@
 			"path": "/Users/zrnke/Documents/Projekti/BSEP/siem-agent/logs/app",
 			"filter": "regex",
 			"interval": -1
+		},
+		{
+			"type": "Application",
+			"path": "C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\siem-agent\\logs\\app",
+			"filter": "regex",
+			"interval": -1
+		},
+		{
+			"type": "OS Windows",
+			"path": "",
+			"kind": "Security",
+			"filter": "regex",
+			"interval": 5
 		}
 	]
 }

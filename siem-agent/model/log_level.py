@@ -8,3 +8,5 @@ class SeverityLevel(Enum):
     WARNING = 3
     INFORMATIONAL = 4
     VERBOSE = 5
+    SUCCESS_AUDIT = 8
+    FAILURE_AUDIT = 16

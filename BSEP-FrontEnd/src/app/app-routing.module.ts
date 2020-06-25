@@ -11,6 +11,8 @@ import { CsrViewerComponent } from './csr-viewer/csr-viewer.component';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthCAGuard } from './helpers/auth.ca.guard';
 import { AuthMUGuard } from './helpers/auth.mu.guard';
+import { AllCertificatesComponent } from './all-certificates/all-certificates.component';
+import { CertificateViewComponent } from './certificate-view/certificate-view.component';
 
 
 const routes: Routes = [
@@ -23,6 +25,8 @@ const routes: Routes = [
   { path: 'csr-submit', component: CSRSubmitComponent},
   { path: 'csr-requests', component: CsrRequestViewerComponent},
   { path: 'login-ca', component: LoginCAComponent},
+   {path: 'all-certificates', component: AllCertificatesComponent},
+   {path: 'ceritificate-view/:id', component: CertificateViewComponent},
   
   //Disabled AuthGuard
   /*

@@ -1,10 +1,12 @@
 {
 	"sources": [
 		{
-			"type": "Application",
-			"path": "C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\siem-agent\\logs\\app",
+			"type": "OS Windows",
+			"path": "",
+			"kind": "Security",
 			"filter": "regex",
-			"interval": -1
+			"interval": 5
 		}
+
 	]
 }

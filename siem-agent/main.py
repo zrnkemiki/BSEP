@@ -12,6 +12,9 @@ def check_config(config):
             raise ConfigException('Allowed types are: [OS Windows, OS Linux, Application, Web-Server]!')
         if not isinstance(src['interval'], int) and not (isinstance(src['interval'], float)):
             raise ConfigException('Interval has to be float or int!')
+        if src['type'] == 'OS Windows':
+            if src['kind'] not in ['Security', 'System']:
+                raise ConfigException('Kind has to be "Security" or "System"')
 
 
 def handle_dir(path):
