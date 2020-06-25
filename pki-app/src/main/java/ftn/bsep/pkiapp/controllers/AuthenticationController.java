@@ -21,6 +21,7 @@ import ftn.bsep.pkiapp.dto.LoginDTO;
 import ftn.bsep.pkiapp.dto.UserDTO;
 import ftn.bsep.pkiapp.model.User;
 import ftn.bsep.pkiapp.security.TokenUtils;
+import ftn.bsep.pkiapp.services.CertificateAuthorityService;
 import ftn.bsep.pkiapp.services.EMailService;
 import ftn.bsep.pkiapp.services.UserServiceImpl;
 
@@ -43,6 +44,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	UserServiceImpl userService;
+	
+	@Autowired
+	CertificateAuthorityService caService;
 	
 	@Autowired
 	EMailService emailService;
@@ -80,7 +84,7 @@ public class AuthenticationController {
 		User u = new User(user);
 		emailService.sendMail(u, "Subject", "test");
 	}
-	
+	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@PostMapping("/loginCA")
 	public ResponseEntity<?> loginCA(@RequestBody()LoginCaDTO loginCaDTO){
 		System.out.println("Usao sam u funkciju login-CA!\n");

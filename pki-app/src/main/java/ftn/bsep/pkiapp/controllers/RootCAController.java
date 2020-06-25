@@ -4,6 +4,7 @@ import java.security.KeyPair;
 import java.security.cert.X509Certificate;
 
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +28,7 @@ public class RootCAController {
 	DataGenerator dataGen = new DataGenerator();
 	PKCS10CertificationRequest csr = null;
 	
+	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@GetMapping("/submit-csr")
 	public String signCSR() throws Exception {
 		KeyPair keyPair = CertHelper.generateKeyPair();
@@ -52,7 +54,7 @@ public class RootCAController {
 		return "Invalid CSR";
 	
 	}
-	
+	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@GetMapping("/gen-root")
 	public String genRoot() throws Exception {
 		RootData rootData = dataGen.generateRootData();
@@ -62,7 +64,7 @@ public class RootCAController {
 		
 		return "Ok";
 	}
-	
+	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@GetMapping("/sign-cert")
 	public String signCert() throws Exception {
 		X509Certificate issuedCert = ca.signCertificate(csr);

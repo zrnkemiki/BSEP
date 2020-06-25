@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +52,7 @@ public class CountryCAController {
 	DataGenerator dataGen = new DataGenerator();
 	PKCS10CertificationRequest csr = null;
 		
-	//TEST CONTROLER
+	@PreAuthorize("hasAuthority('ADMIN_MU')")
 	@PostMapping(value = "/csrData")
 	public ResponseEntity<?> csrDataSubmit(@RequestBody()String csrString) throws IOException, OperatorCreationException, PKCSException {
 		PKCS10CertificationRequest csr = CertHelper.csrStringToCsrPKCS(csrString);
@@ -84,7 +85,7 @@ public class CountryCAController {
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
         }
 	}
-	
+	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getAll() {
 		
@@ -98,7 +99,7 @@ public class CountryCAController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@GetMapping(value = "/getCSR/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Csr> getCSR(@PathVariable("param") Long id) throws Exception {
 		Csr csr = csrService.findByID(id);
@@ -108,7 +109,7 @@ public class CountryCAController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@GetMapping(value = "/generateCertificate/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Csr> generateCertificate(@PathVariable("param") Long id) throws Exception {
 		System.out.println("A");
