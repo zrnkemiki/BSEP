@@ -109,7 +109,7 @@ public class ValidClientApp {
 	        HttpsURLConnection.setDefaultHostnameVerifier(hv);
 
 	        
-	        URL url = new URL("https://localhost:9003/ok");
+	        URL url = new URL("https://localhost:9005/ok");
 
 	        HttpsURLConnection.setDefaultSSLSocketFactory(getSocketFactory());
 	        HttpsURLConnection urlConn = (HttpsURLConnection)url.openConnection();
