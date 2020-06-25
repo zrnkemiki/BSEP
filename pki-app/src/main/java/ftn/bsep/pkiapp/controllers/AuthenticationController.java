@@ -18,6 +18,7 @@ import ftn.bsep.pkiapp.dto.LoginCaDTO;
 import ftn.bsep.pkiapp.dto.LoginDTO;
 import ftn.bsep.pkiapp.dto.UserDTO;
 import ftn.bsep.pkiapp.security.TokenUtils;
+import ftn.bsep.pkiapp.services.CertificateAuthorityService;
 import ftn.bsep.pkiapp.services.UserServiceImpl;
 
 
@@ -39,7 +40,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	UserServiceImpl userService;
-		
+	
+	@Autowired
+	CertificateAuthorityService caService;
 	
 	@PostMapping()
 	public ResponseEntity<?> login(@RequestBody()LoginDTO loginDTO){
@@ -72,7 +75,7 @@ public class AuthenticationController {
 		try {
 			//TO-DO
 			System.out.println(loginCaDTO.getAlias());
-			
+			caService.initCA(loginCaDTO.getAlias(), loginCaDTO.getPrivateKeyPassword());
             return new ResponseEntity<LoginCaDTO>(
             		loginCaDTO, HttpStatus.OK);
         } catch (Exception ex) {
