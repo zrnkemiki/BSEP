@@ -47,7 +47,7 @@ public class CountryCAController {
 	@Autowired
 	CertificateAuthorityService caService;
 	
-	CertificateAuthority ca = new CACountry("D:\\BSEP\\pki-app\\src\\main\\resources\\rootStores\\DFRoot-keystore.jks", null, "password", "root");
+	
 	CSRGenerator csrGen = new CSRGenerator();
 	DataGenerator dataGen = new DataGenerator();
 	PKCS10CertificationRequest csr = null;
@@ -112,11 +112,13 @@ public class CountryCAController {
 	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@GetMapping(value = "/generateCertificate/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Csr> generateCertificate(@PathVariable("param") Long id) throws Exception {
+		CertificateAuthority ca = caService.getCA();
 		System.out.println("A");
 		Csr csr = csrService.findByID(id);
 		
 		PKCS10CertificationRequest csrPkcs = CertHelper.csrStringToCsrPKCS(csr.getCsrStringReq());
 		X509Certificate cert = ca.signCertificate(csrPkcs);
+		
 		//ovo treba da bude slanje mejla
 		CertHelper.writeCertToFileBase64Encoded((Certificate)cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ClientCert.cer");
 		
