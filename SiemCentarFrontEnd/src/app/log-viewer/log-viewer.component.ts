@@ -29,8 +29,13 @@ export class LogViewerComponent implements OnInit {
   }
 
   getLogAlerts() {
-    this.logService.logObservable.subscribe(data => this.logs = data);
-    this.logService.getAlerts();
+    
+
+    setInterval(()=> {
+      console.log(1);
+      this.logService.logObservable.subscribe(data => this.logs = data);
+      this.logService.getAlerts();
+    },1000);
   }
 
   

@@ -17,7 +17,6 @@
                 <thead>
                     <tr>
                         <th>LOG</th>
-                        <th style="width: 15%">Action</th>
                     </tr>
                 </thead>
 
@@ -25,10 +24,6 @@
                     <tr *ngFor="let log of logs; let i = index">
                         <td>
                             {{log}}
-                        </td>
-                        <td>
-                            <button (click)='viewCSR(csrRequest.id)' type="button" class="btn btn-success">View</button>
-                            <button (click)='rejectCSR(csrRequest.id)' type="button" class="btn btn-danger">Reject</button>
                         </td>
                     </tr>
                 </tbody>

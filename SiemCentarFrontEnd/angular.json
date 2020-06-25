@@ -63,7 +63,10 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "SiemCentarFrontEnd:build"
+            "browserTarget": "SiemCentarFrontEnd:build",
+            "sslKey": "../siem-center/src/main/resources/noviJKS/serverKey.key",
+            "sslCert": "../siem-center/src/main/resources/noviJKS/serverCert.cer"
+
           },
           "configurations": {
             "production": {

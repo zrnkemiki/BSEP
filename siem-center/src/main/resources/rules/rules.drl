@@ -6,7 +6,7 @@ rule "ERROR-log"
     when
         $log: Log( getLevel() == 'ERROR');
     then
-    	logsOutput.add("ERROR has occured. \n");
+    	logsOutput.add("ERROR has occured. Time: " + $log.getTimestamp() + " | Message: " + $log.getMessage() + "\n");
     	delete($log);
 end 
 
@@ -14,7 +14,7 @@ rule "Special privileges - log on"
 	when
 	    $log: Log( getEventId() == '4672' && getLevel() == 'SUCCESS_AUDIT');
 	then
-		logsOutput.add("Special privileges -> LOG-ON \n");
+		logsOutput.add("Special privileges -> LOG-ON  Time: " + $log.getTimestamp() + " | Message: " + $log.getMessage() + "\n");
 		delete($log);
 end 
 

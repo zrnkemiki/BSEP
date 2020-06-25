@@ -15,7 +15,7 @@ export class LogService {
 
 
   getAlerts(){
-    this.http.get<String[]>('https://localhost:9005/testCEP/1')
+    this.http.get<String[]>('https://localhost:9005/getAlerts')
     .subscribe(data => {
       this.logs = data;
       this.logSource.next(this.logs);
