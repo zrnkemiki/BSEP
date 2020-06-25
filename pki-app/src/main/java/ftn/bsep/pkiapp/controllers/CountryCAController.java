@@ -2,14 +2,12 @@ package ftn.bsep.pkiapp.controllers;
 
 import java.io.IOException;
 import java.security.cert.Certificate;
-import java.security.InvalidKeyException;
-import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SignatureException;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import javax.naming.ldap.LdapName;
+import javax.naming.ldap.Rdn;
 
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
@@ -27,14 +25,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ftn.bsep.pkiapp.certificates.CSRGenerator;
-import ftn.bsep.pkiapp.certificates.CertificateGenerator;
-import ftn.bsep.pkiapp.data.RootData;
-import ftn.bsep.pkiapp.data.SubjectData;
-import ftn.bsep.pkiapp.model.CACountry;
 import ftn.bsep.pkiapp.model.CertificateAuthority;
 import ftn.bsep.pkiapp.model.Csr;
 import ftn.bsep.pkiapp.services.CSRService;
 import ftn.bsep.pkiapp.services.CertificateAuthorityService;
+import ftn.bsep.pkiapp.services.EMailService;
 import ftn.bsep.pkiapp.util.CertHelper;
 import ftn.bsep.pkiapp.util.DataGenerator;
 
@@ -47,6 +42,8 @@ public class CountryCAController {
 	@Autowired
 	CertificateAuthorityService caService;
 	
+	@Autowired
+	EMailService emailService;
 	
 	CSRGenerator csrGen = new CSRGenerator();
 	DataGenerator dataGen = new DataGenerator();
@@ -118,10 +115,19 @@ public class CountryCAController {
 		
 		PKCS10CertificationRequest csrPkcs = CertHelper.csrStringToCsrPKCS(csr.getCsrStringReq());
 		X509Certificate cert = ca.signCertificate(csrPkcs);
-		
-		//ovo treba da bude slanje mejla
-		CertHelper.writeCertToFileBase64Encoded((Certificate)cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ClientCert.cer");
-		
+		System.out.println(cert.getSubjectDN().getName());
+		String email = cert.getSubjectDN().getName().split("E=")[1];
+		email = email.split(",")[0];
+		System.out.println("Email " + email);
+		String name = cert.getSubjectDN().getName().split("CN=")[1];
+		name = name.split(",")[0];
+		name = name + ".cer";
+		System.out.println("name " + name);
+		String pathToFile = "newCerts\\" + name;
+		String pathToWrite = "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\newCert.cer";
+		CertHelper.writeCertToFileBase64Encoded((Certificate)cert, pathToWrite);
+		TimeUnit.SECONDS.sleep(3);
+		emailService.sendMailWithAttachment(email, "Certificate", "", name, pathToFile);
 		try {
 			return new ResponseEntity<>(csr, HttpStatus.OK);
 		} catch (Exception e) {

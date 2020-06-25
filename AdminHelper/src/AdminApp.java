@@ -11,6 +11,9 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.naming.ldap.LdapName;
+import javax.naming.ldap.Rdn;
+
 import org.bouncycastle.asn1.x509.KeyUsage;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.OperatorCreationException;
@@ -23,8 +26,32 @@ public class AdminApp {
 	public static void main(String[] args) throws Exception {
 		Security.addProvider(new BouncyCastleProvider());
 		//Util.generateKeyStore("D:\\BSEP\\AdminHelper\\recources\\ClientCert.cer", "D:\\BSEP\\AdminHelper\\recources\\privateKeyClient.key", "password", "password", "server", "D:\\BSEP\\AdminHelper\\recources\\client-keystore.jks");
-		//KeyStoreReader ksr = new KeyStoreReader();
-		//X509Certificate cert = (X509Certificate) ksr.readCertificate("D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\client-keystore.jks", "password", "ca-rs");
+		KeyStoreReader ksr = new KeyStoreReader();
+		X509Certificate cert = (X509Certificate) ksr.readCertificate("D:\\BSEP\\pki-app\\src\\main\\resources\\CAStores\\ca-rs-keystore.jks", "password", "ca-rs");
+		System.out.println(cert.getSubjectDN().getName());
+		String email = cert.getSubjectDN().getName().split("EMAILADDRESS=")[1];
+		email = email.split(",")[0];
+		System.out.println(email);
+		int start = cert.getSubjectDN().getName().indexOf("E");
+		String tmpName = "", name = "";
+		if (start > 0) { 
+		  tmpName = cert.getSubjectDN().getName().substring(start+3);
+		  int end = tmpName.indexOf(",");
+		  if (end > 0) {
+		    name = tmpName.substring(0, end);
+		  }
+		  else {
+		    name = tmpName; 
+		  }
+		}
+		System.out.println(name + "aaaaaaaaaaaaaaaaaaaaaa");
+		
+		String dn = cert.getSubjectX500Principal().getName();
+		LdapName ldapDN = new LdapName(dn);
+		for(Rdn rdn: ldapDN.getRdns()) {
+			if(rdn.getType().equalsIgnoreCase("1.2.840.113549.1.9.1"))
+		    System.out.println(rdn.getType() + " -> " + rdn.getValue());
+		}
 		//System.out.println(cert.getSubjectX500Principal());
 		//Util.writeCertToFileBase64Encoded(cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\rootStores\\DFRoot.pem");
 		//Util.writeCertToPem(cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\rootStores\\ClientCert.pem");
@@ -51,7 +78,7 @@ public class AdminApp {
 	
 		//-------------------------------------------------------------------------------------------------
 		//Generisi CSR zahtev -> Opcija 1
-		
+		/*
 		CSRGenerator csrGen = new CSRGenerator();		
 		PKCS10CertificationRequest csr = null;
 		try {
@@ -61,7 +88,7 @@ public class AdminApp {
 		} catch (OperatorCreationException | IOException e) {
 			e.printStackTrace();
 		}
-		
+		*/
 		//----------------------------------------------------------------------------------------------------
 		
 		//-----------------------------------------------------------------------------------------------------
