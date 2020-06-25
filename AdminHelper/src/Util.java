@@ -94,6 +94,13 @@ public class Util {
 			writer.writeObject(new PemObject("RSA PRIVATE KEY", kp.getPrivate().getEncoded()));
 		}
 	}
+	
+	static void writePrivate(PrivateKey pk, String fileName) throws Exception {
+
+		try (PemWriter writer = new PemWriter(new FileWriter(fileName))) {
+			writer.writeObject(new PemObject("RSA PRIVATE KEY", pk.getEncoded()));
+		}
+	}
 
 
 	static void readCSRToFileBase64Encoded(String fileName) throws Exception {

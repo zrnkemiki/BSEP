@@ -48,7 +48,7 @@ export class AuthenticationService {
   }
 
   login(loginDto: LoginDTO) {
-    return this.http.post<any>(`http://localhost:9003/login`, loginDto)
+    return this.http.post<any>(`https://localhost:9003/login`, loginDto)
       .pipe(map(userDTO => {
         if (userDTO && userDTO.jwttoken) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -58,15 +58,15 @@ export class AuthenticationService {
         }
         return userDTO;
       })).subscribe(
-        (data) => { },
-        error => { alert("Pogrešno ime i/ili lozinka, pokušajte ponovo") }
+        (data) => { alert("Successful!") },
+        error => { alert("Wrong username or password!") }
       );
 
       
   }
 
   loginCA(loginCaDTO: LoginCaDTO){
-    this.http.post<any>('http://localhost:9003/login/loginCA', loginCaDTO)
+    this.http.post<any>('https://localhost:9003/login/loginCA', loginCaDTO)
     .subscribe(
       data => {
         alert("Successfuly sent");

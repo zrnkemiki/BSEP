@@ -19,8 +19,12 @@ export class CsrService {
 
   constructor(private http : HttpClient, private router: Router) { }
 
+  testMail(){
+    this.http.get<any>('https://localhost:9003/login/testMail').subscribe(data => {alert(data)});
+  }
+
   csrSubmit(csr: String){
-    this.http.post<CsrDTO>('http://localhost:9003/country-ca/csrData', csr)
+    this.http.post<CsrDTO>('https://localhost:9003/country-ca/csrData', csr)
     .subscribe(
       csr => {
         this.csrs.push(csr);
@@ -31,7 +35,7 @@ export class CsrService {
   }
 
   getAll() {
-    this.http.get<CsrDTO[]>('http://localhost:9003/country-ca/getAll')
+    this.http.get<CsrDTO[]>('https://localhost:9003/country-ca/getAll')
       .subscribe(csrs => {
         this.csrs = csrs;
         this.csrSource.next(this.csrs);
@@ -39,11 +43,11 @@ export class CsrService {
   }
 
   getCsr(id: number) : Observable<any>{
-    return this.http.get<CsrDTO>('http://localhost:9003/country-ca/getCSR' + "/" + id);
+    return this.http.get<CsrDTO>('https://localhost:9003/country-ca/getCSR' + "/" + id);
   }
 
   generateCertificate(id: number) : Observable<any>{
-    return this.http.get<CsrDTO>('http://localhost:9003/country-ca/generateCertificate' + "/"  + id);
+    return this.http.get<CsrDTO>('https://localhost:9003/country-ca/generateCertificate' + "/"  + id);
   }
 
 }

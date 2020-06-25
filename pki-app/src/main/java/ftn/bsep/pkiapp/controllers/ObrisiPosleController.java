@@ -32,13 +32,17 @@ import ftn.bsep.pkiapp.certificates.CertificateGenerator;
 import ftn.bsep.pkiapp.data.RootData;
 import ftn.bsep.pkiapp.keystores.KeyStoreReader;
 import ftn.bsep.pkiapp.keystores.KeyStoreWriter;
+import ftn.bsep.pkiapp.util.OCSPChecker;
 
 @RestController
 public class ObrisiPosleController {
-
-	@GetMapping("/ca.cer")
-	public String genRoot() throws Exception {
-		System.out.println("USAO");
+	OCSPChecker ocspChecker = new OCSPChecker();
+	
+	@GetMapping("/ocsp")
+	public String genRoot(HttpServletRequest request) throws Exception {
+		X509Certificate[] certs = (X509Certificate[])request.getAttribute("javax.servlet.request.X509Certificate");
+		System.out.println(certs[0].toString());
+		ocspChecker.makeCertChain(certs[0]);
 		
 		
 		return "Ok";
@@ -49,6 +53,7 @@ public class ObrisiPosleController {
 		X509Certificate[] certs = (X509Certificate[])request.getAttribute("javax.servlet.request.X509Certificate");
 		for(X509Certificate cert : certs) {
 			System.out.println(cert.toString());
+			
 		}
 		
 		CertificateFactory cf = null;

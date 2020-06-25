@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,7 @@ import ftn.bsep.pkiapp.model.CACountry;
 import ftn.bsep.pkiapp.model.CertificateAuthority;
 import ftn.bsep.pkiapp.model.Csr;
 import ftn.bsep.pkiapp.services.CSRService;
+import ftn.bsep.pkiapp.services.CertificateAuthorityService;
 import ftn.bsep.pkiapp.util.CertHelper;
 import ftn.bsep.pkiapp.util.DataGenerator;
 
@@ -42,25 +44,15 @@ public class CountryCAController {
 	@Autowired
 	CSRService csrService;
 	
+	@Autowired
+	CertificateAuthorityService caService;
+	
 	CertificateAuthority ca = new CACountry("D:\\BSEP\\pki-app\\src\\main\\resources\\rootStores\\DFRoot-keystore.jks", null, "password", "root");
 	CSRGenerator csrGen = new CSRGenerator();
 	DataGenerator dataGen = new DataGenerator();
 	PKCS10CertificationRequest csr = null;
-	
-	@GetMapping("/gen-root")
-	public String genRoot() throws Exception {
-		RootData rootData = dataGen.generateRootData();
-		CertificateGenerator certGen = new CertificateGenerator();
-		X509Certificate rootCert = certGen.generateSelfSignedCertificate(rootData);
 		
-		
-		return "Ok";
-	}
-	
-
-	
-	
-	//TEST CONTROLER
+	@PreAuthorize("hasAuthority('ADMIN_MU')")
 	@PostMapping(value = "/csrData")
 	public ResponseEntity<?> csrDataSubmit(@RequestBody()String csrString) throws IOException, OperatorCreationException, PKCSException {
 		PKCS10CertificationRequest csr = CertHelper.csrStringToCsrPKCS(csrString);
@@ -93,7 +85,7 @@ public class CountryCAController {
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
         }
 	}
-	
+	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getAll() {
 		
@@ -107,7 +99,7 @@ public class CountryCAController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@GetMapping(value = "/getCSR/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Csr> getCSR(@PathVariable("param") Long id) throws Exception {
 		Csr csr = csrService.findByID(id);
@@ -117,7 +109,7 @@ public class CountryCAController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@GetMapping(value = "/generateCertificate/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Csr> generateCertificate(@PathVariable("param") Long id) throws Exception {
 		System.out.println("A");
@@ -125,6 +117,7 @@ public class CountryCAController {
 		
 		PKCS10CertificationRequest csrPkcs = CertHelper.csrStringToCsrPKCS(csr.getCsrStringReq());
 		X509Certificate cert = ca.signCertificate(csrPkcs);
+		//ovo treba da bude slanje mejla
 		CertHelper.writeCertToFileBase64Encoded((Certificate)cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ClientCert.cer");
 		
 		try {

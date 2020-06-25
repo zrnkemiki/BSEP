@@ -2,6 +2,7 @@ package ftn.bsep.pkiapp.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,7 @@ import ftn.bsep.pkiapp.dto.SubjectDataDTO;
 @RequestMapping(value = "/subject-data")
 public class SubjectDataController {
 		
-	
+	@PreAuthorize("hasAuthority('ADMIN_CA')")
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<SubjectDataDTO> addSubjectData(@RequestBody SubjectDataDTO subjectDataDto){
 		System.out.println("Usao sam u funkciju new subject Data!\n");
