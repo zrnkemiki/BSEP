@@ -1,0 +1,30 @@
+2020-06-25 15:59:04 INFORMATIONAL 507 RS-VJ1 Microsoft-Windows-Kernel-Power EnergyDrain{0} DripsResidencyInUs{1855196107} DisconnectedStandby {false}
+2020-06-25 15:59:07 WARNING 9999 RS-VJ1 LOGIN-SECURITY {user: id=1361361; too many login requests}
+2020-06-25 15:59:09 FAILURE_AUDIT 4625 RS-VJ3 Microsoft-Windows-Security-Auditing S-1-5-18 DESKTOP-RS-VJ3$ WORKGROUP 0x3e7 S-1-0-0 Laptop DESKTOP-RS-VJ3 0xc000006d %%2313 0xc000006a 2 User32  Negotiate DESKTOP-RS-VJ3 - - 0 0xae8 C:\Windows\System32\svchost.exe 127.0.0.1 0
+2020-06-25 15:59:10 INFORMATIONAL 507 RS-VJ1 Microsoft-Windows-Kernel-Power EnergyDrain{0} DripsResidencyInUs{1855196107} DisconnectedStandby {false}
+2020-06-25 15:59:13 WARNING 9999 RS-VJ1 LOGIN-SECURITY {user: id=1361361; too many login requests}
+2020-06-25 15:59:15 FAILURE_AUDIT 4625 RS-VJ3 Microsoft-Windows-Security-Auditing S-1-5-18 DESKTOP-RS-VJ3$ WORKGROUP 0x3e7 S-1-0-0 Laptop DESKTOP-RS-VJ3 0xc000006d %%2313 0xc000006a 2 User32  Negotiate DESKTOP-RS-VJ3 - - 0 0xae8 C:\Windows\System32\svchost.exe 127.0.0.1 0
+2020-06-25 15:59:16 INFORMATIONAL 507 RS-VJ1 Microsoft-Windows-Kernel-Power EnergyDrain{0} DripsResidencyInUs{1855196107} DisconnectedStandby {false}
+2020-06-25 15:59:19 WARNING 9999 RS-VJ1 LOGIN-SECURITY {user: id=1361361; too many login requests}
+2020-06-25 15:59:21 FAILURE_AUDIT 4625 RS-VJ3 Microsoft-Windows-Security-Auditing S-1-5-18 DESKTOP-RS-VJ3$ WORKGROUP 0x3e7 S-1-0-0 Laptop DESKTOP-RS-VJ3 0xc000006d %%2313 0xc000006a 2 User32  Negotiate DESKTOP-RS-VJ3 - - 0 0xae8 C:\Windows\System32\svchost.exe 127.0.0.1 0
+2020-06-25 15:59:22 INFORMATIONAL 507 RS-VJ1 Microsoft-Windows-Kernel-Power EnergyDrain{0} DripsResidencyInUs{1855196107} DisconnectedStandby {false}
+2020-06-25 15:59:25 WARNING 9999 RS-VJ1 LOGIN-SECURITY {user: id=1361361; too many login requests}
+2020-06-25 15:59:27 FAILURE_AUDIT 4625 RS-VJ3 Microsoft-Windows-Security-Auditing S-1-5-18 DESKTOP-RS-VJ3$ WORKGROUP 0x3e7 S-1-0-0 Laptop DESKTOP-RS-VJ3 0xc000006d %%2313 0xc000006a 2 User32  Negotiate DESKTOP-RS-VJ3 - - 0 0xae8 C:\Windows\System32\svchost.exe 127.0.0.1 0
+2020-06-25 15:59:28 INFORMATIONAL 507 RS-VJ1 Microsoft-Windows-Kernel-Power EnergyDrain{0} DripsResidencyInUs{1855196107} DisconnectedStandby {false}
+2020-06-25 15:59:31 WARNING 9999 RS-VJ1 LOGIN-SECURITY {user: id=1361361; too many login requests}
+2020-06-25 15:59:33 FAILURE_AUDIT 4625 RS-VJ3 Microsoft-Windows-Security-Auditing S-1-5-18 DESKTOP-RS-VJ3$ WORKGROUP 0x3e7 S-1-0-0 Laptop DESKTOP-RS-VJ3 0xc000006d %%2313 0xc000006a 2 User32  Negotiate DESKTOP-RS-VJ3 - - 0 0xae8 C:\Windows\System32\svchost.exe 127.0.0.1 0
+2020-06-25 15:59:34 INFORMATIONAL 507 RS-VJ1 Microsoft-Windows-Kernel-Power EnergyDrain{0} DripsResidencyInUs{1855196107} DisconnectedStandby {false}
+2020-06-25 15:59:37 WARNING 9999 RS-VJ1 LOGIN-SECURITY {user: id=1361361; too many login requests}
+2020-06-25 15:59:39 FAILURE_AUDIT 4625 RS-VJ3 Microsoft-Windows-Security-Auditing S-1-5-18 DESKTOP-RS-VJ3$ WORKGROUP 0x3e7 S-1-0-0 Laptop DESKTOP-RS-VJ3 0xc000006d %%2313 0xc000006a 2 User32  Negotiate DESKTOP-RS-VJ3 - - 0 0xae8 C:\Windows\System32\svchost.exe 127.0.0.1 0
+2020-06-25 15:59:40 INFORMATIONAL 507 RS-VJ1 Microsoft-Windows-Kernel-Power EnergyDrain{0} DripsResidencyInUs{1855196107} DisconnectedStandby {false}
+2020-06-25 15:59:43 WARNING 9999 RS-VJ1 LOGIN-SECURITY {user: id=1361361; too many login requests}
+2020-06-25 15:59:45 FAILURE_AUDIT 4625 RS-VJ3 Microsoft-Windows-Security-Auditing S-1-5-18 DESKTOP-RS-VJ3$ WORKGROUP 0x3e7 S-1-0-0 Laptop DESKTOP-RS-VJ3 0xc000006d %%2313 0xc000006a 2 User32  Negotiate DESKTOP-RS-VJ3 - - 0 0xae8 C:\Windows\System32\svchost.exe 127.0.0.1 0
+2020-06-25 15:59:46 INFORMATIONAL 507 RS-VJ1 Microsoft-Windows-Kernel-Power EnergyDrain{0} DripsResidencyInUs{1855196107} DisconnectedStandby {false}
+2020-06-25 15:59:49 WARNING 9999 RS-VJ1 LOGIN-SECURITY {user: id=1361361; too many login requests}
+2020-06-25 15:59:51 FAILURE_AUDIT 4625 RS-VJ3 Microsoft-Windows-Security-Auditing S-1-5-18 DESKTOP-RS-VJ3$ WORKGROUP 0x3e7 S-1-0-0 Laptop DESKTOP-RS-VJ3 0xc000006d %%2313 0xc000006a 2 User32  Negotiate DESKTOP-RS-VJ3 - - 0 0xae8 C:\Windows\System32\svchost.exe 127.0.0.1 0
+2020-06-25 15:59:52 INFORMATIONAL 507 RS-VJ1 Microsoft-Windows-Kernel-Power EnergyDrain{0} DripsResidencyInUs{1855196107} DisconnectedStandby {false}
+2020-06-25 15:59:55 WARNING 9999 RS-VJ1 LOGIN-SECURITY {user: id=1361361; too many login requests}
+2020-06-25 15:59:57 FAILURE_AUDIT 4625 RS-VJ3 Microsoft-Windows-Security-Auditing S-1-5-18 DESKTOP-RS-VJ3$ WORKGROUP 0x3e7 S-1-0-0 Laptop DESKTOP-RS-VJ3 0xc000006d %%2313 0xc000006a 2 User32  Negotiate DESKTOP-RS-VJ3 - - 0 0xae8 C:\Windows\System32\svchost.exe 127.0.0.1 0
+2020-06-25 15:59:58 INFORMATIONAL 507 RS-VJ1 Microsoft-Windows-Kernel-Power EnergyDrain{0} DripsResidencyInUs{1855196107} DisconnectedStandby {false}
+2020-06-25 16:00:01 WARNING 9999 RS-VJ1 LOGIN-SECURITY {user: id=1361361; too many login requests}
+2020-06-25 16:00:03 FAILURE_AUDIT 4625 RS-VJ3 Microsoft-Windows-Security-Auditing S-1-5-18 DESKTOP-RS-VJ3$ WORKGROUP 0x3e7 S-1-0-0 Laptop DESKTOP-RS-VJ3 0xc000006d %%2313 0xc000006a 2 User32  Negotiate DESKTOP-RS-VJ3 - - 0 0xae8 C:\Windows\System32\svchost.exe 127.0.0.1 0
