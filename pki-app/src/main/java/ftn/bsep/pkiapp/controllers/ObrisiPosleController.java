@@ -28,13 +28,21 @@ import org.bouncycastle.util.io.pem.PemWriter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ftn.bsep.pkiapp.certificates.CertificateGenerator;
+import ftn.bsep.pkiapp.data.RootData;
 import ftn.bsep.pkiapp.keystores.KeyStoreReader;
 import ftn.bsep.pkiapp.keystores.KeyStoreWriter;
 
 @RestController
 public class ObrisiPosleController {
 
-
+	@GetMapping("/ca.cer")
+	public String genRoot() throws Exception {
+		System.out.println("USAO");
+		
+		
+		return "Ok";
+	}
 	@GetMapping("/ok")
 	public String ok(HttpServletRequest request) {
 
