@@ -10,7 +10,7 @@ public class CertificateAuthorityService {
 	
 	public void initCA(String alias, String privateKeyPass) {
 		
-		ca = new CACountry("D:\\BSEP\\pki-app\\src\\main\\resources\\CAStores\\ca-rs-keystore.jks", null, privateKeyPass, alias);
+		ca = new CACountry("C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\pki-app\\src\\main\\resources\\CAStores\\ca-rs-keystore.jks", null, privateKeyPass, alias);
 	}
 	
 	public CACountry getCA() {

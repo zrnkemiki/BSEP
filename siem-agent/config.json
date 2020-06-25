@@ -3,18 +3,13 @@
 		{
 			"type": "OS Windows",
 			"path": "",
+			"kind": "Security",
 			"filter": "regex",
 			"interval": 5
 		},
 		{
-			"type": "OS Linux",
-			"path": "/var/log",
-			"filter": "regex",
-			"interval": -1
-		},
-		{
 			"type": "Application",
-			"path": "/logs/app",
+			"path": "C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\siem-agent\\logs\\app",
 			"filter": "regex",
 			"interval": -1
 		},

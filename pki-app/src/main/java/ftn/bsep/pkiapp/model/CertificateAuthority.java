@@ -59,8 +59,8 @@ public abstract class CertificateAuthority {
 	// mozda sertifikat kao polje?
 	// .....
 	protected String alias;
-	protected String keyStorePath = "D:\\BSEP\\pki-app\\src\\main\\resources\\CAStores\\ca-keystore.jks";
-	protected String trustStorePath = "D:\\BSEP\\pki-app\\src\\main\\resources\\rootStores\\root-truststore.jks";
+	protected String keyStorePath;
+	protected String trustStorePath;
 	protected KeyStore keystore;
 	protected KeyStore truststore;
 	protected String password = "password";
@@ -165,9 +165,9 @@ public abstract class CertificateAuthority {
 
 		// Adding AuthorityInfoAccess Extensions
 		AccessDescription caIssuers = new AccessDescription(AccessDescription.id_ad_caIssuers, new GeneralName(
-				GeneralName.uniformResourceIdentifier, new DERIA5String("https://localhost:9005/ca.cer")));
+				GeneralName.uniformResourceIdentifier, new DERIA5String("https://localhost:9003/ca.cer")));
 		AccessDescription ocsp = new AccessDescription(AccessDescription.id_ad_ocsp,
-				new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("https://localhost:9005/b")));
+				new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("https://localhost:9003/ocsp")));
 
 		ASN1EncodableVector aia_ASN = new ASN1EncodableVector();
 		aia_ASN.add(caIssuers);
@@ -189,7 +189,7 @@ public abstract class CertificateAuthority {
 		KeyStoreWriter ksw = new KeyStoreWriter();
 		ksw.loadKeyStore(null, "password".toCharArray());
 		ksw.storeCertificate(this.getAlias(), issuedCert);
-		ksw.saveKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\issuedCerts\\issuedCertsStore.jks",
+		ksw.saveKeyStore("C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\pki-app\\src\\main\\resources\\issuedCerts\\issuedCertsStore.jks",
 				"password".toCharArray());
 		return issuedCert;
 
