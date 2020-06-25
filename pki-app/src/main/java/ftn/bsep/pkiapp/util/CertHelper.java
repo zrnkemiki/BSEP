@@ -1,6 +1,7 @@
 package ftn.bsep.pkiapp.util;
 
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -37,6 +38,7 @@ import org.bouncycastle.operator.jcajce.JcaContentVerifierProviderBuilder;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import org.bouncycastle.pkcs.PKCSException;
 import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemWriter;
 
 import ftn.bsep.pkiapp.model.Csr;
 
@@ -240,6 +242,13 @@ public class CertHelper {
 			}
 		}
 		return certBuilder;
+	}
+	
+	public static void writePrivateKeyToFilePem(KeyPair kp, String fileName) throws Exception {
+
+		try (PemWriter writer = new PemWriter(new FileWriter(fileName))) {
+			writer.writeObject(new PemObject("RSA PRIVATE KEY", kp.getPrivate().getEncoded()));
+		}
 	}
 
 	

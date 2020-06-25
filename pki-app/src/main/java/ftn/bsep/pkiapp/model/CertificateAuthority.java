@@ -67,13 +67,12 @@ public abstract class CertificateAuthority {
 	protected KeyStoreReader keystoreReader;
 	protected KeyStoreWriter keystoreWriter;
 	protected ContentSigner contentSigner;
-	
-	
+
 	public CertificateAuthority() {
 		alias = "ca-rs";
 		this.keystoreReader = new KeyStoreReader();
 		this.keystoreWriter = new KeyStoreWriter();
-		//LOAD STORES
+		// LOAD STORES
 		try {
 			this.loadStores();
 		} catch (NoSuchAlgorithmException e) {
@@ -85,15 +84,15 @@ public abstract class CertificateAuthority {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//Content Signer
+		// Content Signer
 		try {
 			this.buildContentSigner();
 		} catch (OperatorCreationException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public CertificateAuthority(String keyStorePath, String trustStorePath, String password, String alias) {
 		this.alias = alias;
 		this.keyStorePath = keyStorePath;
@@ -105,9 +104,9 @@ public abstract class CertificateAuthority {
 
 	public void buildContentSigner() throws OperatorCreationException {
 		JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider("BC");
-        this.contentSigner = builder.build(this.getPrivateKey());
+		this.contentSigner = builder.build(this.getPrivateKey());
 	}
-	
+
 	public void loadStores() throws NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException {
 		System.out.println(this.keyStorePath);
 		System.out.println(this.password);
@@ -115,142 +114,151 @@ public abstract class CertificateAuthority {
 		truststore.load(new FileInputStream(trustStorePath), password.toCharArray());
 	}
 
-	//provera potpisa CSR -> dokazuje da entitet koji je poslao csr ima privatni kljuc
+	// provera potpisa CSR -> dokazuje da entitet koji je poslao csr ima privatni
+	// kljuc
 	public boolean checkCSRSigniture(PKCS10CertificationRequest csr) throws OperatorCreationException, PKCSException {
-		
+
 		JcaContentVerifierProviderBuilder builder = new JcaContentVerifierProviderBuilder().setProvider("BC");
 		return csr.isSignatureValid(builder.build(csr.getSubjectPublicKeyInfo()));
-		
+
 	}
-	
+
 	public String getCSRData(PKCS10CertificationRequest csr) {
 		String data = "";
 		data = csr.getSubject().toString();
-		//petlja trenutno ne radi nista posto ne dodajemo atribute u csr
-		for(Attribute a : csr.getAttributes()) {
+		// petlja trenutno ne radi nista posto ne dodajemo atribute u csr
+		for (Attribute a : csr.getAttributes()) {
 			data += " ";
 			data += a.toString();
 		}
 		return data;
 	}
-	
-	public X509Certificate signCertificate(PKCS10CertificationRequest csr) throws NoSuchAlgorithmException, CertIOException, OperatorCreationException, CertificateException, InvalidKeyException, NoSuchProviderException, SignatureException {
-		//potrebni podaci CA-ja
-		IssuerData issuerData = this.getKeystoreReader().readIssuerFromStore(this.keyStorePath,this.alias, this.password.toCharArray(),  this.password.toCharArray());
+
+	public X509Certificate signCertificate(PKCS10CertificationRequest csr)
+			throws NoSuchAlgorithmException, CertIOException, OperatorCreationException, CertificateException,
+			InvalidKeyException, NoSuchProviderException, SignatureException {
+		// potrebni podaci CA-ja
+		IssuerData issuerData = this.getKeystoreReader().readIssuerFromStore(this.keyStorePath, this.alias,
+				this.password.toCharArray(), this.password.toCharArray());
 		Certificate issuerCert = this.getKeystoreReader().readCertificate(this.keyStorePath, this.password, this.alias);
-		
-		//Datumi vazenja sertifikata (startDate -> trenutno vreme, endDate -> +6meseci)
+
+		// Datumi vazenja sertifikata (startDate -> trenutno vreme, endDate -> +6meseci)
 		Calendar cal = Calendar.getInstance();
 		Date startDate = cal.getTime();
 		cal.add(Calendar.MONTH, 6);
 		Date endDate = cal.getTime();
-		//================================================================================================	
-		//Pravljenje sertifikata
-		
-		X509v3CertificateBuilder issuedCertBuilder = new X509v3CertificateBuilder(issuerData.getX500name(), BigInteger.valueOf(333333), startDate, endDate, csr.getSubject(), csr.getSubjectPublicKeyInfo());
-        JcaX509ExtensionUtils issuedCertExtUtils = new JcaX509ExtensionUtils();
-      
-        
-        // Add Issuer cert identifier as Extension
-        issuedCertBuilder.addExtension(Extension.authorityKeyIdentifier, false, issuedCertExtUtils.createAuthorityKeyIdentifier((X509Certificate) issuerCert));
-        issuedCertBuilder.addExtension(Extension.subjectKeyIdentifier, false, issuedCertExtUtils.createSubjectKeyIdentifier(csr.getSubjectPublicKeyInfo()));
-        
-        // Add Extensions from csr
-        issuedCertBuilder = CertHelper.setCertAttributes(issuedCertBuilder, csr);
-        
-        // Adding AuthorityInfoAccess Extensions
-        AccessDescription caIssuers = new AccessDescription(AccessDescription.id_ad_caIssuers, new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("http://localhost:9005/ca.cer")));
-        AccessDescription ocsp = new AccessDescription(AccessDescription.id_ad_ocsp, new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("http://localhost:9005/b")));
-         
-        ASN1EncodableVector aia_ASN = new ASN1EncodableVector();
-        aia_ASN.add(caIssuers);
-        aia_ASN.add(ocsp);
-        issuedCertBuilder.addExtension(Extension.authorityInfoAccess, false, new DERSequence(aia_ASN));
-        //============================================================================================================================================================================================
-        //Potpisivanje sertifikata
-        JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
-		contentSignerBuilder = contentSignerBuilder.setProvider("BC");
-		ContentSigner contentSigner = contentSignerBuilder.build(this.getPrivateKey());  
-        X509CertificateHolder issuedCertHolder = issuedCertBuilder.build(contentSigner);
-        
-        
-        X509Certificate issuedCert  = new JcaX509CertificateConverter().setProvider("BC").getCertificate(issuedCertHolder);
+		// ================================================================================================
+		// Pravljenje sertifikata
 
-        // Verify the issued cert signature against the root (issuer) cert
-        issuedCert.verify(issuerCert.getPublicKey(), "BC");
-        //Dodavanje sertifikata u store radi pregleda
+		X509v3CertificateBuilder issuedCertBuilder = new X509v3CertificateBuilder(issuerData.getX500name(),
+				BigInteger.valueOf(333333), startDate, endDate, csr.getSubject(), csr.getSubjectPublicKeyInfo());
+		JcaX509ExtensionUtils issuedCertExtUtils = new JcaX509ExtensionUtils();
+
+		// Add Issuer cert identifier as Extension
+		issuedCertBuilder.addExtension(Extension.authorityKeyIdentifier, false,
+				issuedCertExtUtils.createAuthorityKeyIdentifier((X509Certificate) issuerCert));
+		issuedCertBuilder.addExtension(Extension.subjectKeyIdentifier, false,
+				issuedCertExtUtils.createSubjectKeyIdentifier(csr.getSubjectPublicKeyInfo()));
+
+		// Add Extensions from csr
+		issuedCertBuilder = CertHelper.setCertAttributes(issuedCertBuilder, csr);
+
+		// Adding AuthorityInfoAccess Extensions
+		AccessDescription caIssuers = new AccessDescription(AccessDescription.id_ad_caIssuers, new GeneralName(
+				GeneralName.uniformResourceIdentifier, new DERIA5String("https://localhost:9005/ca.cer")));
+		AccessDescription ocsp = new AccessDescription(AccessDescription.id_ad_ocsp,
+				new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("https://localhost:9005/b")));
+
+		ASN1EncodableVector aia_ASN = new ASN1EncodableVector();
+		aia_ASN.add(caIssuers);
+		aia_ASN.add(ocsp);
+		issuedCertBuilder.addExtension(Extension.authorityInfoAccess, false, new DERSequence(aia_ASN));
+		// ============================================================================================================================================================================================
+		// Potpisivanje sertifikata
+		JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
+		contentSignerBuilder = contentSignerBuilder.setProvider("BC");
+		ContentSigner contentSigner = contentSignerBuilder.build(this.getPrivateKey());
+		X509CertificateHolder issuedCertHolder = issuedCertBuilder.build(contentSigner);
+
+		X509Certificate issuedCert = new JcaX509CertificateConverter().setProvider("BC")
+				.getCertificate(issuedCertHolder);
+
+		// Verify the issued cert signature against the root (issuer) cert
+		issuedCert.verify(issuerCert.getPublicKey(), "BC");
+		// Dodavanje sertifikata u store radi pregleda
 		KeyStoreWriter ksw = new KeyStoreWriter();
 		ksw.loadKeyStore(null, "password".toCharArray());
 		ksw.storeCertificate(this.getAlias(), issuedCert);
-		ksw.saveKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\issuedCerts\\issuedCertsStore.jks", "password".toCharArray());
-        return issuedCert;
-		
+		ksw.saveKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\issuedCerts\\issuedCertsStore.jks",
+				"password".toCharArray());
+		return issuedCert;
+
 	}
+
 	public String getAlias() {
 		return alias;
 	}
+
 	public String getNewAlias() {
 		KeyStoreReader ksr = new KeyStoreReader();
-		ArrayList<Integer> aliases = ksr.getKeyStoreAliases("D:\\BSEP\\pki-app\\src\\main\\resources\\issuedCerts\\issuedCertsStore.jks", "password");
-		 Collections.sort(aliases);
-		 int last = aliases.get(aliases.size()-1);
-		 int newAlias = last + 1;
-		 return String.valueOf(newAlias);		
+		ArrayList<Integer> aliases = ksr.getKeyStoreAliases(
+				"D:\\BSEP\\pki-app\\src\\main\\resources\\issuedCerts\\issuedCertsStore.jks", "password");
+		if(aliases.size() == 0) {
+			return "1";
+		}
+		Collections.sort(aliases);
+		int last = aliases.get(aliases.size() - 1);
+		int newAlias = last + 1;
+		return String.valueOf(newAlias);
 	}
 
 	public ArrayList<Certificate> getIssuedCertificate() {
 		KeyStoreReader ksr = new KeyStoreReader();
-		return ksr.getKeyStoreContent("D:\\BSEP\\pki-app\\src\\main\\resources\\issuedCerts\\issuedCertsStore.jks", "password");	
+		return ksr.getKeyStoreContent("D:\\BSEP\\pki-app\\src\\main\\resources\\issuedCerts\\issuedCertsStore.jks",
+				"password");
 	}
+
 	public void setAlias(String alias) {
 		this.alias = alias;
 	}
-
 
 	public KeyStoreReader getKeystoreReader() {
 		return keystoreReader;
 	}
 
-
 	public void setKeystoreReader(KeyStoreReader keystoreReader) {
 		this.keystoreReader = keystoreReader;
 	}
-
 
 	public KeyStoreWriter getKeystoreWriter() {
 		return keystoreWriter;
 	}
 
-
 	public void setKeystoreWriter(KeyStoreWriter keystoreWriter) {
 		this.keystoreWriter = keystoreWriter;
 	}
-
 
 	public String getKeyStore() {
 		return keyStorePath;
 	}
 
-
 	public void setKeyStore(String keyStore) {
 		this.keyStorePath = keyStore;
 	}
-
 
 	public String getTrustStore() {
 		return trustStorePath;
 	}
 
-
 	public void setTrustStore(String trustStore) {
 		this.trustStorePath = trustStore;
 	}
-	
+
 	public PrivateKey getPrivateKey() {
 		PrivateKey privateKey = this.keystoreReader.readPrivateKey(keyStorePath, password, alias, password);
 		return privateKey;
 	}
-	
+
 	public Certificate getCertificate() {
 		return this.keystoreReader.readCertificate(keyStorePath, password, alias);
 	}
@@ -302,11 +310,5 @@ public abstract class CertificateAuthority {
 	public void setContentSigner(ContentSigner contentSigner) {
 		this.contentSigner = contentSigner;
 	}
-	
-	
-	
-	
-	
-	
-	
+
 }

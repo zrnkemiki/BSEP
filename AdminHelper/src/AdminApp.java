@@ -30,7 +30,7 @@ public class AdminApp {
 		//Util.writeCertToPem(cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\rootStores\\ClientCert.pem");
 		//Util.readCSRToFileBase64Encoded("D:\\BSEP\\AdminHelper\\recources\\csrClient.pem");
 		//Util.generateKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ClientCert.cer", "D:\\BSEP\\AdminHelper\\recources\\privateKeyClient.key", "password", "password", "client", "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\client-keystore.jks");
-		//DataGenerator dataGen = new DataGenerator();
+		DataGenerator dataGen = new DataGenerator();
 		//------------------------------------------------------------------------------------------------
 		//Pravljenje SIEMAgent Data -- TO-DO - Unos parametara za formiranje Subjekta i Ekstenzija
 		/*
@@ -42,31 +42,31 @@ public class AdminApp {
 		
 		//------------------------------------------------------------------------------------------------
 		//Pravljenje SIEMServer Data -- TO-DO - Unos parametara za formiranje Subjekta i Ekstenzija
-		/*
+		
 		KeyPair keyPairSubject = Util.generateKeyPair();
 		SubjectData subjectData = dataGen.generateSSLData(keyPairSubject);
 		ArrayList<CSRExtension> extensions = dataGen.generateServerExtensions();
-		*/
+		
 		//------------------------------------------------------------------------------------------------
 	
 		//-------------------------------------------------------------------------------------------------
 		//Generisi CSR zahtev -> Opcija 1
-		/*
+		
 		CSRGenerator csrGen = new CSRGenerator();		
 		PKCS10CertificationRequest csr = null;
 		try {
 			csr = csrGen.generateCSR(subjectData, extensions);
-			Util.writeCSRToFileBase64Encoded(csr, "D:\\BSEP\\AdminHelper\\recources\\csrs\\csrName.pem");
-			Util.writePrivateKeyToFilePem(keyPairSubject, "D:\\BSEP\\AdminHelper\\recources\\csrs\\privateKeyName.key");
+			Util.writeCSRToFileBase64Encoded(csr, "D:\\BSEP\\AdminHelper\\recources\\csrs\\SiemCenter\\csrSiemCenter.pem");
+			Util.writePrivateKeyToFilePem(keyPairSubject, "D:\\BSEP\\AdminHelper\\recources\\csrs\\SiemCenter\\privateKeySiemCenter.key");
 		} catch (OperatorCreationException | IOException e) {
 			e.printStackTrace();
 		}
-		*/
+		
 		//----------------------------------------------------------------------------------------------------
 		
 		//-----------------------------------------------------------------------------------------------------
 		//Generisi KeyStore - params(certFile, privateKeyFile, keyStorePassword, privateKeyPassword, alias, keyStoreFile) -> Opcija 2
-		//Util.generateKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ClientCert.cer", "D:\\BSEP\\AdminHelper\\recources\\privateKeyClient.key", "password", "password", "client", "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\client-keystore.jks");
+		 //Util.generateKeyStore("D:\\BSEP\\AdminHelper\\recources\\ClientCert.cer", "D:\\BSEP\\AdminHelper\\recources\\csrs\\SiemAgent\\privateKeySiemAgent.key", "password", "password", "rs-mu1-agent", "D:\\BSEP\\AdminHelper\\recources\\agent-rs-mu1.jk");
 		//-------------------------------------------------------------------------------------------------------------------
 		//KeyStoreReader ksr = new KeyStoreReader();
 		//PrivateKey privateKey = ksr.readPrivateKey("D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\server-keystore.jks", "password", "ca-rs", "password");
