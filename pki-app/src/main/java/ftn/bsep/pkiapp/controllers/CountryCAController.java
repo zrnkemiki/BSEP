@@ -33,6 +33,7 @@ import ftn.bsep.pkiapp.model.CACountry;
 import ftn.bsep.pkiapp.model.CertificateAuthority;
 import ftn.bsep.pkiapp.model.Csr;
 import ftn.bsep.pkiapp.services.CSRService;
+import ftn.bsep.pkiapp.services.CertificateAuthorityService;
 import ftn.bsep.pkiapp.util.CertHelper;
 import ftn.bsep.pkiapp.util.DataGenerator;
 
@@ -42,22 +43,14 @@ public class CountryCAController {
 	@Autowired
 	CSRService csrService;
 	
+	@Autowired
+	CertificateAuthorityService caService;
+	
 	CertificateAuthority ca = new CACountry("D:\\BSEP\\pki-app\\src\\main\\resources\\rootStores\\DFRoot-keystore.jks", null, "password", "root");
 	CSRGenerator csrGen = new CSRGenerator();
 	DataGenerator dataGen = new DataGenerator();
 	PKCS10CertificationRequest csr = null;
-	
-	@GetMapping("/gen-root")
-	public String genRoot() throws Exception {
-		RootData rootData = dataGen.generateRootData();
-		CertificateGenerator certGen = new CertificateGenerator();
-		X509Certificate rootCert = certGen.generateSelfSignedCertificate(rootData);
 		
-		
-		return "Ok";
-	}
-	
-	
 	//TEST CONTROLER
 	@PostMapping(value = "/csrData")
 	public ResponseEntity<?> csrDataSubmit(@RequestBody()String csrString) throws IOException, OperatorCreationException, PKCSException {
@@ -123,6 +116,7 @@ public class CountryCAController {
 		
 		PKCS10CertificationRequest csrPkcs = CertHelper.csrStringToCsrPKCS(csr.getCsrStringReq());
 		X509Certificate cert = ca.signCertificate(csrPkcs);
+		//ovo treba da bude slanje mejla
 		CertHelper.writeCertToFileBase64Encoded((Certificate)cert, "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ClientCert.cer");
 		
 		try {

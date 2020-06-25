@@ -191,16 +191,6 @@ public ArrayList<CSRExtension> generateClientExtensions() {
     ext = new CSRExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_clientAuth));
     extensions.add(ext);
     
-    AccessDescription caIssuers = new AccessDescription(AccessDescription.id_ad_caIssuers,
-            new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("http://localhost:9005/ca.cer")));
-    AccessDescription ocsp = new AccessDescription(AccessDescription.id_ad_ocsp,
-            new GeneralName(GeneralName.uniformResourceIdentifier, new DERIA5String("http://localhost:9005/b")));
-     
-    ASN1EncodableVector aia_ASN = new ASN1EncodableVector();
-    aia_ASN.add(caIssuers);
-    aia_ASN.add(ocsp);
-    ext = new CSRExtension(Extension.authorityInfoAccess, false, new DERSequence(aia_ASN));
-    extensions.add(ext);
 	return extensions;
 }
 

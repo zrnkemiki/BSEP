@@ -28,19 +28,32 @@ import org.bouncycastle.util.io.pem.PemWriter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ftn.bsep.pkiapp.certificates.CertificateGenerator;
+import ftn.bsep.pkiapp.data.RootData;
 import ftn.bsep.pkiapp.keystores.KeyStoreReader;
 import ftn.bsep.pkiapp.keystores.KeyStoreWriter;
+import ftn.bsep.pkiapp.util.OCSPChecker;
 
 @RestController
 public class ObrisiPosleController {
-
-
+	OCSPChecker ocspChecker = new OCSPChecker();
+	
+	@GetMapping("/ocsp")
+	public String genRoot(HttpServletRequest request) throws Exception {
+		X509Certificate[] certs = (X509Certificate[])request.getAttribute("javax.servlet.request.X509Certificate");
+		System.out.println(certs[0].toString());
+		ocspChecker.makeCertChain(certs[0]);
+		
+		
+		return "Ok";
+	}
 	@GetMapping("/ok")
 	public String ok(HttpServletRequest request) {
 
 		X509Certificate[] certs = (X509Certificate[])request.getAttribute("javax.servlet.request.X509Certificate");
 		for(X509Certificate cert : certs) {
 			System.out.println(cert.toString());
+			
 		}
 		
 		CertificateFactory cf = null;

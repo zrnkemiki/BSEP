@@ -87,7 +87,7 @@ public class AuthenticationController {
 		try {
 			//TO-DO
 			System.out.println(loginCaDTO.getAlias());
-			
+			caService.initCA(loginCaDTO.getAlias(), loginCaDTO.getPrivateKeyPassword());
             return new ResponseEntity<LoginCaDTO>(
             		loginCaDTO, HttpStatus.OK);
         } catch (Exception ex) {

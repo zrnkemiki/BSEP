@@ -15,7 +15,9 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 import org.bouncycastle.asn1.ASN1EncodableVector;
@@ -176,15 +178,30 @@ public abstract class CertificateAuthority {
 
         // Verify the issued cert signature against the root (issuer) cert
         issuedCert.verify(issuerCert.getPublicKey(), "BC");
-
+        //Dodavanje sertifikata u store radi pregleda
+		KeyStoreWriter ksw = new KeyStoreWriter();
+		ksw.loadKeyStore(null, "password".toCharArray());
+		ksw.storeCertificate(this.getAlias(), issuedCert);
+		ksw.saveKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\issuedCerts\\issuedCertsStore.jks", "password".toCharArray());
         return issuedCert;
 		
 	}
 	public String getAlias() {
 		return alias;
 	}
+	public String getNewAlias() {
+		KeyStoreReader ksr = new KeyStoreReader();
+		ArrayList<Integer> aliases = ksr.getKeyStoreAliases("D:\\BSEP\\pki-app\\src\\main\\resources\\issuedCerts\\issuedCertsStore.jks", "password");
+		 Collections.sort(aliases);
+		 int last = aliases.get(aliases.size()-1);
+		 int newAlias = last + 1;
+		 return String.valueOf(newAlias);		
+	}
 
-
+	public ArrayList<Certificate> getIssuedCertificate() {
+		KeyStoreReader ksr = new KeyStoreReader();
+		return ksr.getKeyStoreContent("D:\\BSEP\\pki-app\\src\\main\\resources\\issuedCerts\\issuedCertsStore.jks", "password");	
+	}
 	public void setAlias(String alias) {
 		this.alias = alias;
 	}

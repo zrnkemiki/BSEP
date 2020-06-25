@@ -68,7 +68,11 @@ public class AdminApp {
 		//Generisi KeyStore - params(certFile, privateKeyFile, keyStorePassword, privateKeyPassword, alias, keyStoreFile) -> Opcija 2
 		//Util.generateKeyStore("D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\ClientCert.cer", "D:\\BSEP\\AdminHelper\\recources\\privateKeyClient.key", "password", "password", "client", "D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\client-keystore.jks");
 		//-------------------------------------------------------------------------------------------------------------------
-		
+		//KeyStoreReader ksr = new KeyStoreReader();
+		//PrivateKey privateKey = ksr.readPrivateKey("D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\server-keystore.jks", "password", "ca-rs", "password");
+		//Certificate cert = ksr.readCertificate("D:\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\server-keystore.jks", "password", "ca-rs");
+		//Util.writePrivate(privateKey,"D:\\BSEP\\AdminHelper\\recources\\serverKey.key" );
+		//Util.writeCertToPem(cert,"D:\\BSEP\\AdminHelper\\recources\\serverCert.cer");
 		//Generisi TrustStore - params(Mapa(alias, certFile), KeyStoreFile, password) -> Opcija 3
 		//Util.generateTrustStore(certs, keyStoreFile, password);
 		

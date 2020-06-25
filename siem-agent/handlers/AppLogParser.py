@@ -24,7 +24,7 @@ class AppLogParser(Thread):
             log_elements = line.split()
             unparsed = log_elements[0] + " " + log_elements[1]
             timestamp = self.parse_timedate(unparsed)
-            if timestamp > self.last_log_timestamp:
+            if timestamp >= self.last_log_timestamp:
                 msg = ' '.join(log_elements[6:])
                 log = Log(str(timestamp), log_elements[2], log_elements[3], log_elements[4], log_elements[5], msg)
                 logs.append(log.format_json())
