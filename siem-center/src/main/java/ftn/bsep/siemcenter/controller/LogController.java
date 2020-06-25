@@ -20,6 +20,8 @@ import ftn.bsep.siemcenter.service.LogService;
 @RestController
 public class LogController {
 	
+	private List<String> alerts;
+	
 	private final RuleEngineService ruleEngineService;
 	
 	@Autowired
@@ -53,15 +55,29 @@ public class LogController {
 		
 	}
 	
+	@GetMapping("/getAlerts}")
+	public List<String> getAlerts() {
+		List<String> alertsReturn = new ArrayList<String>();
+		
+		if(alerts.size()!= 0) {
+			for (String alert : alerts) {
+				System.out.println("Ovo je alert: " + alert);
+				alertsReturn.add(alert);
+			}
+		}
+		alerts.clear();
+		
+	return alertsReturn;
+	}
+	
 	
 	
 	//TEST CONTROLLER
-	@PostMapping("/testCEP/{param}")
-	public void testCEP(@PathVariable("param") Long id) {
-		System.out.println("Usao u test cep");
+	@GetMapping("/testCEP/{param}")
+	public List<String> testCEP(@PathVariable("param") Long id) {
 		
 		ArrayList<Log> logs = new ArrayList<Log>();
-
+		List<String> alertsReturn = new ArrayList<String>();
 		if(id==1) {
 			Log log = new Log();
 			log.setLevel("SUCCESS_AUDIT");
@@ -100,15 +116,17 @@ public class LogController {
 			logs.add(log);
 		}
 		
-		List<String> alerts = ruleEngineService.insertLog(logs);
+		alerts = ruleEngineService.insertLog(logs);
 
 		if(alerts.size()!= 0) {
 			for (String alert : alerts) {
-				System.out.println(alert);
+				System.out.println("Ovo je alert: " + alert);
+				alertsReturn.add(alert);
 			}
 		}
-		alerts.clear();
 		
+		alerts.clear();
+		return alertsReturn;
 	}
 	
 }
