@@ -30,7 +30,7 @@ class AppLogParser(Thread):
                 logs.append(log.format_json())
                 self.last_log_timestamp = timestamp
                 continue
-            break
+            #break
         return logs
 
     def parse_timedate(self, timestamp):

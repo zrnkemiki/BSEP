@@ -48,7 +48,7 @@ public class CSRAgentDialog extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MyFrame.getInstance().generateCsrAgentRequest(
-						"D:\\BSEP\\AdminHelper\\recources\\csrs\\" + jtf.getText());
+						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\csrs\\" + jtf.getText());
 				
 			}
 		});

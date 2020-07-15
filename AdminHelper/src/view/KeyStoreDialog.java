@@ -105,12 +105,12 @@ public class KeyStoreDialog extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MyFrame.getInstance().generateKeyStore(
-						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\keystores\\" + jtf.getText(),
-						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\keystores\\" + jtf2.getText(),
+						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\certs\\" + jtf.getText(),
+						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\csrs\\" + jtf2.getText(),
 						jtf3.getText(),
 						jtf4.getText(),
 						jtf5.getText(),
-						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\certs" + jtf6.getText()
+						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\keystores\\" + jtf6.getText()
 						);
 				
 			}

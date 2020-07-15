@@ -231,19 +231,23 @@ public class Util {
 		X509Certificate cert = null;
 
 		try {
+			System.out.println("Cert: " + certFile);
 			cert = (X509Certificate) Util.readCertificateFromPem(certFile);
 		} catch (CertificateException | IOException e1) {
 			e1.printStackTrace();
 		}
 
 		try {
+			System.out.println("Cert: " + keyFile);
 			privateKey = Util.readPrivateKeyFromPem(keyFile);
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException | IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
+			System.out.println("AAAAAAA");
 			if(checkPrivateKeyAndCert(cert,privateKey)) {
+				System.out.println("BBBBBBBB");
 				ksw.write(alias, privateKey, passKey.toCharArray(),(java.security.cert.Certificate) cert);
 				ksw.saveKeyStore(keyStoreFile, passwordKS.toCharArray());
 			}
@@ -257,8 +261,8 @@ public class Util {
 		ksw.loadKeyStore(null, password.toCharArray());
 		X509Certificate cert = null;
 		Map<String, String> certs= new HashMap<String,String>();
-		certs.put("root", "D:\\newWorkspace\\AdminHelper\\recources\\CAs\\DFRoot.cer");
-		certs.put("ca-rs", "D:\\newWorkspace\\AdminHelper\\recources\\CAs\\CA-RS-Cert.cer");
+		certs.put("root", "C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\CAs\\DFRoot.cer");
+		certs.put("ca-rs", "C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\CAs\\CA-RS-Cert.cer");
 		for(Map.Entry<String, String> pair : certs.entrySet()) {
 			try {
 				cert = (X509Certificate) Util.readCertificateFromPem(pair.getValue());

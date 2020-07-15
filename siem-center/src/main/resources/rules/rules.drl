@@ -22,7 +22,7 @@ rule "FAILURE 4625-login"
 	when
 	    $log: Log( getEventId() == '4625' && getLevel() == 'FAILURE_AUDIT' , $eventId: eventId );
 	    Number(intValue >= 2) from accumulate(
-        $log2: Log( this != $log, eventId == $eventId, this meets[15s] $log),count($log2))
+        $log2: Log( this != $log, eventId == $eventId, this meets[5s] $log),count($log2))
 	then
 		logsOutput.add("Multiple failed login! Time: " + $log.getTimestamp() + "| Message: " + $log.getMessage() + "\n");
 		delete($log);
@@ -33,7 +33,7 @@ rule "LOGIN Mulitiple fail"
 	when
 	    $log: Log( getEventId() == '9999' && getLevel() == 'WARNING' , $eventId: eventId );
 	    Number(intValue >= 2) from accumulate(
-        $log2: Log( this != $log, eventId == $eventId, this meets[15s] $log),count($log2))
+        $log2: Log( this != $log, eventId == $eventId, this meets[5s] $log),count($log2))
 	then
 		logsOutput.add("Multiple failed Application LOGIN! Time: " + $log.getTimestamp() + "| Message: " + $log.getMessage() + "\n");
 		delete($log);

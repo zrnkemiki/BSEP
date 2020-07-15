@@ -60,8 +60,8 @@ public class ExportDialog extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MyFrame.getInstance().exportCert(
-						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\csrs\\" + jtf.getText(),
-						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\csrs\\" + jtf2.getText());
+						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\certs\\" + jtf.getText(),
+						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\certs\\" + jtf2.getText());
 				
 			}
 		});

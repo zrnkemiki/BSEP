@@ -19,23 +19,24 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'new-certificate', component: NewCertificateComponent },
   { path: 'csr-view/:id', component: CsrViewerComponent },
-  
+  /*
   { path: 'csr-view/:id', component: CsrViewerComponent },
   { path: 'new-certificate', component: NewCertificateComponent},
   { path: 'csr-submit', component: CSRSubmitComponent},
   { path: 'csr-requests', component: CsrRequestViewerComponent},
   { path: 'login-ca', component: LoginCAComponent},
+  */
    {path: 'all-certificates', component: AllCertificatesComponent},
    {path: 'ceritificate-view/:id', component: CertificateViewComponent},
   
   //Disabled AuthGuard
-  /*
+  
   { path: 'csr-view/:id', component: CsrViewerComponent , canActivate: [AuthCAGuard]},
   { path: 'new-certificate', component: NewCertificateComponent, canActivate: [AuthCAGuard] },
   { path: 'csr-submit', component: CSRSubmitComponent, canActivate: [AuthMUGuard] },
   { path: 'csr-requests', component: CsrRequestViewerComponent, canActivate: [AuthCAGuard] },
   { path: 'login-ca', component: LoginCAComponent, canActivate: [AuthCAGuard]},
-  */
+  
 
   { path: '', component: HomepageComponent },
 

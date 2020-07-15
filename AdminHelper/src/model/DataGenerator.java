@@ -82,10 +82,11 @@ public class DataGenerator {
 			// klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o
 			// vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
-			builder.addRDN(BCStyle.CN, "SIEMCenter");
+			builder.addRDN(BCStyle.CN, "Siem_Centar_SRB_MU1");
 			builder.addRDN(BCStyle.O, "DF");
 			builder.addRDN(BCStyle.OU, "SIEM");
 			builder.addRDN(BCStyle.C, "RS");
+			builder.addRDN(BCStyle.E, "lakovic.j4@gmail.com");
 			// UID (USER ID) je ID korisnika
 			builder.addRDN(BCStyle.UID, "8265433");
 
@@ -113,10 +114,11 @@ public class DataGenerator {
 			// klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o
 			// vlasniku
 			X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
-			builder.addRDN(BCStyle.CN, "SIEMAgent");
+			builder.addRDN(BCStyle.CN, "Siem_Agent_RS_MU1");
 			builder.addRDN(BCStyle.O, "DF");
 			builder.addRDN(BCStyle.OU, "SIEM");
 			builder.addRDN(BCStyle.C, "RS");
+			builder.addRDN(BCStyle.E, "lakovic.j4@gmail.com");
 			// UID (USER ID) je ID korisnika
 			builder.addRDN(BCStyle.UID, "213432");
 

@@ -4,7 +4,7 @@
 			"type": "Application",
 			"path": "C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\siem-agent\\logs\\simulated\\sim.log",
 			"filter": "regex",
-			"interval": -1
+			"interval": 5
 		}
 	]
 }

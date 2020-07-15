@@ -31,7 +31,7 @@ def generate_ok_logs():
     log_path = "C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\siem-agent\\logs\\simulated\\sim.log"
     with open(log_path, 'a') as ff:
         for ll in logs:
-            print(ll)
+            #print(ll)
             ff.write(ll)
 
 

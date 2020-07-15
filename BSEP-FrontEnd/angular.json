@@ -63,8 +63,8 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "BSEP-FrontEnd:build",
-            "sslKey": "../pki-app/src/main/resources/noviJKS/serverKey.key",
-            "sslCert": "../pki-app/src/main/resources/noviJKS/serverCert.cer"
+            "sslKey": "../pki-app/src/main/resources/serverStore/serverKey.key",
+            "sslCert": "../pki-app/src/main/resources/serverStore/serverCert.cer"
           },
           "configurations": {
             "production": {

@@ -123,7 +123,7 @@ public class CountryCAController {
 		name = name.split(",")[0];
 		name = name + ".cer";
 		System.out.println("name " + name);
-		String pathToFile = "newCerts\\" + name;
+		String pathToFile = "newCerts\\newCert.cer";
 		String pathToWrite = "C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\pki-app\\src\\main\\resources\\newCerts\\newCert.cer";
 		CertHelper.writeCertToFileBase64Encoded((Certificate)cert, pathToWrite);
 		TimeUnit.SECONDS.sleep(3);

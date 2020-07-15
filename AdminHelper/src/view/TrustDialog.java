@@ -60,7 +60,7 @@ public class TrustDialog extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MyFrame.getInstance().generateTrustStore(
-						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\keystores" + jtf.getText(),
+						"C:\\Users\\Laptop\\Documents\\GitHub\\BSEP\\AdminHelper\\recources\\keystores\\" + jtf.getText(),
 						jtf2.getText());
 				
 			}

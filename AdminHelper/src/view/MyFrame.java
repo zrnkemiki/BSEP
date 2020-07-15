@@ -59,13 +59,13 @@ public class MyFrame extends JFrame {
 		try {
 			csr = csrGen.generateCSR(subjectData, extensions);
 			try {
-				Util.writeCSRToFileBase64Encoded(csr, fullPath);
+				Util.writeCSRToFileBase64Encoded(csr, fullPath + ".pem");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			try {
-				Util.writePrivateKeyToFilePem(keyPairSubject, fullPath);
+				Util.writePrivateKeyToFilePem(keyPairSubject, fullPath + ".key");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -88,13 +88,13 @@ public class MyFrame extends JFrame {
 		try {
 			csr = csrGen.generateCSR(subjectData, extensions);
 			try {
-				Util.writeCSRToFileBase64Encoded(csr, fullPath);
+				Util.writeCSRToFileBase64Encoded(csr, fullPath + ".pem");
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			try {
-				Util.writePrivateKeyToFilePem(keyPairSubject, fullPath);
+				Util.writePrivateKeyToFilePem(keyPairSubject, fullPath + ".key");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
